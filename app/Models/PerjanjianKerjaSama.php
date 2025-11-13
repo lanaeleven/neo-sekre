@@ -17,10 +17,6 @@ class PerjanjianKerjaSama extends Model
 
     protected $table = 'perjanjian_kerja_sama';
 
-    public function direksi(): BelongsTo
-    {
-        return $this->belongsTo(Direksi::class, 'idDireksi');
-    }
 
     public function units(): BelongsToMany
     {

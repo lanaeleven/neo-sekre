@@ -86,7 +86,8 @@ class DashboardController extends Controller
             'pengumuman' => $pengumuman,
             'edaran' => $edaran,
             'bulanSekarang' => $bulanSekarang,
-            'spoBulanIni' => $spoBulanIni
+            'spoBulanIni' => $spoBulanIni,
+            'isForm' => false
         ]);
     }
 

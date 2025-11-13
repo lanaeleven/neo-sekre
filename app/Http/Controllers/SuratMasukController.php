@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use ZipArchive;
 use App\Models\User;
-use App\Models\Direksi;
 use setasign\Fpdi\Fpdi;
 use App\Models\SuratMasuk;
 use App\Models\UserKepala;
@@ -32,9 +31,10 @@ use Webklex\PDFMerger\Facades\PDFMergerFacade as PDFMerger;
 
 class SuratMasukController extends Controller
 {
-    public function create(?string $keterangan = null) {
+    public function create(?string $keterangan = null)
+    {
+
         $suratMasuk = SuratMasuk::orderBy('tahun', 'desc')->orderBy('index', 'desc');
-        $direksi = Direksi::all();
         $judul = "Surat Masuk";
         // $pengirim = User::whereNotIn("id", [1,2,3])->get();
 
@@ -51,17 +51,13 @@ class SuratMasukController extends Controller
         if (request('index')) {
             $suratMasuk->where('index', '=', request('index'));
         }
-        
+
         if (request('tanggalAwal')) {
             $suratMasuk = $suratMasuk->whereDate('tanggalSurat', '>=', request('tanggalAwal'));
         }
 
         if (request('tanggalAkhir')) {
             $suratMasuk = $suratMasuk->whereDate('tanggalSurat', '<=', request('tanggalAkhir'));
-        }        
-
-        if (request('direksi')) {
-            $suratMasuk->where('idDireksi', request('direksi'));
         }
 
         if (request('status')) {
@@ -89,21 +85,33 @@ class SuratMasukController extends Controller
             'search_tanggalAwal' => request('tanggalAwal'),
             'search_tanggalAkhir' => request('tanggalAkhir'),
             'search_index' => request('index'),
-            'search_direksi' => request('direksi'),
             'search_pengirim' => request('pengirim'),
             'search_nomorSurat' => request('nomorSurat'),
             'search_perihal' => request('perihal'),
             'search_status' => request('status')
         ]);
 
-        return view('surat-masuk.index', ['title' => $judul, 'active' => 'surat masuk', 'suratMasuk' => $suratMasuk->with(['direksi', 'userPengirim'])->paginate(15), 'direksi' => $direksi, 'keterangan' => $keterangan, 'judul' => $judul]);
+        return view('surat-masuk.index', ['title' => $judul, 'active' => 'surat masuk', 'suratMasuk' => $suratMasuk->with(['userPengirim'])->paginate(25), 'keterangan' => $keterangan, 'judul' => $judul, 'isForm' => false]);
     }
 
-    public function tambah() {
-        $direksi = Direksi::all();
+    public function tambah()
+    {
+        $sifatSurat = collect([
+            ['id' => 'Biasa', 'nama' => 'Biasa'],
+            ['id' => 'Rahasia', 'nama' => 'Rahasia'],
+            ['id' => 'Segera', 'nama' => 'Segera'],
+        ])->map(function ($item) {
+            return (object) $item;
+        });
+        $lampiran = collect([
+            ['id' => 'Ada', 'nama' => 'Ada'],
+            ['id' => 'Tidak Ada', 'nama' => 'Tidak Ada'],
+        ])->map(function ($item) {
+            return (object) $item;
+        });
         $pengirim = User::whereNotIn('id', [1, 2, 3])->where('isAktif', true)->get();
-        
-        return view('surat-masuk.tambah', ['title' => 'Tambah Surat Masuk', 'active' => 'surat masuk', 'direksi' => $direksi, 'pengirim' => $pengirim]);
+
+        return view('surat-masuk.tambah', ['title' => 'Tambah Surat Masuk', 'active' => 'surat masuk', 'pengirim' => $pengirim, 'sifatSurat' => $sifatSurat, 'lampiran' => $lampiran, 'isForm' => true]);
     }
 
     public function store(Request $request): RedirectResponse
@@ -117,11 +125,10 @@ class SuratMasukController extends Controller
             'lampiran' => 'required',
             'pengirim' => 'required',
             'idPengirim' => 'required',
-            'direksi' => 'required',
             'perihal' => 'required',
             'fileSurat' => 'required|mimes:pdf,jpg,png|max:10240'
         ]);
-        
+
         $tahun = Carbon::createFromFormat('Y-m-d', $request->input('tanggalSurat'))->format('Y');
         $bulan = Carbon::createFromFormat('Y-m-d', $request->input('tanggalSurat'))->format('m');
         // Get the maximum id for the given year
@@ -156,9 +163,9 @@ class SuratMasukController extends Controller
         }
         $fileName = $request->file('fileSurat')->getClientOriginalName();
 
-        
 
-        
+
+
         $suratMasuk = new SuratMasuk();
         $suratMasuk->index = $newIndex;
         $suratMasuk->idPosisiDisposisi = $request->input('idPosisiDisposisi');
@@ -168,9 +175,8 @@ class SuratMasukController extends Controller
         $suratMasuk->tanggalSurat = $request->input('tanggalSurat');
         $suratMasuk->tahun = $tahun;
         $suratMasuk->lampiran = $request->input('lampiran');
-        $suratMasuk->idPengirim = $request->input('idPengirim') != "lainnya" ? $request->input('idPengirim') : NULL; 
+        $suratMasuk->idPengirim = $request->input('idPengirim') != "lainnya" ? $request->input('idPengirim') : NULL;
         $suratMasuk->pengirim = $request->input('pengirim');
-        $suratMasuk->idDireksi = $request->input('direksi');
         $suratMasuk->perihal = $request->input('perihal');
         $suratMasuk->status = $request->input('status');
         $suratMasuk->statusArsip = 0;
@@ -178,26 +184,27 @@ class SuratMasukController extends Controller
         $suratMasuk->filePath = $filePath;
         $suratMasuk->save();
 
-        
-        if (!($request->input('idPengirim') == 'lainnya')) {
-            $user = User::find($request->input('idPengirim'));
-            $job = new ProcessNotifSuratMasukBaru($user->email, $user->namaJabatan, $request->input('nomorSurat'));
-            dispatch($job);
-        }
+
+        // if (!($request->input('idPengirim') == 'lainnya')) {
+        //     $user = User::find($request->input('idPengirim'));
+        //     $job = new ProcessNotifSuratMasukBaru($user->email, $user->namaJabatan, $request->input('nomorSurat'));
+        //     dispatch($job);
+        // }
 
 
         return redirect('/surat-masuk/index?tahun=' . config('app.tahun'))
             ->with('success', "Berhasil Menambahkan Surat Masuk");
     }
 
-    public function edit(SuratMasuk $suratMasuk) {
-        $direksi = Direksi::all();
+    public function edit(SuratMasuk $suratMasuk)
+    {
         $pengirim = User::whereNotIn('id', [1, 2, 3])->get();
 
-        return view('surat-masuk.edit', ['title' => 'Edit Surat Masuk', 'active' => 'surat masuk', 'suratMasuk' => $suratMasuk, 'direksi' => $direksi, 'pengirim' => $pengirim]);
+        return view('surat-masuk.edit', ['title' => 'Edit Surat Masuk', 'active' => 'surat masuk', 'suratMasuk' => $suratMasuk,  'pengirim' => $pengirim]);
     }
 
-    public function editTerusanSurat(int $idSuratMasuk, DistribusiSurat $terusanSurat) {
+    public function editTerusanSurat(int $idSuratMasuk, DistribusiSurat $terusanSurat)
+    {
         return view('surat-masuk.edit-terusan-surat', ['title' => 'Edit Terusan Surat', 'active' => 'surat masuk', 'terusanSurat' => $terusanSurat, 'idSuratMasuk' => $idSuratMasuk]);
     }
 
@@ -212,7 +219,6 @@ class SuratMasukController extends Controller
             'lampiran' => 'required',
             'pengirim' => 'required',
             'idPengirim' => 'required',
-            'direksi' => 'required',
             'perihal' => 'required',
             'fileSurat' => 'mimes:pdf,jpg,png|max:7168'
         ]);
@@ -245,27 +251,26 @@ class SuratMasukController extends Controller
             } else {
                 $filePath = $request->file('fileSurat')->store('uploads/surat-masuk/' . $tahunInput . '/' . $bulan, 'public');
             }
-                // Store the file in storage\app\public folder
-                $fileName = $request->file('fileSurat')->getClientOriginalName();
+            // Store the file in storage\app\public folder
+            $fileName = $request->file('fileSurat')->getClientOriginalName();
         }
 
         // Store file information in the database
         $suratMasuk = SuratMasuk::find($request->input('id'));
-        $suratMasuk->tanggalAgenda =$request->input('tanggalAgenda');
-        $suratMasuk->sifatSurat =$request->input('sifatSurat');
-        $suratMasuk->nomorSurat =$request->input('nomorSurat');
-        $suratMasuk->tanggalSurat =$request->input('tanggalSurat');
-        $suratMasuk->lampiran =$request->input('lampiran');
-        $suratMasuk->idDireksi =$request->input('direksi');
-        $suratMasuk->idPengirim = $request->input('idPengirim') != "lainnya" ? $request->input('idPengirim') : NULL; 
+        $suratMasuk->tanggalAgenda = $request->input('tanggalAgenda');
+        $suratMasuk->sifatSurat = $request->input('sifatSurat');
+        $suratMasuk->nomorSurat = $request->input('nomorSurat');
+        $suratMasuk->tanggalSurat = $request->input('tanggalSurat');
+        $suratMasuk->lampiran = $request->input('lampiran');
+        $suratMasuk->idPengirim = $request->input('idPengirim') != "lainnya" ? $request->input('idPengirim') : NULL;
         $suratMasuk->pengirim = $request->input('pengirim');
-        $suratMasuk->perihal =$request->input('perihal');
-        $suratMasuk->status =$request->input('status');
+        $suratMasuk->perihal = $request->input('perihal');
+        $suratMasuk->status = $request->input('status');
         if ($request->file('fileSurat')) {
             $suratMasuk->fileName = $fileName;
             $suratMasuk->filePath = $filePath;
         }
-        
+
         if ($tahunInput != $request->input('tahun')) {
             // Get the maximum id for the given year
             $maxIndex = SuratMasuk::where('tahun', $tahunInput)->max('index');
@@ -273,7 +278,7 @@ class SuratMasukController extends Controller
             $newIndex = $maxIndex ? $maxIndex + 1 : 1;
 
             $suratMasuk->tahun = $tahunInput;
-            $suratMasuk->index = $newIndex;         
+            $suratMasuk->index = $newIndex;
         }
         $suratMasuk->save();
 
@@ -301,7 +306,8 @@ class SuratMasukController extends Controller
     }
 
 
-    public function disposisi(SuratMasuk $suratMasuk) {
+    public function disposisi(SuratMasuk $suratMasuk)
+    {
         // $terusan = User::where('id', '<>', auth()->user()->id)->where('id', '<>', 2)->get();
 
         // mengambil id kepala dalam bentuk array
@@ -317,12 +323,10 @@ class SuratMasukController extends Controller
         if (auth()->user()->isKhusus) {
             $penerimaTerusanKhusus = PengirimKhusus::where('idUser', $idUser)->get();
             $terusan = User::whereIn('id', $penerimaTerusanKhusus->select('bisaMengirimKe'))->get();
-        } 
-        
-        else {
+        } else {
             $pengirimTerusanKhusus = PenerimaKhusus::where('bisaMenerimaDari', $idUser)->get();
             $terusanKhusus = User::whereIn('id', $pengirimTerusanKhusus->select('idUser'))->get();
-            
+
             // if($idUser == 1 || in_array($idUser, $arrIdKepala)) { // daftar opsi terusan untuk sekre dan kepala 
             //     $terusan = User::where('id', '<>', $idUser)->where('id', '<>', 2)->where('isKhusus', false)->get();
             //     if ($terusanKhusus->isNotEmpty()) {
@@ -373,7 +377,7 @@ class SuratMasukController extends Controller
                     }
                 } elseif ($levelJabatan == 2) {
                     $terusan = DB::select(
-                            'SELECT *
+                        'SELECT *
                             FROM users
                             WHERE ( 
                                 id IN (SELECT idUser
@@ -381,8 +385,8 @@ class SuratMasukController extends Controller
                                 WHERE levelJabatan = 3 OR levelJabatan = 5)
                                 -- OR id = 1
                             ) AND isKhusus = false AND id != :idUser AND isAktif = true ;',
-                            ['idUser' => $idUser]
-                            );
+                        ['idUser' => $idUser]
+                    );
                     if ($terusanKhusus->isNotEmpty()) {
                         $terusan = [...$terusan, ...$terusanKhusus];
                     }
@@ -399,9 +403,11 @@ class SuratMasukController extends Controller
                             OR id = (3)
                             )
                         AND isKhusus = false AND id != :idUser AND isAktif = true ;',
-                        ['idAtasan' => $idUser,
-                        'idUser' => $idUser]
-                        );
+                        [
+                            'idAtasan' => $idUser,
+                            'idUser' => $idUser
+                        ]
+                    );
 
                     if ($idUser == 9 || $idUser == 10 || $idUser == 44) {
                         $terusanKeSekre = User::where('id', 1)->get();
@@ -426,7 +432,7 @@ class SuratMasukController extends Controller
                             )
                         AND isKhusus = false AND id != ? AND isAktif = true ;',
                         [$idUser, $idUser]
-                        );
+                    );
 
                     // $terusan = DB::select(
                     //     'SELECT *  FROM users 
@@ -447,42 +453,42 @@ class SuratMasukController extends Controller
                     }
                 } elseif ($levelJabatan == 5) {
                     $terusan = DB::select(
-                            'SELECT *
+                        'SELECT *
                             FROM users
                             WHERE ( 
                                 id IN (SELECT idUser
                                 FROM struktur_organisasi
                                 WHERE levelJabatan IN (2,3,4,5))
                             ) AND isKhusus = false AND id != :idUser AND isAktif = true ;',
-                            ['idUser' => $idUser]
-                            );
+                        ['idUser' => $idUser]
+                    );
                     if ($terusanKhusus->isNotEmpty()) {
                         $terusan = [...$terusan, ...$terusanKhusus];
                     }
                 } else {
                     return ('Maaf, posisi Jabatan Akun Anda belum disetting oleh Sekretariat, Silakan hubungi Sekretariat');
                 }
-            } 
+            }
         }
 
-        
-        
-            // PENGECEKAN UNTUK USER NON-SEKRE PADA SURAT YANG SUDAH DITERUSKAN
-            // PENGECEKAN APAKAH SURAT MASUK SUDAH PERNAH DITERUSKAN ATAU BELUM, JIKA BELUM MAKA TIDAK MELEWATI GATE DISPOSISI-SURAT
-            if (DistribusiSurat::where('idSuratMasuk', '=', $suratMasuk->id)->exists()) {
-                $cekDS = DistribusiSurat::where('idSuratMasuk', '=', $suratMasuk->id)->orderBy('id', 'desc')->get()[0];
-                if ((! Gate::allows('disposisi-surat', $cekDS) || $cekDS->status == "Diarsipkan") && $idUser != 1) {
-                    abort(403);
-                }
-            }
 
-            // PENGECEKAN UNTUK USER NON-SEKRE PADA SURAT YANG BELUM DITERUSKAN
-            // PENGECEKAN APAKAH SURAT MASUK YANG BELUM DITERUSKAN DIAKSES OLEH ADMIN ATAU BUKAN, JIKA BUKAN ADMIN MAKA TIDAK DIPERBOLEHKAN
-            if ($suratMasuk->status == "Belum Diteruskan" && $idUser != 1) {
+
+        // PENGECEKAN UNTUK USER NON-SEKRE PADA SURAT YANG SUDAH DITERUSKAN
+        // PENGECEKAN APAKAH SURAT MASUK SUDAH PERNAH DITERUSKAN ATAU BELUM, JIKA BELUM MAKA TIDAK MELEWATI GATE DISPOSISI-SURAT
+        if (DistribusiSurat::where('idSuratMasuk', '=', $suratMasuk->id)->exists()) {
+            $cekDS = DistribusiSurat::where('idSuratMasuk', '=', $suratMasuk->id)->orderBy('id', 'desc')->get()[0];
+            if ((! Gate::allows('disposisi-surat', $cekDS) || $cekDS->status == "Diarsipkan") && $idUser != 1) {
                 abort(403);
             }
-        
-        
+        }
+
+        // PENGECEKAN UNTUK USER NON-SEKRE PADA SURAT YANG BELUM DITERUSKAN
+        // PENGECEKAN APAKAH SURAT MASUK YANG BELUM DITERUSKAN DIAKSES OLEH ADMIN ATAU BUKAN, JIKA BUKAN ADMIN MAKA TIDAK DIPERBOLEHKAN
+        if ($suratMasuk->status == "Belum Diteruskan" && $idUser != 1) {
+            abort(403);
+        }
+
+
 
         // JIKA SUDAH MELEWATI SEMUA GATE, KEMUDIAN AMBIL DATA DISTRIBUSI SURAT
         $distribusiSurat = DistribusiSurat::where('idSuratMasuk', '=', $suratMasuk->id)->with(['pengirimDisposisi', 'tujuanDisposisi'])->get();
@@ -493,32 +499,29 @@ class SuratMasukController extends Controller
     public function teruskan(Request $request): RedirectResponse
     {
         // $perihal = session('search_query_perihal', '');
-        
+
         // pembedaan redirect user sekre dan non-sekre
         if (auth()->user()->id == 1) {
             $redirect = '/surat-masuk/index'
-                    . '?tanggalAwal=' . urlencode(session('search_tanggalAwal', ''))
-                    . '&tanggalAkhir=' . urlencode(session('search_tanggalAkhir', ''))
-                    . '&index=' . urlencode(session('search_index', ''))
-                    . '&direksi=' . urlencode(session('search_direksi', ''))
-                    . '&pengirim=' . urlencode(session('search_pengirim', ''))
-                    . '&nomorSurat=' . urlencode(session('search_nomorSurat', ''))
-                    . '&perihal=' . urlencode(session('search_perihal', ''))
-                    . '&status=' . urlencode(session('search_status', ''))
-            ;
+                . '?tanggalAwal=' . urlencode(session('search_tanggalAwal', ''))
+                . '&tanggalAkhir=' . urlencode(session('search_tanggalAkhir', ''))
+                . '&index=' . urlencode(session('search_index', ''))
+                . '&pengirim=' . urlencode(session('search_pengirim', ''))
+                . '&nomorSurat=' . urlencode(session('search_nomorSurat', ''))
+                . '&perihal=' . urlencode(session('search_perihal', ''))
+                . '&status=' . urlencode(session('search_status', ''));
         } else {
             $redirect = '/';
-        } 
+        }
 
         session()->forget('search_tanggalAwal');
         session()->forget('search_tanggalAkhir');
         session()->forget('search_index');
-        session()->forget('search_direksi');
         session()->forget('search_pengirim');
         session()->forget('search_nomorSurat');
         session()->forget('search_perihal');
         session()->forget('search_status');
-        
+
         // validasi input dari user
         $request->validate([
             'idTujuanDisposisi' => 'required',
@@ -527,7 +530,7 @@ class SuratMasukController extends Controller
             'idPengirimDisposisi' => 'required',
             'fileLampiran' => 'mimes:pdf,jpg,png|max:5120'
         ]);
-        
+
         // START PROCESS file lampiran
         if ($request->file('fileLampiran')) {
             $filesToDelete = [];
@@ -594,7 +597,7 @@ class SuratMasukController extends Controller
             $bulan = Carbon::createFromFormat('Y-m-d', $suratMasuk->tanggalSurat)->format('m');
             $newSuratMasukPath = 'uploads/surat-masuk/' . $tahun . '/' . $bulan . '/' . uniqid() . '.pdf'; // path surat berlampiran yg akan disimpan di database
             $pathPenggabungan = storage_path('app/public/' . $newSuratMasukPath); // path surat untuk keperluan penggabungan
-            
+
             // proses penggabungan surat masuk dengan lampiran
             $pdfMerger = PDFMerger::init();
             $pdfMerger->addPDF($suratMasukPath, 'all');
@@ -612,7 +615,7 @@ class SuratMasukController extends Controller
                 if (file_exists($file)) {
                     unlink($file);
                 }
-            }  
+            }
         }
         // END PROCESS file lampiran 
 
@@ -639,26 +642,27 @@ class SuratMasukController extends Controller
         $penerima = $suratMasuk = User::find($distribusiSurat->idTujuanDisposisi);
 
         $job = new ProcessNotifDisposisi(
-            $sifatSurat, 
-            $nomorSurat, 
-            auth()->user()->namaJabatan, 
-            $penerima->namaJabatan, 
-            $penerima->nama, 
-            \Carbon\Carbon::parse($distribusiSurat->tanggalDiteruskan)->format('d/m/Y'), 
+            $sifatSurat,
+            $nomorSurat,
+            auth()->user()->namaJabatan,
+            $penerima->namaJabatan,
+            $penerima->nama,
+            \Carbon\Carbon::parse($distribusiSurat->tanggalDiteruskan)->format('d/m/Y'),
             $distribusiSurat->instruksi,
-            $penerima->email)
-        ;
+            $penerima->email
+        );
         dispatch($job);
 
-        
 
-        
+
+
 
         return redirect($redirect)
             ->with('success', "Berhasil Meneruskan Pesan");
     }
 
-    public function lacakDistribusi(SuratMasuk $suratMasuk) {
+    public function lacakDistribusi(SuratMasuk $suratMasuk)
+    {
         $idUser = auth()->user()->id;
         $distribusiSurat = DistribusiSurat::where('idSuratMasuk', '=', $suratMasuk->id)->with(['pengirimDisposisi', 'tujuanDisposisi'])->get();
         $daftarPengirim = [];
@@ -666,7 +670,7 @@ class SuratMasukController extends Controller
             array_push($daftarPengirim, $ds->idPengirimDisposisi);
         }
 
-        if ($suratMasuk->idPengirim != $idUser){
+        if ($suratMasuk->idPengirim != $idUser) {
             if (! in_array($idUser, $daftarPengirim) && $idUser != 1 && $idUser != 2) {
                 abort(403);
             }
@@ -675,7 +679,8 @@ class SuratMasukController extends Controller
         return view('surat-masuk.lacak-distribusi', ['title' => 'Disposisi Surat Masuk', 'active' => 'surat masuk', 'suratMasuk' => $suratMasuk, 'distribusiSurat' => $distribusiSurat]);
     }
 
-    public function unduhDisposisi(Request $request) {
+    public function unduhDisposisi(Request $request)
+    {
         // $distribusiSurat = DistribusiSurat::where('idSuratMasuk', '=', $request->input('idSuratMasuk'))->with(['pengirimDisposisi', 'tujuanDisposisi'])->get();
         $suratMasuk = SuratMasuk::where('id', '=', $request->input('idSuratMasuk'))->get()[0];
         // $distribusiSurat = DistribusiSurat::where('idSuratMasuk', '=', $request->input('idSuratMasuk'))->get();
@@ -690,7 +695,7 @@ class SuratMasukController extends Controller
         // $distribusiSurat = $distribusiSurat->map(function($item) use ($user) {
         //     $namaPengirim = isset($user[$item['idPengirimDisposisi']]) ? $user[$item['idPengirimDisposisi']]->namaJabatan : 'Unknown';
         //     $namaPenerima = isset($user[$item['idTujuanDisposisi']]) ? $user[$item['idTujuanDisposisi']]->namaJabatan : 'Unknown';
-        
+
         //     // Mengembalikan item dengan tambahan field namaPengirim dan namaPenerima
         //     return array_merge($item->toArray(), [
         //         'namaPengirim' => $namaPengirim,
@@ -750,7 +755,8 @@ class SuratMasukController extends Controller
         }
     }
 
-    public function unduhDisposisi_lama(Request $request) {
+    public function unduhDisposisi_lama(Request $request)
+    {
         // $distribusiSurat = DistribusiSurat::where('idSuratMasuk', '=', $request->input('idSuratMasuk'))->with(['pengirimDisposisi', 'tujuanDisposisi'])->get();
         $distribusiSurat = DistribusiSurat::where('idSuratMasuk', '=', $request->input('idSuratMasuk'))->get();
         $suratMasuk = SuratMasuk::where('id', '=', $request->input('idSuratMasuk'))->get();
@@ -760,10 +766,10 @@ class SuratMasukController extends Controller
         }
         $user = User::all()->keyBy('id');
 
-        $distribusiSurat = $distribusiSurat->map(function($item) use ($user) {
+        $distribusiSurat = $distribusiSurat->map(function ($item) use ($user) {
             $namaPengirim = isset($user[$item['idPengirimDisposisi']]) ? $user[$item['idPengirimDisposisi']]->namaJabatan : 'Unknown';
             $namaPenerima = isset($user[$item['idTujuanDisposisi']]) ? $user[$item['idTujuanDisposisi']]->namaJabatan : 'Unknown';
-        
+
             // Mengembalikan item dengan tambahan field namaPengirim dan namaPenerima
             return array_merge($item->toArray(), [
                 'namaPengirim' => $namaPengirim,
@@ -776,7 +782,8 @@ class SuratMasukController extends Controller
         return $pdf->stream();
     }
 
-    public function rekapSuratMasuk(Request $request) {
+    public function rekapSuratMasuk(Request $request)
+    {
         // start (setup dengan parameter bulan)
         // $tanggal = $request->input('bulanRekap');
         // $tahun = Carbon::createFromFormat('Y-m', $tanggal)->format('Y');
@@ -785,7 +792,7 @@ class SuratMasukController extends Controller
 
         // $zip = new ZipArchive();
         // $zipFilePath = storage_path('app/' . 'rekap_suratmasuk_' . $tahun . '_' . $bulan . '.zip');
-        
+
         // end (setup dengan parameter bulan)
 
         // start (setup dengan awal dan akhir)
@@ -806,7 +813,7 @@ class SuratMasukController extends Controller
 
         // $zip = new ZipArchive();
         // $zipFilePath = storage_path('app/' . 'rekap_suratmasuk_dari_' . $awal . '_sampai_' . $akhir . '.zip');
-        
+
         // // end (setup dengan awal dan akhir)
 
         // if ($rekapSuratMasuk->isEmpty()) {
@@ -822,12 +829,12 @@ class SuratMasukController extends Controller
         //         // foreach ($distribusiSurat as $ds) {
         //         //     array_push($daftarPengirim, $ds->idPengirimDisposisi);
         //         // }
-                
+
 
         //         // $distribusiSurat = $distribusiSurat->map(function($item) use ($user) {
         //         //     $namaPengirim = isset($user[$item['idPengirimDisposisi']]) ? $user[$item['idPengirimDisposisi']]->namaJabatan : 'Unknown';
         //         //     $namaPenerima = isset($user[$item['idTujuanDisposisi']]) ? $user[$item['idTujuanDisposisi']]->namaJabatan : 'Unknown';
-                
+
         //         //     // Mengembalikan item dengan tambahan field namaPengirim dan namaPenerima
         //         //     return array_merge($item->toArray(), [
         //         //         'namaPengirim' => $namaPengirim,
@@ -900,10 +907,11 @@ class SuratMasukController extends Controller
         // } else {
         //     dd('gagal membuka file zip');
         // }
-    
+
     }
 
-    public function rekapSuratMasuk_lama(Request $request) {
+    public function rekapSuratMasuk_lama(Request $request)
+    {
         $tanggal = $request->input('bulanRekap');
         $tahun = Carbon::createFromFormat('Y-m', $tanggal)->format('Y');
         $bulan = Carbon::createFromFormat('Y-m', $tanggal)->format('m');
@@ -912,7 +920,7 @@ class SuratMasukController extends Controller
         // dd($suratMasuk);
 
         $zip = new ZipArchive();
-        $zipFilePath = storage_path('app/' . 'rekap_suratmasuk_' . $tahun . '_' . $bulan . '.zip') ;
+        $zipFilePath = storage_path('app/' . 'rekap_suratmasuk_' . $tahun . '_' . $bulan . '.zip');
 
         if ($zip->open($zipFilePath, ZipArchive::CREATE | ZipArchive::OVERWRITE) === TRUE) {
             foreach ($suratMasuk as $sm) {
@@ -928,10 +936,10 @@ class SuratMasukController extends Controller
                 }
                 $user = User::all()->keyBy('id');
 
-                $distribusiSurat = $distribusiSurat->map(function($item) use ($user) {
+                $distribusiSurat = $distribusiSurat->map(function ($item) use ($user) {
                     $namaPengirim = isset($user[$item['idPengirimDisposisi']]) ? $user[$item['idPengirimDisposisi']]->namaJabatan : 'Unknown';
                     $namaPenerima = isset($user[$item['idTujuanDisposisi']]) ? $user[$item['idTujuanDisposisi']]->namaJabatan : 'Unknown';
-                
+
                     // Mengembalikan item dengan tambahan field namaPengirim dan namaPenerima
                     return array_merge($item->toArray(), [
                         'namaPengirim' => $namaPengirim,
@@ -950,19 +958,6 @@ class SuratMasukController extends Controller
         } else {
             dd('gagal membuka file zip');
         }
-        
-    }
-
-    public function laporanPerDireksi() {
-        $suratMasuk = SuratMasuk::orderBy('idDireksi', 'asc');
-        $suratMasuk->select('idDireksi', SuratMasuk::raw('COUNT(idDireksi) as total_surat'))->groupBy('idDireksi');
-        if (request('tanggalAwal')) {
-            $suratMasuk = $suratMasuk->whereDate('tanggalSurat', '>=', request('tanggalAwal'));
-        }
-        if (request('tanggalAkhir')) {
-            $suratMasuk = $suratMasuk->whereDate('tanggalSurat', '<=', request('tanggalAkhir'));
-        }        
-        return view('surat-masuk.laporan-per-direksi', ['title' => 'Surat Masuk Per Direksi', 'active' => 'laporan', 'suratMasuk' => $suratMasuk->get()]);
     }
 
     // public function nonSekreBelumDiteruskan() {
@@ -970,8 +965,9 @@ class SuratMasukController extends Controller
     //     return view('surat-masuk.surat-disposisi-belum-diteruskan', ['title' => 'Surat Masuk Belum Diteruskan', 'active' => 'belum diteruskan', 'suratMasuk' => $suratMasuk]);
     // }
 
-    public function nonSekreBelumDiteruskan() {
-        $suratMasuk = SuratMasuk::where('idPosisiDisposisi', auth()->user()->id)->with(['direksi', 'userPengirim'])->orderBy('id', 'desc');
+    public function nonSekreBelumDiteruskan()
+    {
+        $suratMasuk = SuratMasuk::where('idPosisiDisposisi', auth()->user()->id)->with(['userPengirim'])->orderBy('id', 'desc');
 
         if (request('index')) {
             $suratMasuk = $suratMasuk->where('index', '=', request('index'));
@@ -981,7 +977,7 @@ class SuratMasukController extends Controller
         }
         if (request('tanggalAkhir')) {
             $suratMasuk = $suratMasuk->whereDate('tanggalSurat', '<=', request('tanggalAkhir'));
-        }        
+        }
         if (request('pengirim')) {
             $suratMasuk = $suratMasuk->where('pengirim', 'like', '%' . request('pengirim') . '%');
         }
@@ -997,8 +993,9 @@ class SuratMasukController extends Controller
         return view('surat-masuk.surat-disposisi-belum-diteruskan', ['title' => 'Surat Masuk Belum Diteruskan', 'active' => 'surat masuk', 'suratMasuk' => $suratMasuk->paginate(15)]);
     }
 
-    public function nonSekreDikirim() {
-        $suratMasuk = SuratMasuk::where('idPengirim', auth()->user()->id)->with(['direksi', 'userPengirim'])->orderBy('id', 'desc');
+    public function nonSekreDikirim()
+    {
+        $suratMasuk = SuratMasuk::where('idPengirim', auth()->user()->id)->with(['userPengirim'])->orderBy('id', 'desc');
 
         if (request('index')) {
             $suratMasuk = $suratMasuk->where('index', '=', request('index'));
@@ -1008,7 +1005,7 @@ class SuratMasukController extends Controller
         }
         if (request('tanggalAkhir')) {
             $suratMasuk = $suratMasuk->whereDate('tanggalSurat', '<=', request('tanggalAkhir'));
-        }        
+        }
         if (request('pengirim')) {
             $suratMasuk = $suratMasuk->where('pengirim', 'like', '%' . request('pengirim') . '%');
         }
@@ -1018,17 +1015,18 @@ class SuratMasukController extends Controller
         if (request('perihal')) {
             $suratMasuk = $suratMasuk->where('perihal', 'like', '%' . request('perihal') . '%');
         }
-        
+
         return view('surat-masuk.surat-disposisi-dikirim', ['title' => 'Surat Masuk Dikirim', 'active' => 'surat keluar', 'suratMasuk' => $suratMasuk->paginate(15)]);
     }
 
-    public function nonSekreSudahDiteruskan() {
+    public function nonSekreSudahDiteruskan()
+    {
 
         // Old penarikan data
         $distribusiSurat = User::where('id', '=', auth()->user()->id)->get()[0]->mengirimDS;
         $suratMasuk = collect([]);
         foreach ($distribusiSurat as $ds) {
-                $suratMasuk->push($ds->suratMasuk);
+            $suratMasuk->push($ds->suratMasuk);
         }
         $suratMasuk = $suratMasuk->unique('id');
         $suratMasuk = $suratMasuk->sortBy([
@@ -1036,18 +1034,17 @@ class SuratMasukController extends Controller
             ['index', 'desc'],
         ]);
         $suratMasuk = $suratMasuk->where('status', '<>', 'Diarsipkan');
-        
+
         // $idUser = auth()->user()->id;      
         // $suratMasuk = SuratMasuk::join('distribusi_surat', 'surat_masuk.id', '=', 'distribusi_surat.idSuratMasuk')
         // ->where('distribusi_surat.idPengirimDisposisi', $idUser)
         // ->where('surat_masuk.status', '<>', 'Diarsipkan')
         // ->select('surat_masuk.*')
-        // ->with(['direksi', 'userPengirim'])
         // ->groupBy('surat_masuk.id')
         // ->orderBy('surat_masuk.tahun', 'DESC')
         // ->orderBy('surat_masuk.id', 'DESC')
         // ->get();
-        
+
 
         // BEGINNING OF PENCARIAN
         if (request('index')) {
@@ -1058,7 +1055,7 @@ class SuratMasukController extends Controller
             $suratMasuk = $suratMasuk->filter(function ($item) use ($tanggalAwal) {
                 return strtotime($item['tanggalSurat']) >= strtotime($tanggalAwal);
             });
-        }        
+        }
         if (request('tanggalAkhir')) {
             $tanggalAkhir = request('tanggalAkhir');
             $suratMasuk = $suratMasuk->filter(function ($item) use ($tanggalAkhir) {
@@ -1102,11 +1099,12 @@ class SuratMasukController extends Controller
         ]);
     }
 
-    public function nonSekreSudahDiarsipkan() {
+    public function nonSekreSudahDiarsipkan()
+    {
         $distribusiSurat = User::where('id', '=', auth()->user()->id)->get()[0]->mengirimDS;
         $suratMasuk = collect([]);
         foreach ($distribusiSurat as $ds) {
-                $suratMasuk->push($ds->suratMasuk);
+            $suratMasuk->push($ds->suratMasuk);
         }
         $suratMasuk = $suratMasuk->unique('id');
         $suratMasuk = $suratMasuk->sortBy([
@@ -1120,7 +1118,6 @@ class SuratMasukController extends Controller
         // ->where('distribusi_surat.idPengirimDisposisi', $idUser)
         // ->where('surat_masuk.status', 'Diarsipkan')
         // ->select('surat_masuk.*')
-        // ->with(['direksi', 'userPengirim'])
         // ->groupBy('surat_masuk.id')
         // ->orderBy('surat_masuk.tahun', 'DESC')
         // ->orderBy('surat_masuk.id', 'DESC')
@@ -1135,7 +1132,7 @@ class SuratMasukController extends Controller
             $suratMasuk = $suratMasuk->filter(function ($item) use ($tanggalAwal) {
                 return strtotime($item['tanggalSurat']) >= strtotime($tanggalAwal);
             });
-        }        
+        }
         if (request('tanggalAkhir')) {
             $tanggalAkhir = request('tanggalAkhir');
             $suratMasuk = $suratMasuk->filter(function ($item) use ($tanggalAkhir) {
@@ -1175,7 +1172,8 @@ class SuratMasukController extends Controller
     }
 
 
-    public function arsipkan(Request $request) {
+    public function arsipkan(Request $request)
+    {
         $request->validate([
             'idTujuanDisposisi' => 'required',
             'idSuratMasuk' => 'required',
@@ -1187,21 +1185,18 @@ class SuratMasukController extends Controller
         $redirect = "/";
         if (auth()->user()->id == 1) {
             $redirect = "/surat-masuk/index"
-                    . '?tanggalAwal=' . urlencode(session('search_tanggalAwal', ''))
-                    . '&tanggalAkhir=' . urlencode(session('search_tanggalAkhir', ''))
-                    . '&index=' . urlencode(session('search_index', ''))
-                    . '&direksi=' . urlencode(session('search_direksi', ''))
-                    . '&pengirim=' . urlencode(session('search_pengirim', ''))
-                    . '&nomorSurat=' . urlencode(session('search_nomorSurat', ''))
-                    . '&perihal=' . urlencode(session('search_perihal', ''))
-                    . '&status=' . urlencode(session('search_status', ''))
-            ;
+                . '?tanggalAwal=' . urlencode(session('search_tanggalAwal', ''))
+                . '&tanggalAkhir=' . urlencode(session('search_tanggalAkhir', ''))
+                . '&index=' . urlencode(session('search_index', ''))
+                . '&pengirim=' . urlencode(session('search_pengirim', ''))
+                . '&nomorSurat=' . urlencode(session('search_nomorSurat', ''))
+                . '&perihal=' . urlencode(session('search_perihal', ''))
+                . '&status=' . urlencode(session('search_status', ''));
         }
 
         session()->forget('search_tanggalAwal');
         session()->forget('search_tanggalAkhir');
         session()->forget('search_index');
-        session()->forget('search_direksi');
         session()->forget('search_pengirim');
         session()->forget('search_nomorSurat');
         session()->forget('search_perihal');
@@ -1274,7 +1269,7 @@ class SuratMasukController extends Controller
             $bulan = Carbon::createFromFormat('Y-m-d', $suratMasuk->tanggalSurat)->format('m');
             $newSuratMasukPath = 'uploads/surat-masuk/' . $tahun . '/' . $bulan . '/' . uniqid() . '.pdf'; // path surat berlampiran yg akan disimpan di database
             $pathPenggabungan = storage_path('app/public/' . $newSuratMasukPath); // path surat untuk keperluan penggabungan
-            
+
             // proses penggabungan surat masuk dengan lampiran
             $pdfMerger = PDFMerger::init();
             $pdfMerger->addPDF($suratMasukPath, 'all');
@@ -1292,7 +1287,7 @@ class SuratMasukController extends Controller
                 if (file_exists($file)) {
                     unlink($file);
                 }
-            }  
+            }
         }
 
         $suratMasuk = SuratMasuk::find($request->input('idSuratMasuk'));
@@ -1312,7 +1307,8 @@ class SuratMasukController extends Controller
         return redirect($redirect)->with('success', 'Berhasil Mengarsipkan Surat');
     }
 
-    public function bukaArsip(Request $request) {
+    public function bukaArsip(Request $request)
+    {
         $distribusiSurat = DistribusiSurat::where("idSuratMasuk", $request->input('idSuratMasuk'))->get();
         $suratMasuk = SuratMasuk::find($request->input('idSuratMasuk'));
         $suratMasuk->statusArsip = 0;
@@ -1320,9 +1316,9 @@ class SuratMasukController extends Controller
         return redirect('/surat-masuk/disposisi/' . $request->input('idSuratMasuk'));
     }
 
-    public function laporanDistribusiSurat(?string $keterangan = null) {
+    public function laporanDistribusiSurat(?string $keterangan = null)
+    {
         $suratMasuk = SuratMasuk::orderBy('id', 'desc');
-        $direksi = Direksi::all();
         $judul = "Laporan Surat Masuk";
         $terusan = User::where('id', '<>', 1)->where('id', '<>', 2)->get();
 
@@ -1350,7 +1346,7 @@ class SuratMasukController extends Controller
         if (request('statusArsip')) {
             if (request('statusArsip') == "Belum") {
                 $suratMasuk = $suratMasuk->where('statusArsip', '=', 0);
-            }elseif (request('statusArsip') == "Arsip") {
+            } elseif (request('statusArsip') == "Arsip") {
                 $suratMasuk = $suratMasuk->where('statusArsip', '=', 1);
             }
         }
@@ -1371,7 +1367,7 @@ class SuratMasukController extends Controller
 
         if (request('tanggalAkhir')) {
             $suratMasuk = $suratMasuk->whereDate('tanggalSurat', '<=', request('tanggalAkhir'));
-        }     
+        }
 
         if (request('index')) {
             $suratMasuk->where('id', '=', request('index'));
@@ -1379,10 +1375,6 @@ class SuratMasukController extends Controller
 
         if (request('tahun')) {
             $suratMasuk->whereYear('tanggalSurat', request('tahun'));
-        }
-
-        if (request('direksi')) {
-            $suratMasuk->where('idDireksi', request('direksi'));
         }
 
         if (request('status')) {
@@ -1401,19 +1393,20 @@ class SuratMasukController extends Controller
             $suratMasuk->where('perihal', 'like', '%' . request('perihal') . '%');
         }
 
-        return view('surat-masuk.laporan-distribusi-surat', ['title' => $judul, 'active' => 'laporan', 'suratMasuk' => $suratMasuk->paginate(15), 'direksi' => $direksi, 'keterangan' => $keterangan, 'judul' => $judul, 'terusan' => $terusan]);
+        return view('surat-masuk.laporan-distribusi-surat', ['title' => $judul, 'active' => 'laporan', 'suratMasuk' => $suratMasuk->paginate(15), 'keterangan' => $keterangan, 'judul' => $judul, 'terusan' => $terusan]);
     }
 
-    public function laporanPerTujuan() {
+    public function laporanPerTujuan()
+    {
 
         // Mendapatkan jumlah surat masuk yang diteruskan ke masing-masing user
         $rekap = DB::table('surat_masuk')
-        ->join('distribusi_surat', 'surat_masuk.id', '=', 'distribusi_surat.idSuratMasuk')
-        ->join('users', 'distribusi_surat.idTujuanDisposisi', '=', 'users.id')
-        ->select('users.namaJabatan', DB::raw('COUNT(DISTINCT surat_masuk.id) as jumlah_surat_masuk'))
-        ->where('users.id', '<>', 1)
-        ->groupBy('users.namaJabatan')
-        ->orderBy('users.id', 'asc');
+            ->join('distribusi_surat', 'surat_masuk.id', '=', 'distribusi_surat.idSuratMasuk')
+            ->join('users', 'distribusi_surat.idTujuanDisposisi', '=', 'users.id')
+            ->select('users.namaJabatan', DB::raw('COUNT(DISTINCT surat_masuk.id) as jumlah_surat_masuk'))
+            ->where('users.id', '<>', 1)
+            ->groupBy('users.namaJabatan')
+            ->orderBy('users.id', 'asc');
 
         if (request('tanggalAwal')) {
             $rekap = $rekap->whereDate('surat_masuk.tanggalSurat', '>=', request('tanggalAwal'));
@@ -1425,6 +1418,4 @@ class SuratMasukController extends Controller
 
         return view('surat-masuk.laporan-per-tujuan', ['title' => 'Surat Masuk Per Tujuan Disposisi', 'active' => 'laporan', 'rekap' => $rekap->get()]);
     }
-
-
 }

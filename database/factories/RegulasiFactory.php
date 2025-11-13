@@ -20,7 +20,6 @@ class RegulasiFactory extends Factory
             'index' => fake()->unique()->randomNumber(3),
             'tahun' => 2025,
             'idJenisRegulasi' => fake()->numberBetween(1, 2),
-            'idDireksi' => 1,
             'tanggalSurat' => fake()->dateTimeThisYear(),
             'tujuan' => fake()->word(),
             'perihal' => fake()->words(3, true),

@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use App\Models\User;
-use App\Models\Direksi;
 use App\Models\JenisSurat;
 use App\Models\DistribusiSurat;
 use App\Models\JenisInformasi;
@@ -413,11 +412,6 @@ class DatabaseSeeder extends Seeder
         ]);
 
 
-        // SEEDING UNTUK TABEL DIREKSI
-
-        Direksi::create([
-            'namaDireksi' => 'Direktur'
-        ]);
 
         \App\Models\SuratKeluar::factory(100)->create();
         \App\Models\Spo::factory(100)->create();
@@ -749,7 +743,7 @@ class DatabaseSeeder extends Seeder
         DB::table('distribusi_surat')->insert($dataSudahDiteruskan);
 
 
-        
+
         \App\Models\PerjanjianKerjaSama::factory(100)->create();
         $dataPksUser = [];
         for ($i = 1; $i <= 100; $i++) {
@@ -759,7 +753,7 @@ class DatabaseSeeder extends Seeder
             ];
         }
         DB::table('perjanjian_kerja_sama_user')->insert($dataPksUser);
-        
+
         \App\Models\Undangan::factory(100)->create();
         $dataUndanganUser = [];
         for ($i = 1; $i <= 100; $i++) {
@@ -769,10 +763,10 @@ class DatabaseSeeder extends Seeder
             ];
         }
         DB::table('undangan_user')->insert($dataUndanganUser);
-        
+
         JenisInformasi::create(['nama' => 'Pengumuman/Himbauan']);
         JenisInformasi::create(['nama' => 'Edaran']);
-        
+
         \App\Models\Informasi::factory(100)->create();
         $dataInformasiUser = [];
         for ($i = 1; $i <= 100; $i++) {

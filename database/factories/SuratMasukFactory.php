@@ -36,7 +36,6 @@ class SuratMasukFactory extends Factory
         // ];
 
         return [
-            'idDireksi' => 1,
             'idPosisiDisposisi' => 10,
             'idPengirim' => 10,
             'tahun' => 2025,

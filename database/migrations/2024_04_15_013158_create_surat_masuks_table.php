@@ -15,8 +15,6 @@ return new class extends Migration
             $table->id();
             $table->integer('index');
             $table->year('tahun');
-            $table->unsignedInteger('idDireksi');
-            $table->foreign('idDireksi')->references('id')->on('direksi');
             $table->unsignedInteger('idPosisiDisposisi');
             $table->foreign('idPosisiDisposisi')->references('id')->on('users');
             $table->integer('statusArsip');

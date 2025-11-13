@@ -18,11 +18,8 @@ class SuratKeluar extends Model
 
     public $timestamps = false;
 
-    public function jenisSurat(): BelongsTo {
+    public function jenisSurat(): BelongsTo
+    {
         return $this->belongsTo(JenisSurat::class, 'idJenisSurat');
-    }
-
-    public function direksi(): BelongsTo {
-        return $this->belongsTo(Direksi::class, 'idDireksi');
     }
 }

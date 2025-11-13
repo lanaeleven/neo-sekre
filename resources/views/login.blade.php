@@ -64,7 +64,7 @@
 
     <!-- Left Section -->
     <div
-        class="w-full md:w-1/2 bg-gradient-to-b from-blue-500 to-blue-700 text-white flex flex-col justify-center items-center p-10 relative overflow-hidden">
+        class="w-full md:w-1/2 bg-gradient-to-b from-blue-500 to-blue-900 text-white flex flex-col justify-center items-center p-10 relative overflow-hidden">
         <!-- Background pattern -->
         <div class="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]">
         </div>

@@ -19,11 +19,6 @@ class Spo extends Model
 
     public $timestamps = false;
 
-    public function direksi(): BelongsTo
-    {
-        return $this->belongsTo(Direksi::class, 'idDireksi');
-    }
-
     public function units(): BelongsToMany
     {
         return $this->belongsToMany(Unit::class);

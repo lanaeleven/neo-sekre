@@ -19,7 +19,6 @@ class PerjanjianKerjaSamaFactory extends Factory
         return [
             'index' => fake()->unique()->randomNumber(3),
             'tahun' => 2025,
-            'idDireksi' => 1,
             'tanggalSurat' => fake()->dateTimeThisYear(),
             'tujuan' => fake()->word(),
             'perihal' => fake()->words(3, true),

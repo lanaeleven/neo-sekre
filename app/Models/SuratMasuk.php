@@ -19,15 +19,13 @@ class SuratMasuk extends Model
 
     public $timestamps = false;
 
-    public function direksi(): BelongsTo {
-        return $this->belongsTo(Direksi::class, 'idDireksi');
-    }
-    
-    public function distribusiSurat(): HasMany {
+    public function distribusiSurat(): HasMany
+    {
         return $this->hasMany(DistribusiSurat::class, 'idSuratMasuk');
     }
 
-    public function userPengirim(): BelongsTo {
+    public function userPengirim(): BelongsTo
+    {
         return $this->belongsTo(User::class, 'idPengirim');
     }
 }

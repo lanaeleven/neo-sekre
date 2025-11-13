@@ -16,8 +16,6 @@ return new class extends Migration
             $table->timestamps();
             $table->integer('index');
             $table->year('tahun');
-            $table->unsignedInteger('idDireksi');
-            $table->foreign('idDireksi')->references('id')->on('direksi');
             $table->date('tanggalSurat');
             $table->string('tujuan');
             $table->string('perihal');

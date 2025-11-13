@@ -19,6 +19,7 @@ class SuratKeluarController extends Controller
 {
     public function create(?string $ket = null)
     {
+
         $suratKeluar = SuratKeluar::orderBy('tahun', 'desc')->orderBy('index', 'desc');
         $jenisSurat = JenisSurat::all();
         $direksi = Direksi::all();
@@ -54,7 +55,7 @@ class SuratKeluarController extends Controller
         }
         if (request('tanggalAkhir')) {
             $suratKeluar = $suratKeluar->whereDate('tanggalSurat', '<=', request('tanggalAkhir'));
-        }        
+        }
         if (request('jenisSurat')) {
             $suratKeluar->where('idJenisSurat', request('jenisSurat'));
         }

@@ -18,15 +18,13 @@ class Direksi extends Model
 
     public $timestamps = false;
 
-    public function suratKeluar(): HasMany {
+    public function suratKeluar(): HasMany
+    {
         return $this->hasMany(SuratKeluar::class, 'idDireksi');
     }
 
-    public function suratMasuk(): HasMany {
-        return $this->hasMany(SuratMasuk::class, 'idDireksi');
-    }
-
-    public function spo(): HasMany {
+    public function spo(): HasMany
+    {
         return $this->hasMany(Spo::class, 'idDireksi');
     }
 }

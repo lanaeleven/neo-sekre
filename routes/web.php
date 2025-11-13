@@ -31,12 +31,12 @@ use App\Http\Controllers\UndanganController;
 |
 */
 
-Route::get('/', [DashboardController::class, 'create'])->middleware('auth');
+Route::get('/', [DashboardController::class, 'create'])->middleware('auth')->name('dashboard');
 // Route::get('/coba', [SuratMasukController::class, 'coba']);
 
 // Route::get('/email', [EmailController::class, 'index']);
 
-Route::get('/surat-masuk/index', [SuratMasukController::class, 'create'])->middleware('sekre');
+Route::get('/surat-masuk/index', [SuratMasukController::class, 'create'])->middleware('sekre')->name('surat-masuk.index');
 Route::get('/surat-masuk/s/{keterangan}', [SuratMasukController::class, 'create'])->middleware('sekre');
 Route::get('/laporan/distribusi-surat/{keterangan}', [SuratMasukController::class, 'laporanDistribusiSurat'])->middleware('sekre');
 Route::get('/surat-masuk/tambah', [SuratMasukController::class, 'tambah'])->middleware('sekre');
@@ -59,7 +59,7 @@ Route::post('/surat-masuk/buka-arsip', [SuratMasukController::class, 'bukaArsip'
 Route::post('/unduh-disposisi', [SuratMasukController::class, 'unduhDisposisi']);
 Route::post('/unduh-rekap-suratmasuk', [SuratMasukController::class, 'rekapSuratMasuk']);
 
-Route::get('/surat-keluar/index', [SuratKeluarController::class, 'create'])->middleware('sekre');
+Route::get('/surat-keluar/index', [SuratKeluarController::class, 'create'])->middleware('sekre')->name('surat-keluar.index');
 Route::get('/surat-keluar/tambah', [SuratKeluarController::class, 'tambah'])->middleware('sekre');
 Route::get('/surat-keluar/edit/{suratKeluar}', [SuratKeluarController::class, 'edit'])->middleware('sekre');
 Route::get('/surat-keluar/{ket}', [SuratKeluarController::class, 'create'])->middleware('sekre');

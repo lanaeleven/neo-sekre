@@ -18,8 +18,6 @@ return new class extends Migration
             $table->year('tahun');
             $table->unsignedInteger('idJenisRegulasi');
             $table->foreign('idJenisRegulasi')->references('id')->on('jenis_regulasi');
-            $table->unsignedInteger('idDireksi');
-            $table->foreign('idDireksi')->references('id')->on('direksi');
             $table->date('tanggalSurat');
             $table->string('tujuan');
             $table->string('perihal');

@@ -17,7 +17,6 @@ class SpoFactory extends Factory
     public function definition(): array
     {
         return [
-            'idDireksi' => 1,
             'tahun' => 2025,
             'index' => fake()->unique()->randomNumber(3),
             'tanggalSurat' => fake()->dateTimeThisYear(),
