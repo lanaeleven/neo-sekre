@@ -3,13 +3,25 @@
 @section('container')
     <div class="flex flex-col h-screen relative">
         {{-- Navbar --}}
-        <div class="bg-white border-b border-gray-200 px-4 py-1 top-0 z-10">
-            <div class="flex justify-between items-center">
-                <span>E-Sekre</span>
-                <span>Edit Surat Masuk</span>
+        <div class="bg-white border-b border-gray-200 px-4 py-2 shadow-sm">
+            <div class="flex items-center justify-between">
+
+                <!-- Logo / Brand -->
+                <span class="text-gray-700 font-semibold tracking-wide">
+                    E-Sekre
+                </span>
+
+                <!-- Page Title -->
+                <span class="text-gray-600 font-medium">
+                    Edit Surat Masuk
+                </span>
+
+                <!-- Right Button -->
                 <div>
-                    <x-button-with-link title="X" url="/surat-masuk/index" />
+                    <x-button-with-tooltip size="md" variant="danger" title="X" tooltip="Tutup Form"
+                        url="/surat-masuk/index" />
                 </div>
+
             </div>
         </div>
         {{-- Navbar --}}
