@@ -198,9 +198,24 @@ class SuratMasukController extends Controller
 
     public function edit(SuratMasuk $suratMasuk)
     {
+        $sifatSurat = collect([
+            ['id' => 'Biasa', 'nama' => 'Biasa'],
+            ['id' => 'Rahasia', 'nama' => 'Rahasia'],
+            ['id' => 'Segera', 'nama' => 'Segera'],
+        ])->map(function ($item) {
+            return (object) $item;
+        });
+
+        $lampiran = collect([
+            ['id' => 'Ada', 'nama' => 'Ada'],
+            ['id' => 'Tidak Ada', 'nama' => 'Tidak Ada'],
+        ])->map(function ($item) {
+            return (object) $item;
+        });
+
         $pengirim = User::whereNotIn('id', [1, 2, 3])->get();
 
-        return view('surat-masuk.edit', ['title' => 'Edit Surat Masuk', 'active' => 'surat masuk', 'suratMasuk' => $suratMasuk,  'pengirim' => $pengirim]);
+        return view('surat-masuk.edit', ['title' => 'Edit Surat Masuk', 'active' => 'surat masuk', 'suratMasuk' => $suratMasuk,  'pengirim' => $pengirim, 'isForm' => true, 'sifatSurat' => $sifatSurat, 'lampiran' => $lampiran]);
     }
 
     public function editTerusanSurat(int $idSuratMasuk, DistribusiSurat $terusanSurat)
@@ -223,7 +238,6 @@ class SuratMasukController extends Controller
             'fileSurat' => 'mimes:pdf,jpg,png|max:7168'
         ]);
 
-        // dd($request->input());
 
         $tahunInput = Carbon::createFromFormat('Y-m-d', $request->input('tanggalSurat'))->format('Y');
         $bulan = Carbon::createFromFormat('Y-m-d', $request->input('tanggalSurat'))->format('m');
