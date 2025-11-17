@@ -19,7 +19,7 @@
                 <!-- Right Button -->
                 <div>
                     <x-button-with-tooltip size="md" variant="danger" tooltip="Tutup Form"
-                        url="/surat-masuk/index">X</x-button-with-tooltip>
+                        url="/surat-masuk/index"><x-heroicon-o-x-mark class="w-4 h-4 stroke-4" /></x-button-with-tooltip>
                 </div>
 
             </div>
@@ -43,7 +43,7 @@
                 <input type="hidden" name="index" value="{{ $suratMasuk->index }}">
                 <input type="hidden" name="tahun" value="{{ $suratMasuk->tahun }}">
 
-                <div class="grid grid-cols-2 gap-x-6 gap-y-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
                     <div>
                         <x-text-input name="status" id="status" :required="true" :readonly="true"
                             value="{{ old('status', $suratMasuk->status ?? '') }}">Status
@@ -119,8 +119,9 @@
 
                             {{-- Tombol Aksi --}}
                             <div class="mt-2 sm:mt-0 flex gap-2">
-                                <x-button-with-tooltip title="Lihat" tooltip="Lihat surat masuk"
-                                    url="{{ asset('storage/' . $suratMasuk->filePath) }}" target="_blank" />
+                                <x-button-with-tooltip tooltip="Lihat surat masuk"
+                                    url="{{ asset('storage/' . $suratMasuk->filePath) }}"
+                                    target="_blank">Lihat</x-button-with-tooltip>
                             </div>
                         </div>
                     </div>
@@ -143,19 +144,21 @@
 
 
                 </div>
-
-                <div class="mt-6 flex items-center justify-center gap-x-6">
+                <div class="mt-6 flex items-center justify-center gap-x-6 md:hidden">
                     <x-green-submit-button>
-                        Edit Data
+                        Simpan
                     </x-green-submit-button>
                 </div>
 
-            </form>
         </div>
 
-        <div class="bg-white border-t border-gray-200 py-1 text-center">
-            <span class="text-sm text-gray-500">© 2025 E-Sekre. All rights reserved.</span>
+        <div class="pt-2 items-center justify-center gap-x-6 hidden md:flex bg-slate-200">
+            <x-green-submit-button>
+                Simpan
+            </x-green-submit-button>
         </div>
+
+        </form>
 
     </div>
 

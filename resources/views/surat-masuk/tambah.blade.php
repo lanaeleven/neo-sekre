@@ -20,7 +20,7 @@
                 <!-- Right Button -->
                 <div>
                     <x-button-with-tooltip size="md" variant="danger" tooltip="Tutup Form"
-                        url="/surat-masuk/index">X</x-button-with-tooltip>
+                        url="/surat-masuk/index"><x-heroicon-o-x-mark class="w-4 h-4 stroke-4" /></x-button-with-tooltip>
                 </div>
 
             </div>
@@ -43,7 +43,7 @@
                 <input type="hidden" name="idPosisiDisposisi" value="1">
                 <input type="hidden" name="status" value="Belum Diteruskan">
 
-                <div class="grid grid-cols-2 gap-x-6 gap-y-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
                     <div>
                         <x-text-input name="nomorSurat" id="nomorSurat" value="{{ old('nomorSurat') }}"
                             :required="true">Nomor Surat</x-text-input>
@@ -112,18 +112,21 @@
                     </div>
                 </div>
 
-                <div class="mt-6 flex items-center justify-center gap-x-6">
+                <div class="mt-6 flex items-center justify-center gap-x-6 md:hidden">
                     <x-green-submit-button>
-                        Tambah Data
+                        Simpan
                     </x-green-submit-button>
                 </div>
 
-            </form>
         </div>
 
-        <div class="bg-white border-t border-gray-200 py-1 text-center">
-            <span class="text-sm text-gray-500">© 2025 E-Sekre. All rights reserved.</span>
+        <div class="pt-2 items-center justify-center gap-x-6 hidden md:flex bg-slate-200">
+            <x-green-submit-button>
+                Simpan
+            </x-green-submit-button>
         </div>
+
+        </form>
 
     </div>
 
