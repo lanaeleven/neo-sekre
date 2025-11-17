@@ -27,9 +27,16 @@
             </div>
 
             {{-- FILTER button on mobile --}}
-            <button id="openFilter" class="md:hidden text-green-700 px-2 py-1 rounded border border-green-600 ml-2">
-                Filter
+            <button id="openFilter" class="md:hidden text-green-700 px-2 py-1 rounded border ml-2">
+                {{-- Filter --}}
+                <x-heroicon-o-adjustments-horizontal class="w-6 h-6 text-green-700" />
             </button>
+        </div>
+
+
+        {{-- Pagination Mobile --}}
+        <div class="md:hidden flex justify-center mt-1">
+            {{ $suratMasuk->appends(request()->input())->links('pagination::custom') }}
         </div>
 
 
@@ -54,7 +61,7 @@
 
             <div class="w-full max-w-sm bg-white h-full shadow-xl p-4 animate-slideInRight ml-auto">
                 <h2 class="text-lg font-semibold mb-4 text-green-700 flex justify-between">
-                    Filter Surat
+                    Filter
 
                     <button id="closeFilter" class="text-gray-600 text-xl leading-none">×</button>
                 </h2>
@@ -135,17 +142,24 @@
         <div class="hidden md:block flex-1 overflow-y-auto px-1">
 
             <table class="min-w-full text-sm border-collapse">
-                <thead class="sticky top-0 z-10 text-white" style="background: linear-gradient(180deg, #10b981, #059669);">
+                <thead class="sticky top-0 z-10 bg-slate-100 text-slate-700">
                     <tr>
-                        <th class="px-4 py-2 font-semibold text-left border-b border-green-700">Indeks</th>
-                        <th class="px-4 py-2 font-semibold text-left border-b border-green-700">Dari</th>
-                        <th class="px-4 py-2 font-semibold text-left border-b border-green-700">Tgl Surat</th>
-                        <th class="px-4 py-2 font-semibold text-left border-b border-green-700">No Surat</th>
-                        <th class="px-4 py-2 font-semibold text-left border-b border-green-700">Perihal</th>
-                        <th class="px-4 py-2 font-semibold text-left border-b border-green-700">Status</th>
-                        <th class="px-4 py-2 font-semibold text-left border-b border-green-700">Aksi</th>
+                        <th class="px-4 py-2 font-medium text-left ">
+                            Indeks</th>
+                        <th class="px-4 py-2 font-medium text-left ">Dari
+                        </th>
+                        <th class="px-4 py-2 font-medium text-left ">Tgl
+                            Surat</th>
+                        <th class="px-4 py-2 font-medium text-left ">No
+                            Surat</th>
+                        <th class="px-4 py-2 font-medium text-left ">
+                            Perihal</th>
+                        <th class="px-4 py-2 font-medium text-left ">
+                            Status</th>
+                        <th class="px-4 py-2 font-medium text-left border-b border-green-200">Aksi</th>
                     </tr>
                 </thead>
+
 
                 <tbody class="bg-white">
                     @foreach ($suratMasuk as $sm)
@@ -170,14 +184,18 @@
 
                             {{-- ACTIONS --}}
                             <td class="border-b border-gray-200 px-4 py-2 space-x-1">
-                                <x-button-with-tooltip title="E" tooltip="Edit"
-                                    url="/surat-masuk/edit/{{ $sm->id }}" />
-                                <x-button-with-tooltip title="L" tooltip="Lihat"
-                                    url="{{ asset('storage/' . $sm->filePath) }}" target="_blank" />
-                                <x-button-with-tooltip title="LL" tooltip="Lacak"
-                                    url="/surat-masuk/lacak-distribusi/{{ $sm->id }}" />
-                                <x-button-with-tooltip title="D" tooltip="Disposisi"
-                                    url="/surat-masuk/disposisi/{{ $sm->id }}" />
+                                <x-button-with-tooltip variant="warning" tooltip="Edit"
+                                    url="/surat-masuk/edit/{{ $sm->id }}"><x-heroicon-s-pencil
+                                        class="w-4 h-4" /></x-button-with-tooltip>
+                                <x-button-with-tooltip variant="light" tooltip="Lihat"
+                                    url="{{ asset('storage/' . $sm->filePath) }}" target="_blank"><x-heroicon-s-eye
+                                        class="w-4 h-4" /></x-button-with-tooltip>
+                                <x-button-with-tooltip variant="info" tooltip="Lacak"
+                                    url="/surat-masuk/lacak-distribusi/{{ $sm->id }}"><x-heroicon-s-magnifying-glass-plus
+                                        class="w-4 h-4" /></x-button-with-tooltip>
+                                <x-button-with-tooltip variant="success" tooltip="Disposisi"
+                                    url="/surat-masuk/disposisi/{{ $sm->id }}"><x-heroicon-s-arrow-up-right
+                                        class="w-4 h-4" /></x-button-with-tooltip>
                             </td>
                         </tr>
                     @endforeach
@@ -213,14 +231,14 @@
                     </div>
 
                     <div class="flex gap-1 mt-3 justify-end">
-                        <x-button-with-tooltip title="Edit" tooltip="Edit"
-                            url="/surat-masuk/edit/{{ $sm->id }}" />
-                        <x-button-with-tooltip title="Lihat" tooltip="Lihat"
-                            url="{{ asset('storage/' . $sm->filePath) }}" target="_blank" />
-                        <x-button-with-tooltip title="Lacak" tooltip="Lacak"
-                            url="/surat-masuk/lacak-distribusi/{{ $sm->id }}" />
-                        <x-button-with-tooltip title="Disposisi" tooltip="Disposisi"
-                            url="/surat-masuk/disposisi/{{ $sm->id }}" />
+                        <x-button-with-tooltip variant="warning" tooltip="Edit"
+                            url="/surat-masuk/edit/{{ $sm->id }}">Edit</x-button-with-tooltip>
+                        <x-button-with-tooltip variant="light" tooltip="Lihat"
+                            url="{{ asset('storage/' . $sm->filePath) }}" target="_blank">Lihat</x-button-with-tooltip>
+                        <x-button-with-tooltip variant="info" tooltip="Lacak"
+                            url="/surat-masuk/lacak-distribusi/{{ $sm->id }}">Lacak</x-button-with-tooltip>
+                        <x-button-with-tooltip variant="success" tooltip="Disposisi"
+                            url="/surat-masuk/disposisi/{{ $sm->id }}">Disposisi</x-button-with-tooltip>
                     </div>
                 </div>
             @endforeach
@@ -230,12 +248,12 @@
 
 
         {{-- Pagination --}}
-        <div class="flex justify-center mt-2 mb-1">
+        <div class="md:flex hidden  justify-center mt-2 mb-1">
             {{ $suratMasuk->appends(request()->input())->links('pagination::custom') }}
         </div>
 
         {{-- Footer --}}
-        <div class="bg-white border-t border-gray-200 py-1 text-center">
+        <div class="md:block hidden bg-white border-t border-gray-200 py-1 text-center">
             <span class="text-sm text-gray-500">© 2025 E-Sekre. All rights reserved.</span>
         </div>
 

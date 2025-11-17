@@ -1,4 +1,5 @@
 @props([
+    'icon' => '',
     'tooltip' => 'Tooltip',
     'url' => '/',
     'target' => '_self',
@@ -21,9 +22,9 @@
 
     // Size button
     $sizes = [
-        'sm' => 'text-xs px-1 py-1',
-        'md' => 'text-sm px-1.5 py-1.5',
-        'lg' => 'text-base px-2 py-2',
+        'sm' => 'text-xs px-2 py-1',
+        'md' => 'text-sm px-3 py-1.5',
+        'lg' => 'text-base px-4 py-2',
     ];
 
     $btnClass = ($variants[$variant] ?? $variants['primary']) . ' ' . ($sizes[$size] ?? $sizes['md']);
@@ -31,12 +32,9 @@
 
 <div class="relative group inline-block">
     <a href="{{ $url }}" target="{{ $target }}"
-        class="rounded transition-all duration-200 flex items-center justify-center {{ $btnClass }}">
-        <span class="flex items-center">
-            {{ $slot }}
-        </span>
+        class="rounded transition-all duration-200 {{ $btnClass }}">
+        <x-dynamic-component :component="$icon" />
     </a>
-
 
     {{-- Tooltip --}}
     <span

@@ -19,8 +19,8 @@
 
                 <!-- Right Button -->
                 <div>
-                    <x-button-with-tooltip size="md" variant="danger" title="X" tooltip="Tutup Form"
-                        url="/surat-masuk/index" />
+                    <x-button-with-tooltip size="md" variant="danger" tooltip="Tutup Form"
+                        url="/surat-masuk/index">X</x-button-with-tooltip>
                 </div>
 
             </div>
