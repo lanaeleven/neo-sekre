@@ -1,236 +1,85 @@
 @extends('layouts.main')
 
 @section('container')
-    <div class="flex flex-col h-screen relative">
+    {{-- Animations --}}
+    <x-animations-style />
 
-        {{-- ================= NAVBAR ================= --}}
-        <div class="bg-white border-b border-gray-200 px-4 py-2 shadow-sm flex items-center justify-between">
+    <x-default-page-container>
 
-            {{-- Mobile Menu Button --}}
-            <button id="openMenu" class="md:hidden text-gray-700 text-xl">
-                ☰
-            </button>
-
-            {{-- Logo --}}
-            <span class="hidden md:block  text-green-700 font-semibold tracking-wide">
-                E-Sekre
-            </span>
-
-            {{-- Page Title (hide on small screen) --}}
-            <span class="text-gray-600 font-medium ">
-                Surat Masuk
-            </span>
-
-            {{-- Right Button --}}
-            <div class="hidden md:block">
-                <x-button-with-link title="Buat Baru" url="/surat-masuk/tambah" variant="success" />
-            </div>
-
-            {{-- FILTER button on mobile --}}
-            <button id="openFilter" class="md:hidden text-green-700 px-2 py-1 rounded border ml-2">
-                {{-- Filter --}}
-                <x-heroicon-o-adjustments-horizontal class="w-6 h-6 text-green-700" />
-            </button>
-        </div>
-
+        {{-- NAVBAR --}}
+        <x-navbar title="{{ $title }}" urlTambah="/surat-masuk/tambah" />
 
         {{-- Pagination Mobile --}}
-        <div class="md:hidden flex justify-center mt-1">
+        <x-mobile-pagination>
             {{ $suratMasuk->appends(request()->input())->links('pagination::custom') }}
-        </div>
-
-
+        </x-mobile-pagination>
 
         {{-- ================= MOBILE SIDEBAR (MENU) ================= --}}
-        <div id="mobileSidebar" class="fixed inset-0 bg-black/30 backdrop-blur-sm hidden z-50 lg:hidden">
-
-            <div class="w-64 bg-white h-full shadow-xl p-4 animate-slideIn">
-                <h2 class="text-lg font-semibold mb-4 text-green-700">Menu</h2>
-
-                <a href="/surat-masuk/index" class="block px-3 py-2 rounded hover:bg-gray-100">Surat Masuk</a>
-                <a href="/surat-masuk/tambah" class="block px-3 py-2 rounded hover:bg-gray-100">Tambah Surat Masuk</a>
-                <a href="/surat-keluar/index" class="block px-3 py-2 rounded hover:bg-gray-100">Surat Keluar</a>
-
-            </div>
-        </div>
-
-
+        @include('layouts.mobile-sidebar')
 
         {{-- ================= MOBILE FILTER DRAWER ================= --}}
-        <div id="filterDrawer" class="fixed inset-0 bg-black/30 backdrop-blur-sm hidden z-40 md:hidden">
-
-            <div class="w-full max-w-sm bg-white h-full shadow-xl p-4 animate-slideInRight ml-auto">
-                <h2 class="text-lg font-semibold mb-4 text-green-700 flex justify-between">
-                    Filter
-
-                    <button id="closeFilter" class="text-gray-600 text-xl leading-none">×</button>
-                </h2>
-
-                {{-- FILTER FORM (MOBILE) --}}
-                <form class="grid grid-cols-1 gap-2 text-xs" action="/surat-masuk/index">
-
-                    <x-input-field-filter :isLabel="true" label="Awal" name="tanggalAwal" type="date" />
-                    <x-input-field-filter :isLabel="true" label="Akhir" name="tanggalAkhir" type="date" />
-                    <x-input-field-filter :isLabel="false" name="index" type="number" placeholder="Index" />
-                    <x-input-field-filter :isLabel="false" name="pengirim" type="text" placeholder="Pengirim" />
-                    <x-input-field-filter :isLabel="false" name="nomorSurat" type="text" placeholder="No Surat" />
-                    <x-input-field-filter :isLabel="false" name="perihal" type="text" placeholder="Perihal" />
-                    <x-input-field-filter :isLabel="false" name="status" type="text" placeholder="Status" />
-
-                    <x-filter-submit-button />
-
-                </form>
-            </div>
-        </div>
-
-
-
-        {{-- MOBILE + MENU + FILTER Scripts --}}
-        <script>
-            document.getElementById('openMenu').onclick = () => {
-                document.getElementById('mobileSidebar').classList.remove('hidden');
-            };
-            document.getElementById('mobileSidebar').onclick = (e) => {
-                if (e.target.id === 'mobileSidebar')
-                    document.getElementById('mobileSidebar').classList.add('hidden');
-            };
-
-            // FILTER DRAWER
-            document.getElementById('openFilter').onclick = () =>
-                document.getElementById('filterDrawer').classList.remove('hidden');
-
-            document.getElementById('closeFilter').onclick = () =>
-                document.getElementById('filterDrawer').classList.add('hidden');
-
-            document.getElementById('filterDrawer').onclick = (e) => {
-                if (e.target.id === 'filterDrawer')
-                    document.getElementById('filterDrawer').classList.add('hidden');
-            };
-        </script>
-
-
+        <x-mobile-filter-drawer urlFilter="/surat-masuk/index">
+            <x-input-field-filter :isLabel="true" label="Awal" name="tanggalAwal" type="date" />
+            <x-input-field-filter :isLabel="true" label="Akhir" name="tanggalAkhir" type="date" />
+            <x-input-field-filter :isLabel="false" name="index" type="number" placeholder="Index" />
+            <x-input-field-filter :isLabel="false" name="pengirim" type="text" placeholder="Pengirim" />
+            <x-input-field-filter :isLabel="false" name="nomorSurat" type="text" placeholder="No Surat" />
+            <x-input-field-filter :isLabel="false" name="perihal" type="text" placeholder="Perihal" />
+            <x-input-field-filter :isLabel="false" name="status" type="text" placeholder="Status" />
+        </x-mobile-filter-drawer>
 
         {{-- ================= DESKTOP FILTER BAR ================= --}}
-        <div id="filter-box" class="hidden md:flex justify-center bg-gray-50 border-b border-gray-200 py-2 px-2">
-
-            <form class="grid grid-cols-1 sm:grid-cols-2 md:flex md:flex-wrap gap-1 text-xs w-full max-w-4xl"
-                action="/surat-masuk/index">
-
-                <x-input-field-filter :isLabel="true" label="Awal" name="tanggalAwal" type="date"
-                    :isMediumUp="true" />
-                <x-input-field-filter :isLabel="true" label="Akhir" name="tanggalAkhir" type="date"
-                    :isMediumUp="true" />
-                <x-input-field-filter :isLabel="false" name="index" type="number" placeholder="Index"
-                    :isSmall="true" />
-                <x-input-field-filter :isLabel="false" name="pengirim" type="text" placeholder="Pengirim"
-                    :isMedium="true" />
-                <x-input-field-filter :isLabel="false" name="nomorSurat" type="text" placeholder="No Surat"
-                    :isMedium="true" />
-                <x-input-field-filter :isLabel="false" name="perihal" type="text" placeholder="Perihal"
-                    :isMedium="true" />
-                <x-input-field-filter :isLabel="false" name="status" type="text" placeholder="Status"
-                    :isMedium="true" />
-
-                <x-filter-submit-button />
-
-            </form>
-        </div>
-
-
+        <x-desktop-filter-bar urlFilter="/surat-masuk/index">
+            <x-input-field-filter :isLabel="true" label="Awal" name="tanggalAwal" type="date" :isMediumUp="true" />
+            <x-input-field-filter :isLabel="true" label="Akhir" name="tanggalAkhir" type="date" :isMediumUp="true" />
+            <x-input-field-filter :isLabel="false" name="index" type="number" placeholder="Index" :isSmall="true" />
+            <x-input-field-filter :isLabel="false" name="pengirim" type="text" placeholder="Pengirim"
+                :isMedium="true" />
+            <x-input-field-filter :isLabel="false" name="nomorSurat" type="text" placeholder="No Surat"
+                :isMedium="true" />
+            <x-input-field-filter :isLabel="false" name="perihal" type="text" placeholder="Perihal"
+                :isMedium="true" />
+            <x-input-field-filter :isLabel="false" name="status" type="text" placeholder="Status"
+                :isMedium="true" />
+        </x-desktop-filter-bar>
 
         {{-- ================= DESKTOP TABLE ================= --}}
-        <div class="hidden md:block flex-1 overflow-y-auto px-1">
-
-            <table class="min-w-full text-sm border-collapse">
-                <thead class="sticky top-0 z-10 bg-slate-100 text-slate-700">
-                    <tr>
-                        <th class="px-4 py-2 font-medium text-left ">
-                            Indeks</th>
-                        <th class="px-4 py-2 font-medium text-left ">Dari
-                        </th>
-                        <th class="px-4 py-2 font-medium text-left ">Tgl
-                            Surat</th>
-                        <th class="px-4 py-2 font-medium text-left ">No
-                            Surat</th>
-                        <th class="px-4 py-2 font-medium text-left ">
-                            Perihal</th>
-                        <th class="px-4 py-2 font-medium text-left ">
-                            Status</th>
-                        <th class="px-4 py-2 font-medium text-left border-b border-green-200">Aksi</th>
-                    </tr>
-                </thead>
-
-
-                <tbody class="bg-white">
-                    @foreach ($suratMasuk as $sm)
-                        <tr class="hover:bg-green-50 transition-colors">
-                            <td class="border-b border-gray-200 px-4 py-2">{{ $sm->index }}</td>
-                            <td class="border-b border-gray-200 px-4 py-2">{{ $sm->pengirim }}</td>
-                            <td class="border-b border-gray-200 px-4 py-2">{{ $sm->tanggalSurat }}</td>
-                            <td class="border-b border-gray-200 px-4 py-2">{{ $sm->nomorSurat }}</td>
-                            <td class="border-b border-gray-200 px-4 py-2">{{ $sm->perihal }}</td>
-
-                            {{-- STATUS BADGE --}}
-                            <td class="border-b border-gray-200 px-4 py-2">
-                                <span
-                                    class="text-xs font-medium
-                                @if ($sm->status === 'Selesai') text-green-700 bg-green-100
-                                @elseif($sm->status === 'Proses') text-amber-700 bg-amber-100
-                                @else text-gray-700 bg-gray-100 @endif
-                                px-2 py-1 rounded">
-                                    {{ $sm->status }}
-                                </span>
-                            </td>
-
-                            {{-- ACTIONS --}}
-                            <td class="border-b border-gray-200 px-4 py-2 space-x-1">
-                                <x-button-with-tooltip variant="warning" tooltip="Edit"
-                                    url="/surat-masuk/edit/{{ $sm->id }}"><x-heroicon-s-pencil
-                                        class="w-4 h-4" /></x-button-with-tooltip>
-                                <x-button-with-tooltip variant="light" tooltip="Lihat"
-                                    url="{{ asset('storage/' . $sm->filePath) }}" target="_blank"><x-heroicon-s-eye
-                                        class="w-4 h-4" /></x-button-with-tooltip>
-                                <x-button-with-tooltip variant="info" tooltip="Lacak"
-                                    url="/surat-masuk/lacak-distribusi/{{ $sm->id }}"><x-heroicon-s-magnifying-glass-plus
-                                        class="w-4 h-4" /></x-button-with-tooltip>
-                                <x-button-with-tooltip variant="success" tooltip="Disposisi"
-                                    url="/surat-masuk/disposisi/{{ $sm->id }}"><x-heroicon-s-arrow-up-right
-                                        class="w-4 h-4" /></x-button-with-tooltip>
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
-
-
+        <x-simple-table :headers="['Indeks', 'Dari', 'Tgl Surat', 'No Surat', 'Perihal', 'Status', 'Aksi']">
+            @foreach ($suratMasuk as $sm)
+                <tr class="hover:bg-green-50 transition-colors">
+                    <x-td-default>{{ $sm->index }}</x-td-default>
+                    <x-td-default>{{ $sm->pengirim }}</x-td-default>
+                    <x-td-default>{{ $sm->tanggalSurat }}</x-td-default>
+                    <x-td-default>{{ $sm->nomorSurat }}</x-td-default>
+                    <x-td-default>{{ $sm->perihal }}</x-td-default>
+                    <x-td-badge status="{{ $sm->status }}" />
+                    <x-td-action>
+                        <x-button-with-tooltip variant="warning" tooltip="Edit"
+                            url="/surat-masuk/edit/{{ $sm->id }}"><x-heroicon-s-pencil
+                                class="w-4 h-4" /></x-button-with-tooltip>
+                        <x-button-with-tooltip variant="light" tooltip="Lihat" url="{{ asset('storage/' . $sm->filePath) }}"
+                            target="_blank"><x-heroicon-s-eye class="w-4 h-4" /></x-button-with-tooltip>
+                        <x-button-with-tooltip variant="info" tooltip="Lacak"
+                            url="/surat-masuk/lacak-distribusi/{{ $sm->id }}"><x-heroicon-s-magnifying-glass-plus
+                                class="w-4 h-4" /></x-button-with-tooltip>
+                        <x-button-with-tooltip variant="success" tooltip="Disposisi"
+                            url="/surat-masuk/disposisi/{{ $sm->id }}"><x-heroicon-s-arrow-up-right
+                                class="w-4 h-4" /></x-button-with-tooltip>
+                    </x-td-action>
+                </tr>
+            @endforeach
+        </x-simple-table>
 
         {{-- ================= MOBILE CARD LIST ================= --}}
-        <div class="md:hidden px-2 space-y-2 mt-2 overflow-y-auto flex-1">
-
+        <x-mobile-card-container>
             @foreach ($suratMasuk as $sm)
-                <div class="border border-gray-200 rounded-lg p-3 shadow-sm bg-white">
-
-                    <div class="flex justify-between">
-                        <span class="text-xs text-gray-400">{{ $sm->nomorSurat }}</span>
-                        <span class="font-medium">{{ $sm->index }}</span>
-                    </div>
-
-                    <div class="font-medium text-gray-500">{{ $sm->perihal }}</div>
-                    <div class="mt-1 text-sm text-gray-700 ">Dari: {{ $sm->pengirim }}</div>
-                    <div class="text-sm text-gray-500">{{ $sm->tanggalSurat }}</div>
-
-                    <div class="mt-2">
-                        <span
-                            class="text-xs px-2 py-1 rounded
-                        @if ($sm->status === 'Selesai') bg-green-100 text-green-700
-                        @elseif($sm->status === 'Proses') bg-amber-100 text-amber-700
-                        @else bg-gray-100 text-gray-700 @endif">
-                            {{ $sm->status }}
-                        </span>
-                    </div>
-
-                    <div class="flex gap-1 mt-3 justify-end">
+                <x-mobile-card-border>
+                    <x-mobile-card-header title1="{{ $sm->nomorSurat }}" title2="{{ $sm->index }}" />
+                    <x-mobile-card-text-bold text="{{ $sm->perihal }}" />
+                    <x-mobile-card-text-normal text="Dari: {{ $sm->pengirim }}" />
+                    <x-mobile-card-text-lite text="{{ $sm->tanggalSurat }}" />
+                    <x-mobile-card-text-badge text="{{ $sm->status }}" />
+                    <x-mobile-card-text-actions>
                         <x-button-with-tooltip variant="warning" tooltip="Edit"
                             url="/surat-masuk/edit/{{ $sm->id }}">Edit</x-button-with-tooltip>
                         <x-button-with-tooltip variant="light" tooltip="Lihat"
@@ -239,55 +88,23 @@
                             url="/surat-masuk/lacak-distribusi/{{ $sm->id }}">Lacak</x-button-with-tooltip>
                         <x-button-with-tooltip variant="success" tooltip="Disposisi"
                             url="/surat-masuk/disposisi/{{ $sm->id }}">Disposisi</x-button-with-tooltip>
-                    </div>
-                </div>
+                    </x-mobile-card-text-actions>
+                </x-mobile-card-border>
             @endforeach
+        </x-mobile-card-container>
 
-        </div>
-
-
-
-        {{-- Pagination --}}
-        <div class="md:flex hidden  justify-center mt-2 mb-1">
+        {{-- Pagination Desktop --}}
+        <x-desktop-pagination>
             {{ $suratMasuk->appends(request()->input())->links('pagination::custom') }}
-        </div>
+        </x-desktop-pagination>
 
         {{-- Footer --}}
-        <div class="md:block hidden bg-white border-t border-gray-200 py-1 text-center">
-            <span class="text-sm text-gray-500">© 2025 E-Sekre. All rights reserved.</span>
-        </div>
+        <x-footer-desktop>
+            © 2025 E-Sekre. All rights reserved
+        </x-footer-desktop>
 
-    </div>
+    </x-default-page-container>
 
-
-    {{-- Animations --}}
-    <style>
-        .animate-slideIn {
-            animation: slideIn 0.3s ease-out;
-        }
-
-        .animate-slideInRight {
-            animation: slideInRight 0.25s ease-out;
-        }
-
-        @keyframes slideIn {
-            from {
-                transform: translateX(-100%);
-            }
-
-            to {
-                transform: translateX(0);
-            }
-        }
-
-        @keyframes slideInRight {
-            from {
-                transform: translateX(100%);
-            }
-
-            to {
-                transform: translateX(0);
-            }
-        }
-    </style>
+    {{-- MOBILE + MENU + FILTER Scripts --}}
+    <x-mobile-menu-filter-scripts />
 @endsection

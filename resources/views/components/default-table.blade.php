@@ -7,7 +7,8 @@
     <thead>
         <tr>
             @foreach ($tableHeader as $th)
-                <th scope="col" class="sticky-header" style="background-color: #f0f0f0; color: #000;">{{ $th }}</th>
+                <th scope="col" class="sticky-header" style="background-color: #f0f0f0; color: #000;">
+                    {{ $th }}</th>
             @endforeach
         </tr>
     </thead>
