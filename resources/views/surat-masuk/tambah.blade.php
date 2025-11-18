@@ -1,49 +1,20 @@
 @extends('layouts.main')
 
 @section('container')
-    <div class="flex flex-col h-screen relative">
+    <x-default-page-container>
         {{-- Navbar --}}
+        <x-navbar-form title="Tambah Surat Masuk" closeUrl="/surat-masuk/index" />
 
-        <div class="bg-white border-b border-gray-200 px-4 py-2 shadow-sm">
-            <div class="flex items-center justify-between">
+        {{-- Error Notif --}}
+        <x-error-notif />
 
-                <!-- Logo / Brand -->
-                <span class="text-gray-700 font-semibold tracking-wide">
-                    E-Sekre
-                </span>
-
-                <!-- Page Title -->
-                <span class="text-gray-600 font-medium">
-                    Tambah Surat Masuk
-                </span>
-
-                <!-- Right Button -->
-                <div>
-                    <x-button-with-tooltip size="md" variant="danger" tooltip="Tutup Form"
-                        url="/surat-masuk/index"><x-heroicon-o-x-mark class="w-4 h-4 stroke-4" /></x-button-with-tooltip>
-                </div>
-
-            </div>
-        </div>
-        {{-- Navbar --}}
-
-        {{-- Content --}}
-        @if ($errors->any())
-            <x-alert-danger>
-                <ul class="list-disc list-inside">
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </x-alert-danger>
-        @endif
-        <div class="flex-1 overflow-y-auto p-4">
+        <x-form-body-container>
             <form action="/surat-masuk/tambah" method="post" enctype="multipart/form-data">
                 @csrf
                 <input type="hidden" name="idPosisiDisposisi" value="1">
                 <input type="hidden" name="status" value="Belum Diteruskan">
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+                <x-block-input-container>
                     <div>
                         <x-text-input name="nomorSurat" id="nomorSurat" value="{{ old('nomorSurat') }}"
                             :required="true">Nomor Surat</x-text-input>
@@ -110,7 +81,7 @@
                             @enderror
                         </div>
                     </div>
-                </div>
+                </x-block-input-container>
 
                 <div class="mt-6 flex items-center justify-center gap-x-6 md:hidden">
                     <x-green-submit-button>
@@ -118,7 +89,7 @@
                     </x-green-submit-button>
                 </div>
 
-        </div>
+        </x-form-body-container>
 
         <div class="pt-2 items-center justify-center gap-x-6 hidden md:flex bg-slate-200">
             <x-green-submit-button>
@@ -128,7 +99,7 @@
 
         </form>
 
-    </div>
+    </x-default-page-container>
 
     <link href="https://cdn.jsdelivr.net/npm/tom-select/dist/css/tom-select.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/tom-select/dist/js/tom-select.complete.min.js"></script>
