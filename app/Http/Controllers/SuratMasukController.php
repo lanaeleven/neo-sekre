@@ -110,8 +110,18 @@ class SuratMasukController extends Controller
             return (object) $item;
         });
         $pengirim = User::whereNotIn('id', [1, 2, 3])->where('isAktif', true)->get();
+        $opsiPengirim = $pengirim->map(function ($p) {
+            return (object)[
+                'id' => $p->id,
+                'nama' => $p->namaJabatan
+            ];
+        });
+        $opsiPengirim->push((object)[
+            'id' => 'lainnya',
+            'nama' => 'Lainnya'
+        ]);
 
-        return view('surat-masuk.tambah', ['title' => 'Tambah Surat Masuk', 'active' => 'surat masuk', 'pengirim' => $pengirim, 'sifatSurat' => $sifatSurat, 'lampiran' => $lampiran, 'isForm' => true]);
+        return view('surat-masuk.tambah', ['title' => 'Tambah Surat Masuk', 'active' => 'surat masuk', 'pengirim' => $opsiPengirim, 'sifatSurat' => $sifatSurat, 'lampiran' => $lampiran, 'isForm' => true]);
     }
 
     public function store(Request $request): RedirectResponse
@@ -214,8 +224,18 @@ class SuratMasukController extends Controller
         });
 
         $pengirim = User::whereNotIn('id', [1, 2, 3])->get();
+        $opsiPengirim = $pengirim->map(function ($p) {
+            return (object)[
+                'id' => $p->id,
+                'nama' => $p->namaJabatan
+            ];
+        });
+        $opsiPengirim->push((object)[
+            'id' => 'lainnya',
+            'nama' => 'Lainnya'
+        ]);
 
-        return view('surat-masuk.edit', ['title' => 'Edit Surat Masuk', 'active' => 'surat masuk', 'suratMasuk' => $suratMasuk,  'pengirim' => $pengirim, 'isForm' => true, 'sifatSurat' => $sifatSurat, 'lampiran' => $lampiran]);
+        return view('surat-masuk.edit', ['title' => 'Edit Surat Masuk', 'active' => 'surat masuk', 'suratMasuk' => $suratMasuk,  'pengirim' => $opsiPengirim, 'isForm' => true, 'sifatSurat' => $sifatSurat, 'lampiran' => $lampiran]);
     }
 
     public function editTerusanSurat(int $idSuratMasuk, DistribusiSurat $terusanSurat)
