@@ -22,7 +22,6 @@ class SuratKeluarController extends Controller
 
         $suratKeluar = SuratKeluar::orderBy('tahun', 'desc')->orderBy('index', 'desc');
         $jenisSurat = JenisSurat::all();
-        $direksi = Direksi::all();
         $judul = "Surat Keluar";
 
         if ($ket == 'hari-ini') {
@@ -81,23 +80,33 @@ class SuratKeluarController extends Controller
             'search_tahun' => request('tahun')
         ]);
 
-        return view('surat-keluar.index', ['title' => $judul, 'active' => 'surat keluar', 'suratKeluar' => $suratKeluar->with(['jenisSurat', 'direksi'])->paginate(15), 'jenisSurat' => $jenisSurat, 'direksi' => $direksi, 'ket' => $ket, 'judul' => $judul]);
+        return view('surat-keluar.index', ['title' => $judul, 'active' => 'surat keluar', 'suratKeluar' => $suratKeluar->with('jenisSurat')->paginate(25), 'jenisSurat' => $jenisSurat, 'ket' => $ket, 'judul' => $judul, 'isForm' => false]);
     }
 
     public function edit(SuratKeluar $suratKeluar)
     {
         $jenisSurat = JenisSurat::all();
-        $direksi = Direksi::all();
+        $opsiJenisSurat = $jenisSurat->map(function ($js) {
+            return (object)[
+                'id' => $js->id,
+                'nama' => $js->kodeJenisSurat . '-' . $js->keterangan
+            ];
+        });
 
-        return view('surat-keluar.edit', ['title' => 'Edit Surat Keluar', 'active' => 'surat keluar', 'suratKeluar' => $suratKeluar, 'jenisSurat' => $jenisSurat, 'direksi' => $direksi]);
+        return view('surat-keluar.edit', ['title' => 'Edit Surat Keluar', 'active' => 'surat keluar', 'suratKeluar' => $suratKeluar, 'jenisSurat' => $opsiJenisSurat, 'isForm' => true]);
     }
 
     public function tambah()
     {
         $jenisSurat = JenisSurat::all();
-        $direksi = Direksi::all();
+        $opsiJenisSurat = $jenisSurat->map(function ($js) {
+            return (object)[
+                'id' => $js->id,
+                'nama' => $js->kodeJenisSurat . '-' . $js->keterangan
+            ];
+        });
 
-        return view('surat-keluar.tambah', ['title' => 'Tambah Surat Keluar', 'active' => 'surat keluar', 'jenisSurat' => $jenisSurat, 'direksi' => $direksi]);
+        return view('surat-keluar.tambah', ['title' => 'Tambah Surat Keluar', 'active' => 'surat keluar', 'jenisSurat' => $opsiJenisSurat, 'isForm' => true]);
     }
 
     public function store(Request $request): RedirectResponse
@@ -115,7 +124,6 @@ class SuratKeluarController extends Controller
             'tanggalSurat' => 'required',
             'tujuan' => 'required',
             'perihal' => 'required',
-            'direksi' => 'required',
             'fileSurat' => 'required|mimes:pdf,jpg,png|max:12288'
         ]);
 
@@ -137,7 +145,6 @@ class SuratKeluarController extends Controller
         $suratKeluar->index = $newIndex;
         $suratKeluar->tahun = $tahun;
         $suratKeluar->idJenisSurat = $request->input('jenisSurat');
-        $suratKeluar->idDireksi = $request->input('direksi');
         $suratKeluar->tanggalSurat = $request->input('tanggalSurat');
         $suratKeluar->tujuan = $request->input('tujuan');
         $suratKeluar->perihal = $request->input('perihal');
@@ -166,7 +173,6 @@ class SuratKeluarController extends Controller
             'tanggalSurat' => 'required',
             'tujuan' => 'required',
             'perihal' => 'required',
-            'direksi' => 'required',
             'fileSurat' => 'mimes:pdf,jpg,png|max:12288'
         ]);
 
@@ -185,7 +191,6 @@ class SuratKeluarController extends Controller
         $suratKeluar = SuratKeluar::find($request->input('id'));
 
         $suratKeluar->idJenisSurat = $request->input('jenisSurat');
-        $suratKeluar->idDireksi = $request->input('direksi');
         $suratKeluar->tanggalSurat = $request->input('tanggalSurat');
         $suratKeluar->tujuan = $request->input('tujuan');
         $suratKeluar->perihal = $request->input('perihal');

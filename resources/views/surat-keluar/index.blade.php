@@ -1,126 +1,99 @@
 @extends('layouts.main')
 
-    @section('container')
-        <div>
-            <x-default-notif />
+@section('container')
+    <div>
+        {{-- Animations --}}
+        <x-animations-style />
 
-            <x-title-with-add-button title="{{ $judul }}" addUrl="/surat-keluar/tambah" />
+        <x-default-page-container>
+            {{-- NAVBAR --}}
+            <x-navbar title="{{ $title }}" urlTambah="/surat-keluar/tambah" />
 
-            {{-- @if (is_null($ket))
-                <div class="d-flex justify-content-end">
-                    <div>
-                        <button class="btn btn-success btn-sm py-2 fs-6 mx-auto" data-bs-toggle="modal"
-                            data-bs-target="#unduhRekapModal">Unduh Rekap</button>
-                    </div>
-                </div>
-            @endif --}}
+            {{-- Pagination Mobile --}}
+            <x-mobile-pagination>
+                {{ $suratKeluar->appends(request()->input())->links('pagination::custom') }}
+            </x-mobile-pagination>
 
-            <div>
-                <form class="row g-3" action="">
-                    <x-input-field-filter name="tahun" type="number" placeholder="Tahun" :isSmall="true" />
-                    <x-input-field-filter :isLabel="true" label="Tgl Awal" name="tanggalAwal" type="date" />
-                    <x-input-field-filter :isLabel="true" label="Tgl Akhir" name="tanggalAkhir" type="date" />
-                    <x-input-field-filter name="index" type="number" placeholder="Index" :isSmall="true" />
-                    <div class="col-auto">
-                        <select name="jenisSurat" class="form-select form-select-sm"
-                            value="{{ request('jenisSurat') }}">
-                            <option value="">Semua Jenis Surat</option>
-                            @foreach ($jenisSurat as $js)
-                                <option value="{{ $js->id }}"
-                                    {{ request('jenisSurat') == $js->id ? 'selected' : '' }}>
-                                    {{ $js->kodeJenisSurat . '-' . $js->keterangan }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <x-input-field-filter name="tujuan" type="text" placeholder="Tujuan" />
-                    <x-input-field-filter name="perihal" type="text" placeholder="Perihal" />
-                    <x-input-field-filter name="keterangan" type="text" placeholder="Keterangan" />
-                    <x-filter-submit-button />
-                </form>
-            </div>
+            {{-- ================= MOBILE SIDEBAR (MENU) ================= --}}
+            @include('layouts.mobile-sidebar')
 
-            @if ($suratKeluar->isEmpty())
-                <x-empty-data data='{{ $judul }}' />
-            @else
-                {{-- start set data table --}}
-                @php
-                    $tableHeader = ['Indeks', 'Tanggal', 'Tujuan', 'Perihal', 'Keterangan', 'Jenis', 'Aksi'];
-                @endphp
+            <x-mobile-filter-drawer urlFilter="/surat-keluar/index">
+                <x-input-field-filter :isLabel="true" label="Awal" name="tanggalAwal" type="date" />
+                <x-input-field-filter :isLabel="true" label="Akhir" name="tanggalAkhir" type="date" />
+                <x-input-field-filter :isLabel="false" name="index" type="number" placeholder="Index" />
+                {{-- Tambahkan Field Jenis Surat --}}
+                <x-input-field-filter :isLabel="false" name="tujuan" type="text" placeholder="Tujuan" />
+                <x-input-field-filter :isLabel="false" name="perihal" type="text" placeholder="Perihal" />
+                <x-input-field-filter :isLabel="false" name="keterangan" type="text" placeholder="Keterangan" />
+            </x-mobile-filter-drawer>
+
+            {{-- ================= DESKTOP FILTER BAR ================= --}}
+            <x-desktop-filter-bar urlFilter="/surat-keluar/index">
+                <x-input-field-filter :isLabel="true" label="Awal" name="tanggalAwal" type="date"
+                    :isMediumUp="true" />
+                <x-input-field-filter :isLabel="true" label="Akhir" name="tanggalAkhir" type="date"
+                    :isMediumUp="true" />
+                <x-input-field-filter :isLabel="false" name="index" type="number" placeholder="Index"
+                    :isSmall="true" />
+                {{-- Tambahkan Field Jenis Surat --}}
+                <x-input-field-filter :isLabel="false" name="tujuan" type="text" placeholder="Tujuan"
+                    :isMedium="true" />
+                <x-input-field-filter :isLabel="false" name="perihal" type="text" placeholder="Perihal"
+                    :isMedium="true" />
+                <x-input-field-filter :isLabel="false" name="keterangan" type="text" placeholder="Keterangan"
+                    :isMedium="true" />
+            </x-desktop-filter-bar>
+
+            {{-- ================= DESKTOP TABLE ================= --}}
+            <x-simple-table :headers="['Indeks', 'Tanggal', 'Tujuan', 'Perihal', 'Keterangan', 'Jenis', 'Aksi']">
                 @foreach ($suratKeluar as $sk)
-                    @php
-                        $rows[] = [
-                            $sk->index,
-                            $sk->tanggalSurat,
-                            $sk->tujuan,
-                            $sk->perihal,
-                            $sk->keterangan,
-                            $sk->jenisSurat->keterangan,
-                            '
-                            <a href="/surat-keluar/edit/' .
-                            $sk->id .
-                            '"
-                                class="mt-1 btn btn-sm btn-primary"><i class="fa-solid fa-pencil"
-                                    style="color: #ffffff;"></i></a>
-                            <a href="' .
-                            asset('storage/' . $sk->filePath) .
-                            '"
-                                class="mt-1 btn btn-sm btn-secondary" target="_blank"><i class="fa-solid fa-eye"
-                                    style="color: #ffffff;"></i></a>
-                            ',
-                        ];
-                    @endphp
+                    <tr class="hover:bg-green-50 transition-colors">
+                        <x-td-default>{{ $sk->index }}</x-td-default>
+                        <x-td-default>{{ $sk->tanggalSurat }}</x-td-default>
+                        <x-td-default>{{ $sk->tujuan }}</x-td-default>
+                        <x-td-default>{{ $sk->perihal }}</x-td-default>
+                        <x-td-default>{{ $sk->keterangan }}</x-td-default>
+                        <x-td-default>{{ $sk->jenisSurat->keterangan }}</x-td-default>
+                        <x-td-action>
+                            <x-button-with-tooltip variant="warning" tooltip="Edit"
+                                url="/surat-keluar/edit/{{ $sk->id }}"><x-heroicon-s-pencil
+                                    class="w-4 h-4" /></x-button-with-tooltip>
+                            <x-button-with-tooltip variant="light" tooltip="Lihat"
+                                url="{{ asset('storage/' . $sk->filePath) }}" target="_blank"><x-heroicon-s-eye
+                                    class="w-4 h-4" /></x-button-with-tooltip>
+                        </x-td-action>
+                    </tr>
                 @endforeach
-                {{-- end set data table --}}
+            </x-simple-table>
 
-                <x-default-table-container>
-                    <x-default-table :tableHeader="$tableHeader" :rows="$rows" />
-                </x-default-table-container>
+            {{-- ================= MOBILE CARD LIST ================= --}}
+            <x-mobile-card-container>
+                @foreach ($suratKeluar as $sk)
+                    <x-mobile-card-border>
+                        <x-mobile-card-header title1="{{ $sk->jenisSurat->keterangan }}" title2="{{ $sk->index }}" />
+                        <x-mobile-card-text-bold text="{{ $sk->perihal }}" />
+                        <x-mobile-card-text-normal text="Dari: {{ $sk->tujuan }}" />
+                        <x-mobile-card-text-lite text="{{ $sk->tanggalSurat }}" />
+                        <x-mobile-card-text-lite text="{{ $sk->keterangan }}" />
+                        <x-mobile-card-text-actions>
+                            <x-button-with-tooltip variant="warning" tooltip="Edit"
+                                url="/surat-keluar/edit/{{ $sk->id }}">Edit</x-button-with-tooltip>
+                            <x-button-with-tooltip variant="light" tooltip="Lihat"
+                                url="{{ asset('storage/' . $sk->filePath) }}" target="_blank">Lihat</x-button-with-tooltip>
+                        </x-mobile-card-text-actions>
+                    </x-mobile-card-border>
+                @endforeach
+            </x-mobile-card-container>
 
-                <x-mobile-table-container>
-                    <x-mobile-table :tableHeader="$tableHeader" :rows="$rows" />
-                </x-mobile-table-container>
+            {{-- Pagination Desktop --}}
+            <x-desktop-pagination>
+                {{ $suratKeluar->appends(request()->input())->links('pagination::custom') }}
+            </x-desktop-pagination>
 
-                <x-pagination-links-container>
-                    {{ $suratKeluar->appends(request()->input())->links() }}
-                </x-pagination-links-container>
-            @endif
-        </div>
+            {{-- Footer --}}
+            <x-footer-desktop>
+                © 2025 E-Sekre. All rights reserved
+            </x-footer-desktop>
 
-        {{-- Modal Unduh Rekap --}}
-        <div class="modal fade" id="unduhRekapModal" data-bs-backdrop="static" tabindex="-1"
-            aria-labelledby="unduhRekapModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="unduhRekapModalLabel">Rekap File Surat Keluar</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-
-                        <form method="POST" action="/unduh-rekap-suratkeluar">
-                            @csrf
-                            {{-- <div class="mb-3">
-                <label for="bulanRekap" class="col-form-label">Pilih Bulan</label>
-                <input type="month" id="bulanRekap" name="bulanRekap"  class="form-control" required>
-              </div> --}}
-                            <div class="col-auto">
-                                <label for="awal" class="col-form-label"><small>Awal</small></label>
-                            </div>
-                            <div class="col-auto mb-3">
-                                <input name="awal" type="date" id="awal" class="form-control form-control-sm">
-                            </div>
-                            <div class="col-auto">
-                                <label for="akhir" class="col-form-label"><small>Akhir</small></label>
-                            </div>
-                            <div class="col-auto mb-3">
-                                <input name="akhir" type="date" id="akhir" class="form-control form-control-sm">
-                            </div>
-                            <button type="submit" class="btn btn-success container-fluid">Unduh Rekap</button>
-                    </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-        {{-- end of modal --}}
-
+        </x-default-page-container>
     @endsection

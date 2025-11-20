@@ -1,119 +1,61 @@
-
 @extends('layouts.main')
 
 @section('container')
+    <x-default-page-container>
+        {{-- Navbar --}}
+        <x-navbar-form title="Tambah Surat Keluar" closeUrl="/surat-keluar/index" />
 
-<div>
-    <div class="d-flex justify-content-between align-items-center my-4">
-      <div>
-        <a href="/surat-keluar/index?tahun={{ config('app.tahun') }}" class="btn btn-warning btn-sm"><i class="fa-solid fa-arrow-left" style="color: #000;"></i></a>
-      </div>
-      <div>
-        <h3 class="fw-bold fs-4 text-center">Tambah Surat Keluar</h3>
-      </div>
-      <div>
-      </div>
-    </div>
-    <div class="d-flex justify-content-center">
-        <div class="col-12 col-md-6">
-            <form method="post" id="formTambah" action="/surat-keluar/tambah" enctype="multipart/form-data">
-              @csrf
+        {{-- Error Notif --}}
+        <x-error-notif />
 
-                <div class="row mb-3">
-                  <label for="jenisSurat" class="col-sm-3 col-form-label">Jenis Surat</label>
-                  <div class="col-sm-9">
-                    <select name="jenisSurat" class="form-select" id="jenisSurat" required>
-                        <option value="">Pilih Jenis Surat</option>
-                        @foreach ($jenisSurat as $js)
-                          <option value="{{ $js->id }}" @if ($js->id == old('jenisSurat'))
-                            selected
-                            @endif>{{ $js->kodeJenisSurat.'-'.$js->keterangan }}</option>
-                          @endforeach
-                      </select>
-                  </div>
-                </div>
+        <x-form-body-container>
+            <form action="/surat-keluar/tambah" method="post" enctype="multipart/form-data">
+                @csrf
+                <input type="hidden" name="idPosisiDisposisi" value="1">
+                <input type="hidden" name="status" value="Belum Diteruskan">
 
-                <div class="row mb-3">
-                  <label for="tanggalSurat" class="col-sm-3 col-form-label">Tanggal Surat</label>
-                  <div class="col-sm-9">
-                    <input name="tanggalSurat" type="date" class="form-control" id="tanggalSurat" value="{{ old('tanggalSurat') }}" required>
-                  </div>
-                </div>
-
-                <div class="row mb-3">
-                    <label for="tujuan" class="col-sm-3 col-form-label">Tujuan</label>
-                    <div class="col-sm-9">
-                      <input name="tujuan" type="text" class="form-control" id="tujuan" value="{{ old('tujuan') }}" required>
+                <x-block-input-container>
+                    <div>
+                        <x-dropdown-input :label="'Jenis Surat'" labelPilihan='Pilih Jenis Surat' :name="'jenisSurat'"
+                            :id="'jenisSurat'" :options="$jenisSurat" :required="true"></x-dropdown-input>
                     </div>
-                </div>
-
-                <div class="row mb-3">
-                    <label for="perihal" class="col-sm-3 col-form-label">Perihal</label>
-                    <div class="col-sm-9">
-                      <textarea class="form-control" name="perihal" id="perihal" rows="3" required>{{ old('perihal') }}</textarea>
+                    <div>
+                        <x-date-input name="tanggalSurat" id="tanggalSurat" value="{{ old('tanggalSurat') }}"
+                            :required="true">Tanggal Surat</x-date-input>
                     </div>
-                </div>
-
-                <div class="row mb-3">
-                    <label for="direktorat" class="col-sm-3 col-form-label">Direktorat</label>
-                    <div class="col-sm-9">
-                      <select name="direksi" class="form-select" id="direktorat" required>
-                          <option value="">Pilih Direksi</option>
-                          @foreach ($direksi as $d)
-                        
-                          <option value="{{ $d->id }}" @if ($d->id == old('direksi'))
-                            selected
-                            @endif>{{ $d->namaDireksi }}</option>
-
-                          @endforeach
-                        </select>
+                    <div>
+                        <x-text-input name="tujuan" id="tujuan" value="{{ old('tujuan') }}"
+                            :required="true">Tujuan</x-text-input>
                     </div>
-                  </div>
-
-                  <div class="row mb-3">
-                    <label for="fileSurat" class="col-sm-3 col-form-label">Upload Surat</label>
-                    <div class="col-sm-9">
-                        <input name="fileSurat" class="form-control @error('fileSurat') is-invalid @enderror" type="file" id="fileSurat" required>
-                      @error('fileSurat')
-                      <div id="fileSurat" class="invalid-feedback">
-                        {{ $message }}
-                      </div>
-                      @enderror
+                    <div>
+                        <x-text-area-input label="Perihal" name="perihal" id="perihal" value="{{ old('perihal') }}"
+                            :required="true" />
                     </div>
-                </div>
-
-                <div class="row mb-3">
-                    <label for="keterangan" class="col-sm-3 col-form-label">Keterangan</label>
-                    <div class="col-sm-9">
-                      <textarea name="keterangan" class="form-control" name="keterangan" id="keterangan" rows="3">{{ old('keterangan') }}</textarea>
+                    <div>
+                        <x-file-input id="fileSurat" name="fileSurat" label="Upload Surat" :required="true" />
                     </div>
-                </div>
+                    <div>
+                        <x-text-area-input label="Keterangan" name="keterangan" id="keterangan"
+                            value="{{ old('keterangan') }}" :required="true" />
+                    </div>
 
-                <div class="d-flex justify-content-center">
-                  <div>
-                    <button type="submit" class="btn btn-success mt-3">Tambah
-                      <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true" id="spinnerTambah"></span>
-                    </button>
-                  </div>
-                </div>
-                  
-              </form>
-        </div>
-    </div>
-</div>
+                </x-block-input-container>
 
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    // spinner tombol tambah
-    var formTambah = document.getElementById('formTambah'); 
-    formTambah.addEventListener('submit', function(event) {
-      var submitButtonTambah = formTambah.querySelector('button[type="submit"]');
-      if (submitButtonTambah) {
-        submitButtonTambah.disabled = true;
-        document.getElementById('spinnerTambah').classList.remove('d-none');
-      }
-    });
-  });
-</script>
+                <x-mobile-submit-container>
+                    <x-green-submit-button>
+                        Simpan
+                    </x-green-submit-button>
+                </x-mobile-submit-container>
 
+        </x-form-body-container>
+
+        <x-desktop-submit-container>
+            <x-green-submit-button>
+                Simpan
+            </x-green-submit-button>
+        </x-desktop-submit-container>
+
+        </form>
+
+    </x-default-page-container>
 @endsection
