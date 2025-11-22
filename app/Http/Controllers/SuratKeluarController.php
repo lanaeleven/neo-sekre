@@ -22,6 +22,12 @@ class SuratKeluarController extends Controller
 
         $suratKeluar = SuratKeluar::orderBy('tahun', 'desc')->orderBy('index', 'desc');
         $jenisSurat = JenisSurat::all();
+        $opsiJenisSurat = $jenisSurat->map(function ($js) {
+            return (object)[
+                'id' => $js->id,
+                'label' => $js->kodeJenisSurat . '-' . $js->keterangan
+            ];
+        });
         $judul = "Surat Keluar";
 
         if ($ket == 'hari-ini') {
@@ -80,7 +86,7 @@ class SuratKeluarController extends Controller
             'search_tahun' => request('tahun')
         ]);
 
-        return view('surat-keluar.index', ['title' => $judul, 'active' => 'surat keluar', 'suratKeluar' => $suratKeluar->with('jenisSurat')->paginate(25), 'jenisSurat' => $jenisSurat, 'ket' => $ket, 'judul' => $judul, 'isForm' => false]);
+        return view('surat-keluar.index', ['title' => $judul, 'active' => 'surat keluar', 'suratKeluar' => $suratKeluar->with('jenisSurat')->paginate(25), 'jenisSurat' => $opsiJenisSurat, 'ket' => $ket, 'judul' => $judul, 'isForm' => false]);
     }
 
     public function edit(SuratKeluar $suratKeluar)

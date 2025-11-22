@@ -18,10 +18,9 @@
             @include('layouts.mobile-sidebar')
 
             <x-mobile-filter-drawer urlFilter="/surat-keluar/index">
-                <x-input-field-filter :isLabel="true" label="Awal" name="tanggalAwal" type="date" />
-                <x-input-field-filter :isLabel="true" label="Akhir" name="tanggalAkhir" type="date" />
+                <x-range-date-filter />
                 <x-input-field-filter :isLabel="false" name="index" type="number" placeholder="Index" />
-                {{-- Tambahkan Field Jenis Surat --}}
+                <x-mobile-dropdown-field-filter name='jenisSurat' optionLabelDefault='Semua Jenis' :options="$jenisSurat" />
                 <x-input-field-filter :isLabel="false" name="tujuan" type="text" placeholder="Tujuan" />
                 <x-input-field-filter :isLabel="false" name="perihal" type="text" placeholder="Perihal" />
                 <x-input-field-filter :isLabel="false" name="keterangan" type="text" placeholder="Keterangan" />
@@ -29,17 +28,15 @@
 
             {{-- ================= DESKTOP FILTER BAR ================= --}}
             <x-desktop-filter-bar urlFilter="/surat-keluar/index">
-                <x-input-field-filter :isLabel="true" label="Awal" name="tanggalAwal" type="date"
-                    :isMediumUp="true" />
-                <x-input-field-filter :isLabel="true" label="Akhir" name="tanggalAkhir" type="date"
-                    :isMediumUp="true" />
+                <x-range-date-filter />
                 <x-input-field-filter :isLabel="false" name="index" type="number" placeholder="Index"
                     :isSmall="true" />
-                {{-- Tambahkan Field Jenis Surat --}}
+                <x-desktop-dropdown-field-filter name="jenisSurat" id="jenisSurat" optionLabelDefault="Semua Jenis"
+                    :options="$jenisSurat" />
                 <x-input-field-filter :isLabel="false" name="tujuan" type="text" placeholder="Tujuan"
-                    :isMedium="true" />
+                    :isSmall="true" />
                 <x-input-field-filter :isLabel="false" name="perihal" type="text" placeholder="Perihal"
-                    :isMedium="true" />
+                    :isSmall="true" />
                 <x-input-field-filter :isLabel="false" name="keterangan" type="text" placeholder="Keterangan"
                     :isMedium="true" />
             </x-desktop-filter-bar>
@@ -96,4 +93,8 @@
             </x-footer-desktop>
 
         </x-default-page-container>
+
+        {{-- MOBILE + MENU + FILTER Scripts --}}
+        <x-mobile-menu-filter-scripts />
+        <x-range-date-filter-script />
     @endsection

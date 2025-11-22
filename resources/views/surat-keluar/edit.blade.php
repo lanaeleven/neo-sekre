@@ -40,11 +40,12 @@
                     </div>
 
                     <div>
-                        <x-file-input id="fileSurat" name="fileSurat" label="Ganti File Surat" :required="true" />
+                        <x-file-input id="fileSurat" name="fileSurat" label="Ganti File Surat" :required="false" />
                     </div>
+
                     <div>
                         <x-text-area-input label="Keterangan" name="keterangan" id="keterangan"
-                            value="{{ old('keterangan', $suratKeluar->keterangan ?? '') }}":required="true" />
+                            value="{{ old('keterangan', $suratKeluar->keterangan ?? '') }}" :required="true" />
                     </div>
 
                 </x-block-input-container>
