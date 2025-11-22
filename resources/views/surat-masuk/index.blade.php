@@ -19,8 +19,7 @@
 
         {{-- ================= MOBILE FILTER DRAWER ================= --}}
         <x-mobile-filter-drawer urlFilter="/surat-masuk/index">
-            <x-input-field-filter :isLabel="true" label="Awal" name="tanggalAwal" type="date" />
-            <x-input-field-filter :isLabel="true" label="Akhir" name="tanggalAkhir" type="date" />
+            <x-range-date-filter />
             <x-input-field-filter :isLabel="false" name="index" type="number" placeholder="Index" />
             <x-input-field-filter :isLabel="false" name="pengirim" type="text" placeholder="Pengirim" />
             <x-input-field-filter :isLabel="false" name="nomorSurat" type="text" placeholder="No Surat" />
@@ -30,8 +29,7 @@
 
         {{-- ================= DESKTOP FILTER BAR ================= --}}
         <x-desktop-filter-bar urlFilter="/surat-masuk/index">
-            <x-input-field-filter :isLabel="true" label="Awal" name="tanggalAwal" type="date" :isMediumUp="true" />
-            <x-input-field-filter :isLabel="true" label="Akhir" name="tanggalAkhir" type="date" :isMediumUp="true" />
+            <x-range-date-filter />
             <x-input-field-filter :isLabel="false" name="index" type="number" placeholder="Index" :isSmall="true" />
             <x-input-field-filter :isLabel="false" name="pengirim" type="text" placeholder="Pengirim"
                 :isMedium="true" />
@@ -107,4 +105,5 @@
 
     {{-- MOBILE + MENU + FILTER Scripts --}}
     <x-mobile-menu-filter-scripts />
+    <x-range-date-filter-script />
 @endsection
