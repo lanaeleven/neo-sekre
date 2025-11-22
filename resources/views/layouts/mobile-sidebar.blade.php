@@ -6,6 +6,7 @@
         <a href="/surat-masuk/index" class="block px-3 py-2 rounded hover:bg-gray-100">Surat Masuk</a>
         <a href="/surat-masuk/tambah" class="block px-3 py-2 rounded hover:bg-gray-100">Tambah Surat Masuk</a>
         <a href="/surat-keluar/index" class="block px-3 py-2 rounded hover:bg-gray-100">Surat Keluar</a>
+        <a href="/surat-keluar/tambah" class="block px-3 py-2 rounded hover:bg-gray-100">Tambah Surat Keluar</a>
 
     </div>
 </div>

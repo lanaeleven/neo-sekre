@@ -72,7 +72,7 @@ Route::post('/unduh-rekap-suratkeluar', [SuratKeluarController::class, 'rekapSur
 Route::get('/rekap/{fileName}', [SuratKeluarController::class, 'downloadZip']);
 Route::get('/td', [SuratKeluarController::class, 'testDownload']);
 
-Route::get('/spo/index', [SpoController::class, 'create'])->middleware('sekre');
+Route::get('/spo/index', [SpoController::class, 'create'])->middleware('sekre')->name('spo.index');;
 Route::get('/spo/tambah', [SpoController::class, 'tambah'])->middleware('sekre');
 Route::get('/spo/edit/{spo}', [SpoController::class, 'edit'])->middleware('sekre');
 Route::get('/spo/index/ns/', [SpoController::class, 'listSpoNs'])->middleware('notSekre');

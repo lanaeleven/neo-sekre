@@ -25,7 +25,6 @@ class SpoController extends Controller
     {
 
         $spo = Spo::orderBy('tahun', 'desc')->orderBy('index', 'desc');
-        $direksi = Direksi::all();
         $judul = "Standar Prosedur Operasional";
 
         if (request('index')) {
@@ -60,7 +59,7 @@ class SpoController extends Controller
             $spo->where('tahun', request('tahun'));
         }
 
-        return view('spo.index', ['title' =>  $judul, 'active' => 'spo', 'spo' => $spo->with('direksi')->paginate(15), 'direksi' => $direksi, 'judul' => $judul]);
+        return view('spo.index', ['title' =>  $judul, 'active' => 'spo', 'spo' => $spo->paginate(25), 'judul' => $judul, 'isForm' => false]);
     }
 
     public function listSpoNs()
@@ -103,10 +102,9 @@ class SpoController extends Controller
 
     public function tambah()
     {
-        $direksi = Direksi::all();
         $units = Unit::all();
 
-        return view('spo.tambah', ['title' => 'Tambah Surat Prosedur Operasional', 'active' => 'spo', 'direksi' => $direksi, 'units' => $units]);
+        return view('spo.tambah', ['title' => 'Tambah Surat Prosedur Operasional', 'active' => 'spo', 'units' => $units, 'isForm' => true]);
     }
 
     public function store(Request $request): RedirectResponse
@@ -116,7 +114,6 @@ class SpoController extends Controller
             'tanggalSurat' => 'required',
             'tujuan' => 'required',
             'perihal' => 'required',
-            'direksi' => 'required',
             'units' => 'required|array',
             'fileSurat' => 'required|mimes:pdf|max:5120'
         ]);
@@ -138,7 +135,6 @@ class SpoController extends Controller
         $spo = new Spo();
         $spo->index = $newIndex;
         $spo->tahun = $tahun;
-        $spo->idDireksi = $request->input('direksi');
         $spo->tanggalSurat = $request->input('tanggalSurat');
         $spo->tujuan = $request->input('tujuan');
         $spo->perihal = $request->input('perihal');
@@ -156,11 +152,10 @@ class SpoController extends Controller
 
     public function edit(Spo $spo)
     {
-        $direksi = Direksi::all();
         $spo = SPO::with('units')->findOrFail($spo->id);
         $units = Unit::all();
 
-        return view('spo.edit', ['title' => 'Edit Standar Prosedur Operasional', 'active' => 'spo', 'spo' => $spo, 'direksi' => $direksi, 'units' => $units]);
+        return view('spo.edit', ['title' => 'Edit Standar Prosedur Operasional', 'active' => 'spo', 'spo' => $spo, 'units' => $units, 'isForm' => true]);
     }
 
     public function save(Request $request): RedirectResponse
@@ -171,12 +166,11 @@ class SpoController extends Controller
             'tanggalSurat' => 'required',
             'tujuan' => 'required',
             'perihal' => 'required',
-            'direksi' => 'required',
             'fileSurat' => 'mimes:pdf|max:5120',
             'units' => 'required|array',
             'revisi' => 'mimes:pdf|max:5120'
         ]);
-        
+
 
         $tahunInput = Carbon::createFromFormat('Y-m-d', $request->input('tanggalSurat'))->format('Y');
         $bulan = Carbon::createFromFormat('Y-m-d', $request->input('tanggalSurat'))->format('m');
@@ -254,7 +248,7 @@ class SpoController extends Controller
             $bulan = Carbon::createFromFormat('Y-m-d', $spo->tanggalSurat)->format('m');
             $newSpoPath = 'uploads/spo/' . $tahun . '/' . $bulan . '/' . uniqid() . '.pdf'; // path surat berlampiran yg akan disimpan di database
             $pathPenggabungan = storage_path('app/public/' . $newSpoPath); // path surat untuk keperluan penggabungan
-            
+
             // proses penggabungan surat masuk dengan lampiran
             $pdfMerger = PDFMerger::init();
             $pdfMerger->addPDF($spoPath, 'all');
@@ -272,14 +266,13 @@ class SpoController extends Controller
                 if (file_exists($file)) {
                     unlink($file);
                 }
-            }  
+            }
         }
         // END PROCESS file lampiran 
 
         // Store file information in the database
         $spo = Spo::find($request->input('id'));
 
-        $spo->idDireksi = $request->input('direksi');
         $spo->tanggalSurat = $request->input('tanggalSurat');
         $spo->tujuan = $request->input('tujuan');
         $spo->perihal = $request->input('perihal');

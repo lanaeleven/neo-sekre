@@ -1,94 +1,95 @@
 @extends('layouts.main')
+
 @section('container')
     <div>
-        <x-default-notif />
+        {{-- Animations --}}
+        <x-animations-style />
 
-        <x-title-with-add-button title="{{ $judul }}" addUrl="/spo/tambah" />
+        <x-default-page-container>
+            {{-- NAVBAR --}}
+            <x-navbar title="{{ $title }}" urlTambah="/spo/tambah" />
 
-        {{-- <div class="d-flex justify-content-end">
-            <div>
-                <button class="btn btn-success btn-sm py-2 fs-6 mx-auto" data-bs-toggle="modal"
-                    data-bs-target="#unduhRekapModal">Unduh Rekap</button>
-            </div>
-        </div> --}}
+            {{-- Pagination Mobile --}}
+            <x-mobile-pagination>
+                {{ $spo->appends(request()->input())->links('pagination::custom') }}
+            </x-mobile-pagination>
 
-        <div>
-            <form class="row g-3" action="/spo/index">
-                <x-input-field-filter name="tahun" type="number" placeholder="Tahun" :isSmall="true" />
-                <x-input-field-filter :isLabel="true" label="Tgl Awal" name="tanggalAwal" type="date" />
-                <x-input-field-filter :isLabel="true" label="Tgl Akhir" name="tanggalAkhir" type="date" />
-                <x-input-field-filter name="index" type="number" placeholder="Index" :isSmall="true" />
-                <x-input-field-filter name="tujuan" type="text" placeholder="Tujuan" />
-                <x-input-field-filter name="perihal" type="text" placeholder="Perihal" />
-                <x-input-field-filter name="keterangan" type="text" placeholder="Keterangan" />
-                <x-filter-submit-button />
-            </form>
-        </div>
+            {{-- ================= MOBILE SIDEBAR (MENU) ================= --}}
+            @include('layouts.mobile-sidebar')
 
-        @if ($spo->isEmpty())
-            <x-empty-data data='{{ $judul }}' />
-        @else
-            {{-- start set data table --}}
-            @php
-                $tableHeader = ['Indeks', 'Tanggal', 'Tujuan', 'Perihal', 'Direktorat', 'Keterangan', 'Aksi'];
-            @endphp
-            @foreach ($spo as $s)
-                @php
-                    $rows[] = [
-                        $s->index,
-                        $s->tanggalSurat,
-                        $s->tujuan,
-                        $s->perihal,
-                        $s->direksi->namaDireksi,
-                        $s->keterangan,
-                        '
-                        <a href="/spo/edit/' . $s->id . '" class="mt-1 btn btn-sm btn-primary"><i
-                                class="fa-solid fa-pencil" style="color: #ffffff;"></i></a>
-                        <a href="'. asset('storage/' . $s->filePath) .'" class="mt-1 btn btn-sm btn-secondary"
-                            target="_blank"><i class="fa-solid fa-eye" style="color: #ffffff;"></i></a>
-                        ',
-                    ];
-                @endphp
-            @endforeach
-            {{-- end set data table --}}
+            <x-mobile-filter-drawer urlFilter="/spo/index">
+                <x-range-date-filter />
+                <x-input-field-filter :isLabel="false" name="index" type="number" placeholder="Index" />
+                <x-input-field-filter :isLabel="false" name="tujuan" type="text" placeholder="Tujuan" />
+                <x-input-field-filter :isLabel="false" name="perihal" type="text" placeholder="Perihal" />
+                <x-input-field-filter :isLabel="false" name="keterangan" type="text" placeholder="Keterangan" />
+            </x-mobile-filter-drawer>
 
-            <x-default-table-container>
-                <x-default-table :tableHeader="$tableHeader" :rows="$rows" />
-            </x-default-table-container>
+            {{-- ================= DESKTOP FILTER BAR ================= --}}
+            <x-desktop-filter-bar urlFilter="/spo/index">
+                <x-range-date-filter />
+                <x-input-field-filter :isLabel="false" name="index" type="number" placeholder="Index"
+                    :isSmall="true" />
+                <x-input-field-filter :isLabel="false" name="tujuan" type="text" placeholder="Tujuan"
+                    :isSmall="true" />
+                <x-input-field-filter :isLabel="false" name="perihal" type="text" placeholder="Perihal"
+                    :isSmall="true" />
+                <x-input-field-filter :isLabel="false" name="keterangan" type="text" placeholder="Keterangan"
+                    :isMedium="true" />
+            </x-desktop-filter-bar>
 
-            <x-mobile-table-container>
-                <x-mobile-table :tableHeader="$tableHeader" :rows="$rows" />
-            </x-mobile-table-container>
+            {{-- ================= DESKTOP TABLE ================= --}}
+            <x-simple-table :headers="['Indeks', 'Tanggal', 'Tujuan', 'Perihal', 'Keterangan', 'Aksi']">
+                @foreach ($spo as $s)
+                    <tr class="hover:bg-green-50 transition-colors">
+                        <x-td-default>{{ $s->index }}</x-td-default>
+                        <x-td-default>{{ $s->tanggalSurat }}</x-td-default>
+                        <x-td-default>{{ $s->tujuan }}</x-td-default>
+                        <x-td-default>{{ $s->perihal }}</x-td-default>
+                        <x-td-default>{{ $s->keterangan }}</x-td-default>
+                        <x-td-action>
+                            <x-button-with-tooltip variant="warning" tooltip="Edit"
+                                url="/spo/edit/{{ $s->id }}"><x-heroicon-s-pencil
+                                    class="w-4 h-4" /></x-button-with-tooltip>
+                            <x-button-with-tooltip variant="light" tooltip="Lihat"
+                                url="{{ asset('storage/' . $s->filePath) }}" target="_blank"><x-heroicon-s-eye
+                                    class="w-4 h-4" /></x-button-with-tooltip>
+                        </x-td-action>
+                    </tr>
+                @endforeach
+            </x-simple-table>
 
-            <x-pagination-links-container>
-                {{ $spo->appends(request()->input())->links() }}
-            </x-pagination-links-container>
-        @endif
-    </div>
+            {{-- ================= MOBILE CARD LIST ================= --}}
+            <x-mobile-card-container>
+                @foreach ($spo as $s)
+                    <x-mobile-card-border>
+                        <x-mobile-card-header title1="{{ $s->tanggalSurat }}" title2="{{ $s->index }}" />
+                        <x-mobile-card-text-bold text="{{ $s->perihal }}" />
+                        <x-mobile-card-text-normal text="Dari: {{ $s->tujuan }}" />
+                        <x-mobile-card-text-lite text="{{ $s->keterangan }}" />
+                        <x-mobile-card-text-actions>
+                            <x-button-with-tooltip variant="warning" tooltip="Edit"
+                                url="/spo/edit/{{ $s->id }}">Edit</x-button-with-tooltip>
+                            <x-button-with-tooltip variant="light" tooltip="Lihat"
+                                url="{{ asset('storage/' . $s->filePath) }}" target="_blank">Lihat</x-button-with-tooltip>
+                        </x-mobile-card-text-actions>
+                    </x-mobile-card-border>
+                @endforeach
+            </x-mobile-card-container>
 
-    {{-- Modal Unduh Rekap --}}
-    <div class="modal fade" id="unduhRekapModal" data-bs-backdrop="static" tabindex="-1"
-        aria-labelledby="unduhRekapModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="unduhRekapModalLabel">Rekap File Standar Prosedur Operasional</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
+            {{-- Pagination Desktop --}}
+            <x-desktop-pagination>
+                {{ $spo->appends(request()->input())->links('pagination::custom') }}
+            </x-desktop-pagination>
 
-                    <form method="POST" action="/unduh-rekap-spo">
-                        @csrf
-                        <div class="mb-3">
-                            <label for="bulanRekap" class="col-form-label">Pilih Bulan</label>
-                            <input type="month" id="bulanRekap" name="bulanRekap" class="form-control" required>
-                        </div>
-                        <button type="submit" class="btn btn-success container-fluid">Unduh Rekap</button>
-                </div>
-                </form>
-            </div>
-        </div>
-    </div>
-    {{-- end of modal --}}
+            {{-- Footer --}}
+            <x-footer-desktop>
+                © 2025 E-Sekre. All rights reserved
+            </x-footer-desktop>
 
-@endsection
+        </x-default-page-container>
+
+        {{-- MOBILE + MENU + FILTER Scripts --}}
+        <x-mobile-menu-filter-scripts />
+        <x-range-date-filter-script />
+    @endsection

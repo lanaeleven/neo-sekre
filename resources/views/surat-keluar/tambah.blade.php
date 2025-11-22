@@ -11,8 +11,6 @@
         <x-form-body-container>
             <form action="/surat-keluar/tambah" method="post" enctype="multipart/form-data">
                 @csrf
-                <input type="hidden" name="idPosisiDisposisi" value="1">
-                <input type="hidden" name="status" value="Belum Diteruskan">
 
                 <x-block-input-container>
                     <div>
