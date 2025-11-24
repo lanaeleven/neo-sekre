@@ -13,12 +13,7 @@
                 @csrf
 
                 <x-block-input-container>
-                    {{-- <div>
-                        <x-dropdown-input :label="'Jenis Surat'" labelPilihan='Pilih Jenis Surat' :name="'jenisSurat'"
-                            :id="'jenisSurat'" :options="$jenisSurat" :required="true"></x-dropdown-input>
-                    </div> --}}
-                    <x-multi-select-input id="units" name="units" label="Pilih unit" :options="$units"
-                        {{-- array of selected IDs --}} />
+                    <x-multi-select-input id="units" name="units" label="Pilih unit" :options="$units" />
 
                     <div>
                         <x-date-input name="tanggalSurat" id="tanggalSurat" value="{{ old('tanggalSurat') }}"

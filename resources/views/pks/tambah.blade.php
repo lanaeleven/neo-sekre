@@ -1,122 +1,63 @@
 @extends('layouts.main')
 
 @section('container')
-    <div>
-        <div class="d-flex justify-content-between align-items-center my-4">
-            <div>
-                <a href="/pks/index?tahun={{ config('app.tahun') }}" class="btn btn-warning btn-sm"><i
-                        class="fa-solid fa-arrow-left" style="color: #000;"></i></a>
-            </div>
-            <div>
-                <h3 class="fw-bold fs-4 text-center">Tambah Perjanjian Kerja Sama</h3>
-            </div>
-            <div>
-            </div>
-        </div>
-        <div class="d-flex justify-content-center">
-            <div class="col-12 col-md-6">
-                <form method="post" id="formTambah" action="/pks/tambah" enctype="multipart/form-data">
-                    @csrf
+    <x-default-page-container>
+        {{-- Navbar --}}
+        <x-navbar-form title="Tambah Perjanjian Kerja Sama" closeUrl="/pks/index" />
 
-                    <div class="row mb-3">
-                        <label for="tanggalSurat" class="col-sm-3 col-form-label">Tanggal Surat</label>
-                        <div class="col-sm-9">
-                            <input name="tanggalSurat" type="date" class="form-control" id="tanggalSurat"
-                                value="{{ old('tanggalSurat') }}" required>
-                        </div>
+        {{-- Error Notif --}}
+        <x-error-notif />
+
+        <x-form-body-container>
+            <form action="/pks/tambah" method="post" enctype="multipart/form-data">
+                @csrf
+
+                <x-block-input-container>
+                    <div>
+                        <x-date-input name="tanggalSurat" id="tanggalSurat" value="{{ old('tanggalSurat') }}"
+                            :required="true">Tanggal Surat</x-date-input>
                     </div>
 
-                    <div class="row mb-3">
-                        <label for="tujuan" class="col-sm-3 col-form-label">Tujuan</label>
-                        <div class="col-sm-9">
-                            <input name="tujuan" type="text" class="form-control" id="tujuan"
-                                value="{{ old('tujuan') }}" required>
-                        </div>
+                    <div>
+                        <x-text-input name="tujuan" id="tujuan" value="{{ old('tujuan') }}"
+                            :required="true">Tujuan</x-text-input>
                     </div>
 
-                    <div class="row mb-3">
-                        <label for="perihal" class="col-sm-3 col-form-label">Perihal</label>
-                        <div class="col-sm-9">
-                            <textarea class="form-control" name="perihal" id="perihal" rows="3" required>{{ old('perihal') }}</textarea>
-                        </div>
+                    <div>
+                        <x-text-area-input label="Perihal" name="perihal" id="perihal" value="{{ old('perihal') }}"
+                            :required="true" />
                     </div>
 
-                    <div class="row mb-3">
-                        <label for="direktorat" class="col-sm-3 col-form-label">Direktorat</label>
-                        <div class="col-sm-9">
-                            <select name="direksi" class="form-select" id="direktorat" required>
-                                <option value="">Pilih Direksi</option>
-                                @foreach ($direksi as $d)
-                                    <option value="{{ $d->id }}" @if ($d->id == old('direksi')) selected @endif>
-                                        {{ $d->namaDireksi }}</option>
-                                @endforeach
-                            </select>
-                        </div>
+                    <x-multi-select-input id="users" name="users" label="Pilih user" :options="$users" />
+
+                    <div>
+                        <x-file-input id="fileSurat" name="fileSurat" label="Upload Surat" :required="true" />
+                    </div>
+                    <div>
+                        <x-text-area-input label="Keterangan" name="keterangan" id="keterangan"
+                            value="{{ old('keterangan') }}" :required="true" />
                     </div>
 
-                    <div class="row mb-3">
-                        <label for="users" class="col-sm-3 col-form-label">Pilih User (bisa lebih dari satu)</label>
-                        <div class="col-sm-9">
-                            <select name="users[]" id="users" multiple class="form-select select2" required>
-                                <option value="all">Seluruh User</option>
-                                @foreach ($users as $user)
-                                    <option value="{{ $user->id }}">{{ $user->namaJabatan }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
+                </x-block-input-container>
 
-                    <div class="row mb-3">
-                        <label for="fileSurat" class="col-sm-3 col-form-label">Upload Surat</label>
-                        <div class="col-sm-9">
-                            <input name="fileSurat" class="form-control @error('fileSurat') is-invalid @enderror"
-                                type="file" id="fileSurat" required>
-                            @error('fileSurat')
-                                <div id="fileSurat" class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
-                            @enderror
-                        </div>
-                    </div>
+                <x-mobile-submit-container>
+                    <x-green-submit-button>
+                        Simpan
+                    </x-green-submit-button>
+                </x-mobile-submit-container>
 
-                    <div class="row mb-3">
-                        <label for="keterangan" class="col-sm-3 col-form-label">Keterangan</label>
-                        <div class="col-sm-9">
-                            <textarea name="keterangan" class="form-control" name="keterangan" id="keterangan" rows="3">{{ old('keterangan') }}</textarea>
-                        </div>
-                    </div>
+        </x-form-body-container>
 
-                    <div class="d-flex justify-content-center">
-                        <div>
-                            <button type="submit" class="btn btn-success mt-3">Tambah
-                                <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"
-                                    id="spinnerTambah"></span>
-                            </button>
-                        </div>
-                    </div>
+        <x-desktop-submit-container>
+            <x-green-submit-button>
+                Simpan
+            </x-green-submit-button>
+        </x-desktop-submit-container>
 
-                </form>
-            </div>
-        </div>
-    </div>
+        </form>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    </x-default-page-container>
+    <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
 
-    <script src="/js/multiple-select.js"></script>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // spinner tombol tambah
-            var formTambah = document.getElementById('formTambah');
-            formTambah.addEventListener('submit', function(event) {
-                var submitButtonTambah = formTambah.querySelector('button[type="submit"]');
-                if (submitButtonTambah) {
-                    submitButtonTambah.disabled = true;
-                    document.getElementById('spinnerTambah').classList.remove('d-none');
-                }
-            });
-        });
-    </script>
+    @stack('scripts')
 @endsection

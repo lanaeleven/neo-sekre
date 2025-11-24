@@ -1,64 +1,95 @@
 @extends('layouts.main')
+
 @section('container')
     <div>
-        <x-default-notif />
+        {{-- Animations --}}
+        <x-animations-style />
 
-        <x-title-with-add-button title="{{ $judul }}" addUrl="/pks/tambah" />
+        <x-default-page-container>
+            {{-- NAVBAR --}}
+            <x-navbar title="{{ $title }}" urlTambah="/pks/tambah" />
 
-        <div>
-            <form class="row g-3" action="">
-                <x-input-field-filter name="tahun" type="number" placeholder="Tahun" :isSmall="true" />
-                <x-input-field-filter :isLabel="true" label="Tgl Awal" name="tanggalAwal" type="date" />
-                <x-input-field-filter :isLabel="true" label="Tgl Akhir" name="tanggalAkhir" type="date" />
-                <x-input-field-filter name="index" type="number" placeholder="Index" :isSmall="true" />
-                <x-input-field-filter name="tujuan" type="text" placeholder="Tujuan" />
-                <x-input-field-filter name="perihal" type="text" placeholder="Perihal" />
-                <x-input-field-filter name="keterangan" type="text" placeholder="Keterangan" />
-                <x-filter-submit-button />
-            </form>
-        </div>
+            {{-- Pagination Mobile --}}
+            <x-mobile-pagination>
+                {{ $pks->appends(request()->input())->links('pagination::custom') }}
+            </x-mobile-pagination>
 
-        @if ($pks->isEmpty())
-            <x-empty-data data='{{ $judul }}' />
-        @else
-            {{-- start set data table --}}
-            @php
-                $tableHeader = ['Indeks', 'Tanggal', 'Tujuan', 'Perihal', 'Direktorat', 'Keterangan', 'Aksi'];
-            @endphp
-            @foreach ($pks as $p)
-                @php
-                    $rows[] = [
-                        $p->index,
-                        $p->tanggalSurat,
-                        $p->tujuan,
-                        $p->perihal,
-                        $p->direksi->namaDireksi,
-                        $p->keterangan,
-                        '
-                        <a href="/pks/edit/' .
-                        $p->id .
-                        '" class="mt-1 btn btn-sm btn-primary"><i class="fa-solid fa-pencil" style="color: #ffffff;"></i></a>
-                        <a href="' .
-                        asset('storage/' . $p->filePath) .
-                        '" class="mt-1 btn btn-sm btn-secondary"
-                            target="_blank"><i class="fa-solid fa-eye" style="color: #ffffff;"></i></a>
-                        ',
-                    ];
-                @endphp
-            @endforeach
-            {{-- end set data table --}}
+            {{-- ================= MOBILE SIDEBAR (MENU) ================= --}}
+            @include('layouts.mobile-sidebar')
 
-            <x-default-table-container>
-                <x-default-table :tableHeader="$tableHeader" :rows="$rows" />
-            </x-default-table-container>
+            <x-mobile-filter-drawer urlFilter="/pks/index">
+                <x-range-date-filter />
+                <x-input-field-filter :isLabel="false" name="index" type="number" placeholder="Index" />
+                <x-input-field-filter :isLabel="false" name="tujuan" type="text" placeholder="Tujuan" />
+                <x-input-field-filter :isLabel="false" name="perihal" type="text" placeholder="Perihal" />
+                <x-input-field-filter :isLabel="false" name="keterangan" type="text" placeholder="Keterangan" />
+            </x-mobile-filter-drawer>
 
-            <x-mobile-table-container>
-                <x-mobile-table :tableHeader="$tableHeader" :rows="$rows" />
-            </x-mobile-table-container>
+            {{-- ================= DESKTOP FILTER BAR ================= --}}
+            <x-desktop-filter-bar urlFilter="/pks/index">
+                <x-range-date-filter />
+                <x-input-field-filter :isLabel="false" name="index" type="number" placeholder="Index"
+                    :isSmall="true" />
+                <x-input-field-filter :isLabel="false" name="tujuan" type="text" placeholder="Tujuan"
+                    :isSmall="true" />
+                <x-input-field-filter :isLabel="false" name="perihal" type="text" placeholder="Perihal"
+                    :isSmall="true" />
+                <x-input-field-filter :isLabel="false" name="keterangan" type="text" placeholder="Keterangan"
+                    :isMedium="true" />
+            </x-desktop-filter-bar>
 
-            <x-pagination-links-container>
-                {{ $pks->appends(request()->input())->links() }}
-            </x-pagination-links-container>
-        @endif
-    </div>
-@endsection
+            {{-- ================= DESKTOP TABLE ================= --}}
+            <x-simple-table :headers="['Indeks', 'Tanggal', 'Tujuan', 'Perihal', 'Keterangan', 'Aksi']">
+                @foreach ($pks as $p)
+                    <tr class="hover:bg-green-50 transition-colors">
+                        <x-td-default>{{ $p->index }}</x-td-default>
+                        <x-td-default>{{ $p->tanggalSurat }}</x-td-default>
+                        <x-td-default>{{ $p->tujuan }}</x-td-default>
+                        <x-td-default>{{ $p->perihal }}</x-td-default>
+                        <x-td-default>{{ $p->keterangan }}</x-td-default>
+                        <x-td-action>
+                            <x-button-with-tooltip variant="warning" tooltip="Edit"
+                                url="/pks/edit/{{ $p->id }}"><x-heroicon-s-pencil
+                                    class="w-4 h-4" /></x-button-with-tooltip>
+                            <x-button-with-tooltip variant="light" tooltip="Lihat"
+                                url="{{ asset('storage/' . $p->filePath) }}" target="_blank"><x-heroicon-s-eye
+                                    class="w-4 h-4" /></x-button-with-tooltip>
+                        </x-td-action>
+                    </tr>
+                @endforeach
+            </x-simple-table>
+
+            {{-- ================= MOBILE CARD LIST ================= --}}
+            <x-mobile-card-container>
+                @foreach ($pks as $p)
+                    <x-mobile-card-border>
+                        <x-mobile-card-header title1="{{ $p->tanggalSurat }}" title2="{{ $p->index }}" />
+                        <x-mobile-card-text-bold text="{{ $p->perihal }}" />
+                        <x-mobile-card-text-normal text="Dari: {{ $p->tujuan }}" />
+                        <x-mobile-card-text-lite text="{{ $p->keterangan }}" />
+                        <x-mobile-card-text-actions>
+                            <x-button-with-tooltip variant="warning" tooltip="Edit"
+                                url="/pks/edit/{{ $p->id }}">Edit</x-button-with-tooltip>
+                            <x-button-with-tooltip variant="light" tooltip="Lihat"
+                                url="{{ asset('storage/' . $p->filePath) }}" target="_blank">Lihat</x-button-with-tooltip>
+                        </x-mobile-card-text-actions>
+                    </x-mobile-card-border>
+                @endforeach
+            </x-mobile-card-container>
+
+            {{-- Pagination Desktop --}}
+            <x-desktop-pagination>
+                {{ $pks->appends(request()->input())->links('pagination::custom') }}
+            </x-desktop-pagination>
+
+            {{-- Footer --}}
+            <x-footer-desktop>
+                © 2025 E-Sekre. All rights reserved
+            </x-footer-desktop>
+
+        </x-default-page-container>
+
+        {{-- MOBILE + MENU + FILTER Scripts --}}
+        <x-mobile-menu-filter-scripts />
+        <x-range-date-filter-script />
+    @endsection

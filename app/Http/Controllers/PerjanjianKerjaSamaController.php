@@ -17,7 +17,6 @@ class PerjanjianKerjaSamaController extends Controller
     {
 
         $pks = PerjanjianKerjaSama::orderBy('tahun', 'desc')->orderBy('index', 'desc');
-        $direksi = Direksi::all();
         $judul = "Perjanjian Kerja Sama";
 
         if (request('index')) {
@@ -30,10 +29,6 @@ class PerjanjianKerjaSamaController extends Controller
 
         if (request('tanggalAkhir')) {
             $pks = $pks->whereDate('tanggalSurat', '<=', request('tanggalAkhir'));
-        }
-
-        if (request('direksi')) {
-            $pks->where('idDireksi', request('direksi'));
         }
 
         if (request('tujuan')) {
@@ -56,19 +51,25 @@ class PerjanjianKerjaSamaController extends Controller
             'search_tahun' => request('tahun')
         ]);
 
-        return view('pks.index', ['title' => $judul, 'active' => 'pks', 'pks' => $pks->with(['direksi'])->paginate(15), 'direksi' => $direksi, 'judul' => $judul]);
+        return view('pks.index', ['title' => $judul, 'active' => 'pks', 'pks' => $pks->paginate(25), 'judul' => $judul, 'isForm' => false]);
     }
 
     public function tambah()
     {
-        $direksi = Direksi::all();
         $users = User::where('id', '<>', 2)->where('isAktif', true)->get();
+
+        $opsiUsers = $users->map(function ($u) {
+            return (object)[
+                'id' => $u->id,
+                'nama' => $u->namaJabatan
+            ];
+        });
 
         return view('pks.tambah', [
             'title' => 'Tambah Perjanjian Kerja Sama',
             'active' => 'pks',
-            'direksi' => $direksi,
-            'users' => $users
+            'users' => $opsiUsers,
+            'isForm' => true
         ]);
     }
 
@@ -86,7 +87,6 @@ class PerjanjianKerjaSamaController extends Controller
             'tanggalSurat' => 'required',
             'tujuan' => 'required',
             'perihal' => 'required',
-            'direksi' => 'required',
             'users' => 'required|array',
             'fileSurat' => 'required|mimes:pdf,jpg,png'
         ]);
@@ -106,7 +106,6 @@ class PerjanjianKerjaSamaController extends Controller
         $pks = new PerjanjianKerjaSama();
         $pks->index = $newIndex;
         $pks->tahun = $tahun;
-        $pks->idDireksi = $request->input('direksi');
         $pks->tanggalSurat = $request->input('tanggalSurat');
         $pks->tujuan = $request->input('tujuan');
         $pks->perihal = $request->input('perihal');
@@ -141,12 +140,21 @@ class PerjanjianKerjaSamaController extends Controller
 
     public function edit(PerjanjianKerjaSama $pks)
     {
-        $direksi = Direksi::all();
         $users = User::where('id', '<>', 2)->get();
+        $opsiUsers = $users->map(function ($u) {
+            return (object)[
+                'id' => $u->id,
+                'nama' => $u->namaJabatan
+            ];
+        });
 
-        return view('pks.edit', ['title' => 'Edit Perjanjian Kerja Sama', 'active' => 'pks', 'pks' => $pks, 'direksi' => $direksi, 
-        'users' => $users
-    ]);
+        return view('pks.edit', [
+            'title' => 'Edit Perjanjian Kerja Sama',
+            'active' => 'pks',
+            'pks' => $pks,
+            'users' => $opsiUsers,
+            'isForm' => true
+        ]);
     }
 
     public function save(Request $request): RedirectResponse
@@ -163,7 +171,6 @@ class PerjanjianKerjaSamaController extends Controller
             'tanggalSurat' => 'required',
             'tujuan' => 'required',
             'perihal' => 'required',
-            'direksi' => 'required',
             'users' => 'required|array',
             'fileSurat' => 'mimes:pdf,jpg,png'
         ]);
@@ -181,7 +188,6 @@ class PerjanjianKerjaSamaController extends Controller
         // Store file information in the database
         $pks = PerjanjianKerjaSama::find($request->input('id'));
 
-        $pks->idDireksi = $request->input('direksi');
         $pks->tanggalSurat = $request->input('tanggalSurat');
         $pks->tujuan = $request->input('tujuan');
         $pks->perihal = $request->input('perihal');

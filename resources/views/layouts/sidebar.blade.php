@@ -10,7 +10,7 @@
             'label' => 'Surat Masuk',
             'key' => 'surat masuk',
             'route' => 'surat-masuk.index',
-            'icons' => ['active' => 'heroicon-s-inbox', 'inactive' => 'heroicon-o-inbox'],
+            'icons' => ['active' => 'heroicon-s-inbox-arrow-down', 'inactive' => 'heroicon-o-inbox-arrow-down'],
         ],
         [
             'label' => 'Surat Keluar',
@@ -29,6 +29,12 @@
             'key' => 'regulasi',
             'route' => 'regulasi.index',
             'icons' => ['active' => 'heroicon-s-building-library', 'inactive' => 'heroicon-o-building-library'],
+        ],
+        [
+            'label' => 'Perjanjian Kerja Sama',
+            'key' => 'pks',
+            'route' => 'pks.index',
+            'icons' => ['active' => 'heroicon-s-user-group', 'inactive' => 'heroicon-o-user-group'],
         ],
     ];
 @endphp
