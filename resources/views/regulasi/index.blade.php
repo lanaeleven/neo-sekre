@@ -2,110 +2,99 @@
 
 @section('container')
     <div>
-        <x-default-notif />
+        {{-- Animations --}}
+        <x-animations-style />
 
-        <x-title-with-add-button title="{{ $judul }}" addUrl="/regulasi/tambah" />
+        <x-default-page-container>
+            {{-- NAVBAR --}}
+            <x-navbar title="{{ $title }}" urlTambah="/regulasi/tambah" />
 
-        <div>
-            <form class="row g-3" action="">
-                <x-input-field-filter name="tahun" type="number" placeholder="Tahun" :isSmall="true" />
-                <x-input-field-filter :isLabel="true" label="Tgl Awal" name="tanggalAwal" type="date" />
-                <x-input-field-filter :isLabel="true" label="Tgl Akhir" name="tanggalAkhir" type="date" />
-                <x-input-field-filter name="index" type="number" placeholder="Index" :isSmall="true" />
-                <div class="col-auto">
-                    <select name="jenisRegulasi" class="form-select form-select-sm" value="{{ request('jenisRegulasi') }}">
-                        <option value="">Semua Jenis Regulasi</option>
-                        @foreach ($jenisRegulasi as $js)
-                            <option value="{{ $js->id }}" {{ request('jenisRegulasi') == $js->id ? 'selected' : '' }}>
-                                {{ $js->kodeJenisRegulasi . '-' . $js->keterangan }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <x-input-field-filter name="tujuan" type="text" placeholder="Tujuan" />
-                <x-input-field-filter name="perihal" type="text" placeholder="Perihal" />
-                <x-input-field-filter name="keterangan" type="text" placeholder="Keterangan" />
-                <x-filter-submit-button />
-            </form>
-        </div>
+            {{-- Pagination Mobile --}}
+            <x-mobile-pagination>
+                {{ $regulasi->appends(request()->input())->links('pagination::custom') }}
+            </x-mobile-pagination>
 
-        @if ($regulasi->isEmpty())
-            <x-empty-data data='{{ $judul }}' />
-        @else
-            {{-- start set data table --}}
-            @php
-                $tableHeader = ['Indeks', 'Tanggal', 'Tujuan', 'Perihal', 'Direktorat', 'Keterangan', 'Jenis', 'Aksi'];
-            @endphp
-            @foreach ($regulasi as $r)
-                @php
-                    $rows[] = [
-                        $r->index,
-                        $r->tanggalSurat,
-                        $r->tujuan,
-                        $r->perihal,
-                        $r->direksi->namaDireksi,
-                        $r->keterangan,
-                        $r->jenisRegulasi->keterangan,
-                        '
-                        <a href="/regulasi/edit/' .
-                        $r->id .
-                        '" class="mt-1 btn btn-sm btn-primary"><i class="fa-solid fa-pencil" style="color: #ffffff;"></i></a>
-                        <a href="' .
-                        asset('storage/' . $r->filePath) .
-                        '" class="mt-1 btn btn-sm btn-secondary" target="_blank"><i class="fa-solid fa-eye" style="color: #ffffff;"></i></a>
-                        ',
-                    ];
-                @endphp
-            @endforeach
-            {{-- end set data table --}}
+            {{-- ================= MOBILE SIDEBAR (MENU) ================= --}}
+            @include('layouts.mobile-sidebar')
 
-            <x-default-table-container>
-                <x-default-table :tableHeader="$tableHeader" :rows="$rows" />
-            </x-default-table-container>
+            <x-mobile-filter-drawer urlFilter="/regulasi/index">
+                <x-range-date-filter />
+                <x-input-field-filter :isLabel="false" name="index" type="number" placeholder="Index" />
+                <x-mobile-dropdown-field-filter name='jenisRegulasi' optionLabelDefault='Semua Jenis' :options="$jenisRegulasi" />
+                <x-input-field-filter :isLabel="false" name="tujuan" type="text" placeholder="Tujuan" />
+                <x-input-field-filter :isLabel="false" name="perihal" type="text" placeholder="Perihal" />
+                <x-input-field-filter :isLabel="false" name="keterangan" type="text" placeholder="Keterangan" />
+            </x-mobile-filter-drawer>
 
-            <x-mobile-table-container>
-                <x-mobile-table :tableHeader="$tableHeader" :rows="$rows" />
-            </x-mobile-table-container>
+            {{-- ================= DESKTOP FILTER BAR ================= --}}
+            <x-desktop-filter-bar urlFilter="/regulasi/index">
+                <x-range-date-filter />
+                <x-input-field-filter :isLabel="false" name="index" type="number" placeholder="Index"
+                    :isSmall="true" />
+                <x-desktop-dropdown-field-filter name="jenisRegulasi" id="jenisRegulasi" optionLabelDefault="Semua Jenis"
+                    :options="$jenisRegulasi" />
+                <x-input-field-filter :isLabel="false" name="tujuan" type="text" placeholder="Tujuan"
+                    :isSmall="true" />
+                <x-input-field-filter :isLabel="false" name="perihal" type="text" placeholder="Perihal"
+                    :isSmall="true" />
+                <x-input-field-filter :isLabel="false" name="keterangan" type="text" placeholder="Keterangan"
+                    :isMedium="true" />
+            </x-desktop-filter-bar>
 
-            <x-pagination-links-container>
-                {{ $regulasi->appends(request()->input())->links() }}
-            </x-pagination-links-container>
-        @endif
-    </div>
+            {{-- ================= DESKTOP TABLE ================= --}}
+            <x-simple-table :headers="['Indeks', 'Tanggal', 'Tujuan', 'Perihal', 'Keterangan', 'Jenis', 'Aksi']">
+                @foreach ($regulasi as $r)
+                    <tr class="hover:bg-green-50 transition-colors">
+                        <x-td-default>{{ $r->index }}</x-td-default>
+                        <x-td-default>{{ $r->tanggalSurat }}</x-td-default>
+                        <x-td-default>{{ $r->tujuan }}</x-td-default>
+                        <x-td-default>{{ $r->perihal }}</x-td-default>
+                        <x-td-default>{{ $r->keterangan }}</x-td-default>
+                        <x-td-default>{{ $r->jenisRegulasi->keterangan }}</x-td-default>
+                        <x-td-action>
+                            <x-button-with-tooltip variant="warning" tooltip="Edit"
+                                url="/regulasi/edit/{{ $r->id }}"><x-heroicon-s-pencil
+                                    class="w-4 h-4" /></x-button-with-tooltip>
+                            <x-button-with-tooltip variant="light" tooltip="Lihat"
+                                url="{{ asset('storage/' . $r->filePath) }}" target="_blank"><x-heroicon-s-eye
+                                    class="w-4 h-4" /></x-button-with-tooltip>
+                        </x-td-action>
+                    </tr>
+                @endforeach
+            </x-simple-table>
 
-    {{-- Modal Unduh Rekap --}}
-    <div class="modal fade" id="unduhRekapModal" data-bs-backdrop="static" tabindex="-1"
-        aria-labelledby="unduhRekapModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="unduhRekapModalLabel">Rekap File Regulasi</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
+            {{-- ================= MOBILE CARD LIST ================= --}}
+            <x-mobile-card-container>
+                @foreach ($regulasi as $r)
+                    <x-mobile-card-border>
+                        <x-mobile-card-header title1="{{ $r->jenisRegulasi->keterangan }}" title2="{{ $r->index }}" />
+                        <x-mobile-card-text-bold text="{{ $r->perihal }}" />
+                        <x-mobile-card-text-normal text="Dari: {{ $r->tujuan }}" />
+                        <x-mobile-card-text-lite text="{{ $r->tanggalSurat }}" />
+                        <x-mobile-card-text-lite text="{{ $r->keterangan }}" />
+                        <x-mobile-card-text-actions>
+                            <x-button-with-tooltip variant="warning" tooltip="Edit"
+                                url="/regulasi/edit/{{ $r->id }}">Edit</x-button-with-tooltip>
+                            <x-button-with-tooltip variant="light" tooltip="Lihat"
+                                url="{{ asset('storage/' . $r->filePath) }}" target="_blank">Lihat</x-button-with-tooltip>
+                        </x-mobile-card-text-actions>
+                    </x-mobile-card-border>
+                @endforeach
+            </x-mobile-card-container>
 
-                    <form method="POST" action="/unduh-rekap-regulasi">
-                        @csrf
-                        {{-- <div class="mb-3">
-                <label for="bulanRekap" class="col-form-label">Pilih Bulan</label>
-                <input type="month" id="bulanRekap" name="bulanRekap"  class="form-control" required>
-              </div> --}}
-                        <div class="col-auto">
-                            <label for="awal" class="col-form-label"><small>Awal</small></label>
-                        </div>
-                        <div class="col-auto mb-3">
-                            <input name="awal" type="date" id="awal" class="form-control form-control-sm">
-                        </div>
-                        <div class="col-auto">
-                            <label for="akhir" class="col-form-label"><small>Akhir</small></label>
-                        </div>
-                        <div class="col-auto mb-3">
-                            <input name="akhir" type="date" id="akhir" class="form-control form-control-sm">
-                        </div>
-                        <button type="submit" class="btn btn-success container-fluid">Unduh Rekap</button>
-                </div>
-                </form>
-            </div>
-        </div>
-    </div>
-    {{-- end of modal --}}
-@endsection
+            {{-- Pagination Desktop --}}
+            <x-desktop-pagination>
+                {{ $regulasi->appends(request()->input())->links('pagination::custom') }}
+            </x-desktop-pagination>
+
+            {{-- Footer --}}
+            <x-footer-desktop>
+                © 2025 E-Sekre. All rights reserved
+            </x-footer-desktop>
+
+        </x-default-page-container>
+
+        {{-- MOBILE + MENU + FILTER Scripts --}}
+        <x-mobile-menu-filter-scripts />
+        <x-range-date-filter-script />
+    @endsection

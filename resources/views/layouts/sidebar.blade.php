@@ -24,6 +24,12 @@
             'route' => 'spo.index',
             'icons' => ['active' => 'heroicon-s-document-text', 'inactive' => 'heroicon-o-document-text'],
         ],
+        [
+            'label' => 'Regulasi',
+            'key' => 'regulasi',
+            'route' => 'regulasi.index',
+            'icons' => ['active' => 'heroicon-s-building-library', 'inactive' => 'heroicon-o-building-library'],
+        ],
     ];
 @endphp
 

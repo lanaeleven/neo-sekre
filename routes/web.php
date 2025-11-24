@@ -80,7 +80,7 @@ Route::post('/spo/tambah', [SpoController::class, 'store']);
 Route::post('/spo/save', [SpoController::class, 'save']);
 Route::post('/unduh-rekap-spo', [SpoController::class, 'rekapSpo']);
 
-Route::get('/regulasi/index', [RegulasiController::class, 'create'])->middleware('sekre');
+Route::get('/regulasi/index', [RegulasiController::class, 'create'])->middleware('sekre')->name('regulasi.index');
 Route::get('/regulasi/tambah', [RegulasiController::class, 'tambah'])->middleware('sekre');
 Route::get('/regulasi/edit/{regulasi}', [RegulasiController::class, 'edit'])->middleware('sekre');
 Route::get('/regulasi/index/ns/', [RegulasiController::class, 'listRegulasiNs'])->middleware('notSekre');

@@ -14,11 +14,17 @@ use Illuminate\Http\RedirectResponse;
 
 class RegulasiController extends Controller
 {
-    public function create() {
+    public function create()
+    {
 
         $regulasi = Regulasi::orderBy('tahun', 'desc')->orderBy('index', 'desc');
-        $jenisRegulasi = JenisRegulasi::all();  
-        $direksi = Direksi::all();
+        $jenisRegulasi = JenisRegulasi::all();
+        $opsiJenisRegulasi = $jenisRegulasi->map(function ($jr) {
+            return (object)[
+                'id' => $jr->id,
+                'label' => $jr->kodeJenisRegulasi . '-' . $jr->keterangan
+            ];
+        });
         $judul = "Regulasi";
 
         if (request('index')) {
@@ -31,14 +37,10 @@ class RegulasiController extends Controller
 
         if (request('tanggalAkhir')) {
             $regulasi = $regulasi->whereDate('tanggalSurat', '<=', request('tanggalAkhir'));
-        }        
+        }
 
         if (request('jenisRegulasi')) {
             $regulasi->where('idJenisRegulasi', request('jenisRegulasi'));
-        }
-
-        if (request('direksi')) {
-            $regulasi->where('idDireksi', request('direksi'));
         }
 
         if (request('tujuan')) {
@@ -61,7 +63,7 @@ class RegulasiController extends Controller
             'search_tahun' => request('tahun')
         ]);
 
-        return view('regulasi.index', ['title' => $judul, 'active' => 'regulasi', 'regulasi' => $regulasi->with(['jenisRegulasi', 'direksi'])->paginate(15), 'jenisRegulasi' => $jenisRegulasi, 'direksi' => $direksi, 'judul' => $judul]);
+        return view('regulasi.index', ['title' => $judul, 'active' => 'regulasi', 'regulasi' => $regulasi->with(['jenisRegulasi'])->paginate(25), 'jenisRegulasi' => $opsiJenisRegulasi, 'judul' => $judul, 'isForm' => false]);
     }
 
     public function listRegulasiNs()
@@ -102,37 +104,41 @@ class RegulasiController extends Controller
         return view('regulasi.index-ns', ['title' =>  $judul, 'active' => 'regulasi', 'regulasi' => $regulasi->with(['direksi', 'jenisRegulasi'])->orderBy('tahun', 'desc')->orderBy('index', 'desc')->paginate(15), 'direksi' => $direksi, 'judul' => $judul]);
     }
 
-    public function tambah() {
+    public function tambah()
+    {
         $jenisRegulasi = JenisRegulasi::all();
-        $direksi = Direksi::all();
+        $opsiJenisRegulasi = $jenisRegulasi->map(function ($jr) {
+            return (object)[
+                'id' => $jr->id,
+                'nama' => $jr->kodeJenisRegulasi . '-' . $jr->keterangan
+            ];
+        });
         $units = Unit::all();
 
-        return view('regulasi.tambah', ['title' => 'Tambah Regulasi', 'active' => 'regulasi', 'jenisRegulasi' => $jenisRegulasi, 'direksi' => $direksi, 'units' => $units]);
+        return view('regulasi.tambah', ['title' => 'Tambah Regulasi', 'active' => 'regulasi', 'jenisRegulasi' => $opsiJenisRegulasi, 'units' => $units, 'isForm' => true]);
     }
 
     public function store(Request $request): RedirectResponse
     {
         if (auth()->user()->id == 1) {
             $redirect = '/regulasi/index'
-                    . '?tahun=' . urlencode(session('search_tahun', ''))
-            ;
+                . '?tahun=' . urlencode(session('search_tahun', ''));
         } else {
             $redirect = '/';
-        } 
+        }
         session()->forget('search_tahun');
-        
+
         $request->validate([
             'jenisRegulasi' => 'required',
             'tanggalSurat' => 'required',
             'tujuan' => 'required',
             'perihal' => 'required',
-            'direksi' => 'required',
             'units' => 'required|array',
             'fileSurat' => 'required|mimes:pdf,jpg,png'
         ]);
 
-        
-        
+
+
         $tahun = Carbon::createFromFormat('Y-m-d', $request->input('tanggalSurat'))->format('Y');
         $bulan = Carbon::createFromFormat('Y-m-d', $request->input('tanggalSurat'))->format('m');
         $maxIndex = Regulasi::where('tahun', $tahun)->max('index');
@@ -147,7 +153,6 @@ class RegulasiController extends Controller
         $regulasi->index = $newIndex;
         $regulasi->tahun = $tahun;
         $regulasi->idJenisRegulasi = $request->input('jenisRegulasi');
-        $regulasi->idDireksi = $request->input('direksi');
         $regulasi->tanggalSurat = $request->input('tanggalSurat');
         $regulasi->tujuan = $request->input('tujuan');
         $regulasi->perihal = $request->input('perihal');
@@ -171,31 +176,35 @@ class RegulasiController extends Controller
             ->with('success', 'Berhasil Menambahkan Regulasi');
     }
 
-    public function edit(Regulasi $regulasi) {
+    public function edit(Regulasi $regulasi)
+    {
         $jenisRegulasi = JenisRegulasi::all();
-        $direksi = Direksi::all();
+        $opsiJenisRegulasi = $jenisRegulasi->map(function ($js) {
+            return (object)[
+                'id' => $js->id,
+                'nama' => $js->kodeJenisRegulasi . '-' . $js->keterangan
+            ];
+        });
         $units = Unit::all();
 
-        return view('regulasi.edit', ['title' => 'Edit Regulasi', 'active' => 'regulasi', 'regulasi' => $regulasi, 'jenisRegulasi' => $jenisRegulasi, 'direksi' => $direksi, 'units' => $units]);
+        return view('regulasi.edit', ['title' => 'Edit Regulasi', 'active' => 'regulasi', 'regulasi' => $regulasi, 'jenisRegulasi' => $opsiJenisRegulasi, 'units' => $units, 'isForm' => true]);
     }
 
     public function save(Request $request): RedirectResponse
     {
         if (auth()->user()->id == 1) {
             $redirect = '/regulasi/index'
-                    . '?tahun=' . urlencode(session('search_tahun', ''))
-            ;
+                . '?tahun=' . urlencode(session('search_tahun', ''));
         } else {
             $redirect = '/';
-        } 
+        }
         session()->forget('search_tahun');
-        
+
         $request->validate([
             'jenisRegulasi' => 'required',
             'tanggalSurat' => 'required',
             'tujuan' => 'required',
             'perihal' => 'required',
-            'direksi' => 'required',
             'units' => 'required|array',
             'fileSurat' => 'mimes:pdf,jpg,png'
         ]);
@@ -214,7 +223,6 @@ class RegulasiController extends Controller
         $regulasi = Regulasi::find($request->input('id'));
 
         $regulasi->idJenisRegulasi = $request->input('jenisRegulasi');
-        $regulasi->idDireksi = $request->input('direksi');
         $regulasi->tanggalSurat = $request->input('tanggalSurat');
         $regulasi->tujuan = $request->input('tujuan');
         $regulasi->perihal = $request->input('perihal');
@@ -223,13 +231,13 @@ class RegulasiController extends Controller
             $regulasi->fileName = $fileName;
             $regulasi->filePath = $filePath;
         }
-        
+
         if ($tahunInput != $request->input('tahun')) {
             $maxIndex = Regulasi::where('tahun', $tahunInput)->max('index');
             $newIndex = $maxIndex ? $maxIndex + 1 : 1;
 
             $regulasi->tahun = $tahunInput;
-            $regulasi->index = $newIndex;         
+            $regulasi->index = $newIndex;
         }
         $regulasi->save();
 
