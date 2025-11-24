@@ -1,109 +1,59 @@
 @extends('layouts.main')
 
 @section('container')
-    <div>
-        <div class="d-flex justify-content-between align-items-center my-4">
-            <div>
-                <a href="/informasi/index?tahun={{ config('app.tahun') }}" class="btn btn-warning btn-sm"><i
-                        class="fa-solid fa-arrow-left" style="color: #000;"></i></a>
-            </div>
-            <div>
-                <h3 class="fw-bold fs-4 text-center">Tambah Informasi</h3>
-            </div>
-            <div>
-            </div>
-        </div>
-        <div class="d-flex justify-content-center">
-            <div class="col-12 col-md-6">
-                <form method="post" id="formTambah" action="/informasi/tambah" enctype="multipart/form-data">
-                    @csrf
+    <x-default-page-container>
+        {{-- Navbar --}}
+        <x-navbar-form title="Tambah Informasi" closeUrl="/informasi/index" />
 
-                    <div class="row mb-3">
-                        <label for="jenisInformasi" class="col-sm-3 col-form-label">Jenis Informasi</label>
-                        <div class="col-sm-9">
-                            <select name="jenisInformasi" class="form-select" id="jenisInformasi" required>
-                                <option value="">Pilih Jenis Informasi</option>
-                                @foreach ($jenisInformasi as $jr)
-                                    <option value="{{ $jr->id }}" @if ($jr->id == old('jenisInformasi')) selected @endif>
-                                        {{ $jr->nama }}</option>
-                                @endforeach
-                            </select>
-                        </div>
+        {{-- Error Notif --}}
+        <x-error-notif />
+
+        <x-form-body-container>
+            <form action="/informasi/tambah" method="post" enctype="multipart/form-data">
+                @csrf
+
+                <x-block-input-container>
+                    <div>
+                        <x-dropdown-input :label="'Jenis Informasi'" labelPilihan='Pilih Jenis Informasi' :name="'jenisInformasi'"
+                            :id="'jenisInformasi'" :options="$jenisInformasi" :required="true"></x-dropdown-input>
                     </div>
 
-
-                    <div class="row mb-3">
-                        <label for="judul" class="col-sm-3 col-form-label">Judul</label>
-                        <div class="col-sm-9">
-                            <input name="judul" type="text" class="form-control" id="judul"
-                                value="{{ old('judul') }}" required>
-                        </div>
+                    <div>
+                        <x-text-input name="judul" id="judul" value="{{ old('judul') }}"
+                            :required="true">Judul</x-text-input>
                     </div>
 
-                    <div class="row mb-3">
-                        <label for="tanggalSurat" class="col-sm-3 col-form-label">Tanggal Surat</label>
-                        <div class="col-sm-9">
-                            <input name="tanggalSurat" type="date" class="form-control" id="tanggalSurat"
-                                value="{{ old('tanggalSurat') }}" required>
-                        </div>
+                    <div>
+                        <x-date-input name="tanggalSurat" id="tanggalSurat" value="{{ old('tanggalSurat') }}"
+                            :required="true">Tanggal Surat</x-date-input>
                     </div>
 
-                    <div class="row mb-3">
-                        <label for="users" class="col-sm-3 col-form-label">Pilih User (bisa lebih dari satu)</label>
-                        <div class="col-sm-9">
-                            <select name="users[]" id="users" multiple class="form-select select2" required>
-                                <option value="all">Seluruh User</option>
-                                @foreach ($users as $user)
-                                    <option value="{{ $user->id }}">{{ $user->namaJabatan }}</option>
-                                @endforeach
-                            </select>
-                        </div>
+                    <x-multi-select-input id="users" name="users" label="Pilih user" :options="$users" />
+
+                    <div>
+                        <x-file-input id="fileSurat" name="fileSurat" label="Upload Surat" :required="true" />
                     </div>
 
-                    <div class="row mb-3">
-                        <label for="fileSurat" class="col-sm-3 col-form-label">Upload Surat</label>
-                        <div class="col-sm-9">
-                            <input name="fileSurat" class="form-control @error('fileSurat') is-invalid @enderror"
-                                type="file" id="fileSurat" required>
-                            @error('fileSurat')
-                                <div id="fileSurat" class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
-                            @enderror
-                        </div>
-                    </div>
+                </x-block-input-container>
 
-                    <div class="d-flex justify-content-center">
-                        <div>
-                            <button type="submit" class="btn btn-success mt-3">Tambah
-                                <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"
-                                    id="spinnerTambah"></span>
-                            </button>
-                        </div>
-                    </div>
+                <x-mobile-submit-container>
+                    <x-green-submit-button>
+                        Simpan
+                    </x-green-submit-button>
+                </x-mobile-submit-container>
 
-                </form>
-            </div>
-        </div>
-    </div>
+        </x-form-body-container>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+        <x-desktop-submit-container>
+            <x-green-submit-button>
+                Simpan
+            </x-green-submit-button>
+        </x-desktop-submit-container>
 
-    <script src="/js/multiple-select.js"></script>
+        </form>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // spinner tombol tambah
-            var formTambah = document.getElementById('formTambah');
-            formTambah.addEventListener('submit', function(event) {
-                var submitButtonTambah = formTambah.querySelector('button[type="submit"]');
-                if (submitButtonTambah) {
-                    submitButtonTambah.disabled = true;
-                    document.getElementById('spinnerTambah').classList.remove('d-none');
-                }
-            });
-        });
-    </script>
+    </x-default-page-container>
+    <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+
+    @stack('scripts')
 @endsection

@@ -18,6 +18,12 @@ class InformasiController extends Controller
 
         $informasi = Informasi::orderBy('tahun', 'desc')->orderBy('index', 'desc');
         $jenisInformasi = JenisInformasi::all();
+        $opsiJenisInformasi = $jenisInformasi->map(function ($ji) {
+            return (object)[
+                'id' => $ji->id,
+                'label' => $ji->nama
+            ];
+        });
         $judul = "Informasi";
 
         if (request('index')) {
@@ -48,7 +54,7 @@ class InformasiController extends Controller
             'search_tahun' => request('tahun')
         ]);
 
-        return view('informasi.index', ['title' => $judul, 'active' => 'informasi', 'informasi' => $informasi->with(['jenisInformasi'])->paginate(15), 'jenisInformasi' => $jenisInformasi, 'judul' => $judul]);
+        return view('informasi.index', ['title' => $judul, 'active' => 'informasi', 'informasi' => $informasi->with(['jenisInformasi'])->paginate(25), 'jenisInformasi' => $opsiJenisInformasi, 'judul' => $judul, 'isForm' => false]);
     }
 
     public function listInformasiNs()
@@ -90,11 +96,19 @@ class InformasiController extends Controller
         $jenisInformasi = JenisInformasi::all();
         $users = User::where('id', '<>', 2)->where('isAktif', true)->get();
 
+        $opsiUsers = $users->map(function ($u) {
+            return (object)[
+                'id' => $u->id,
+                'nama' => $u->namaJabatan
+            ];
+        });
+
         return view('informasi.tambah', [
             'title' => 'Tambah Informasi',
             'active' => 'informasi',
             'jenisInformasi' => $jenisInformasi,
-            'users' => $users
+            'users' => $opsiUsers,
+            'isForm' => true
         ]);
     }
 
@@ -157,13 +171,20 @@ class InformasiController extends Controller
     {
         $jenisInformasi = JenisInformasi::all();
         $users = User::where('id', '<>', 2)->get();
+        $opsiUsers = $users->map(function ($u) {
+            return (object)[
+                'id' => $u->id,
+                'nama' => $u->namaJabatan
+            ];
+        });
 
         return view('informasi.edit', [
             'title' => 'Edit Informasi',
             'active' => 'informasi',
             'informasi' => $informasi,
             'jenisInformasi' => $jenisInformasi,
-            'users' => $users
+            'users' => $opsiUsers,
+            'isForm' => true
         ]);
     }
 

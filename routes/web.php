@@ -87,7 +87,7 @@ Route::get('/regulasi/index/ns/', [RegulasiController::class, 'listRegulasiNs'])
 Route::post('/regulasi/tambah', [RegulasiController::class, 'store']);
 Route::post('/regulasi/save', [RegulasiController::class, 'save']);
 
-Route::get('/informasi/index', [InformasiController::class, 'create'])->middleware('sekre');
+Route::get('/informasi/index', [InformasiController::class, 'create'])->middleware('sekre')->name('informasi.index');
 Route::get('/informasi/tambah', [InformasiController::class, 'tambah'])->middleware('sekre');
 Route::get('/informasi/edit/{informasi}', [InformasiController::class, 'edit'])->middleware('sekre');
 Route::get('/informasi/index/ns/', [InformasiController::class, 'listInformasiNs'])->middleware('notSekre');

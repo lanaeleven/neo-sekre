@@ -36,6 +36,15 @@
             'route' => 'pks.index',
             'icons' => ['active' => 'heroicon-s-user-group', 'inactive' => 'heroicon-o-user-group'],
         ],
+        [
+            'label' => 'Informasi',
+            'key' => 'informasi',
+            'route' => 'informasi.index',
+            'icons' => [
+                'active' => 'heroicon-s-chat-bubble-bottom-center-text',
+                'inactive' => 'heroicon-o-chat-bubble-bottom-center-text',
+            ],
+        ],
     ];
 @endphp
 
