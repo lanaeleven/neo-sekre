@@ -63,33 +63,32 @@
 <body class="min-h-screen flex flex-col md:flex-row">
 
     <!-- Left Section -->
-    <div
-        class="w-full md:w-1/2 bg-gradient-to-b from-blue-500 to-blue-900 text-white flex flex-col justify-center items-center p-10 relative overflow-hidden">
+    <div class="w-full md:w-1/2 text-white flex flex-col justify-center items-center p-10 relative overflow-hidden"
+        style="background: linear-gradient(180deg, #059669, #047857);">
         <!-- Background pattern -->
-        <div class="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]">
+        <div class="absolute inset-0 opacity-50 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]">
         </div>
 
         <div class="relative z-10 text-center mt-10 md:mt-0">
-            <h1 class="text-xl md:text-2xl font-semibold mb-2">Nice to see you again</h1>
-            <h2 class="text-4xl md:text-5xl font-bold mb-6">WELCOME BACK</h2>
+            <img src="{{ asset('img/logo-cmi.png') }}" alt="Logo" class="w-20 md:w-28 mx-auto mb-6 drop-shadow-xl">
+            <h2 class="text-4xl md:text-5xl font-bold mb-6">E-SEKRE</h2>
             <p class="text-sm md:text-base max-w-md mx-auto">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et
-                dolore magna aliqua.
+                Pusat layanan administrasi yang dihadirkan untuk memberikan pengalaman pengelolaan administrasi yang
+                lebih rapi, terstruktur, dan mudah diakses.
             </p>
         </div>
 
         <!-- Logo -->
         <div
             class="absolute top-4 left-4 md:top-6 md:left-6 text-sm tracking-widest font-semibold flex items-center gap-2">
-            <div class="w-4 h-4 md:w-5 md:h-5 rounded-full border-2 border-white"></div>
-            COMPANY NAME
+            YAYASAN CITRA BABUR RAHMAN MADINATUL ILMI
         </div>
     </div>
 
     <!-- Right Section -->
     <div class="w-full md:w-1/2 flex justify-center items-center bg-white p-8 md:p-0">
         <div class="w-full max-w-md">
-            <h2 class="text-2xl font-bold text-blue-600 mb-2 text-center md:text-left">Login Account</h2>
+            <h2 class="text-2xl font-semibold text-emerald-700 mb-2 text-center md:text-left">LOGIN</h2>
             <p class="text-gray-500 text-sm mb-6 text-center md:text-left">
                 Silakan masuk menggunakan username dan password Anda.
             </p>
@@ -101,7 +100,7 @@
                 <!-- Username -->
                 <div>
                     <input type="text" id="username" name="username" placeholder="Username" required
-                        class="w-full border rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-blue-400
+                        class="w-full border rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-emerald-400
                         @error('username') border-red-500 @enderror">
                     @error('username')
                         <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
@@ -111,19 +110,19 @@
                 <!-- Password -->
                 <div>
                     <input type="password" id="password" name="password" placeholder="Password" required
-                        class="w-full border rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-blue-400">
+                        class="w-full border rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-emerald-400">
                 </div>
 
                 <!-- Show Password -->
                 <div class="flex items-center space-x-2">
-                    <input type="checkbox" id="passwordToggle" class="accent-blue-600 cursor-pointer"
+                    <input type="checkbox" id="passwordToggle" class="accent-emerald-600 cursor-pointer"
                         onclick="togglePassword()">
                     <label for="passwordToggle" class="text-sm text-gray-600 cursor-pointer">Show Password</label>
                 </div>
 
                 <!-- Submit Button -->
                 <button type="submit"
-                    class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-md transition">
+                    class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3 rounded-md transition">
                     Login
                 </button>
             </form>
