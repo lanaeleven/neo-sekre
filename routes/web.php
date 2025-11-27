@@ -45,10 +45,10 @@ Route::get('/laporan/surat-masuk/per-direksi', [SuratMasukController::class, 'la
 Route::get('/laporan/distribusi-surat/rekap/per-tujuan', [SuratMasukController::class, 'laporanPerTujuan'])->middleware('sekre');
 Route::get('/surat-masuk/disposisi/{suratMasuk}', [SuratMasukController::class, 'disposisi'])->middleware('auth');
 Route::get('/surat-masuk/lacak-distribusi/{suratMasuk}', [SuratMasukController::class, 'lacakDistribusi'])->middleware('auth');
-Route::get('/surat-masuk/ns/belum-diteruskan', [SuratMasukController::class, 'nonSekreBelumDiteruskan'])->middleware('notSekre');
-Route::get('/surat-masuk/ns/sudah-diteruskan', [SuratMasukController::class, 'nonSekreSudahDiteruskan'])->middleware('notSekre');
-Route::get('/surat-masuk/ns/sudah-diarsipkan', [SuratMasukController::class, 'nonSekreSudahDiarsipkan'])->middleware('notSekre');
-Route::get('/surat-masuk/ns/dikirim', [SuratMasukController::class, 'nonSekreDikirim'])->middleware('notSekre');
+Route::get('/surat-masuk/ns/belum-diteruskan', [SuratMasukController::class, 'nonSekreBelumDiteruskan'])->middleware('notSekre')->name('surat-masuk.belum-diteruskan');
+Route::get('/surat-masuk/ns/sudah-diteruskan', [SuratMasukController::class, 'nonSekreSudahDiteruskan'])->middleware('notSekre')->name('surat-masuk.sudah-diteruskan');
+Route::get('/surat-masuk/ns/sudah-diarsipkan', [SuratMasukController::class, 'nonSekreSudahDiarsipkan'])->middleware('notSekre')->name('surat-masuk.sudah-diarsipkan');
+Route::get('/surat-masuk/ns/dikirim', [SuratMasukController::class, 'nonSekreDikirim'])->middleware('notSekre')->name('surat-masuk.yang-dikirim');
 Route::get('/surat-masuk/terusan-surat/{idSuratMasuk}/{terusanSurat}/edit', [SuratMasukController::class, 'editTerusanSurat'])->middleware('sekre');
 Route::put('/terusan-surat', [SuratMasukController::class, 'updateTerusanSurat']);
 Route::post('/surat-masuk/tambah', [SuratMasukController::class, 'store']);
@@ -75,7 +75,7 @@ Route::get('/td', [SuratKeluarController::class, 'testDownload']);
 Route::get('/spo/index', [SpoController::class, 'create'])->middleware('sekre')->name('spo.index');;
 Route::get('/spo/tambah', [SpoController::class, 'tambah'])->middleware('sekre');
 Route::get('/spo/edit/{spo}', [SpoController::class, 'edit'])->middleware('sekre');
-Route::get('/spo/index/ns/', [SpoController::class, 'listSpoNs'])->middleware('notSekre');
+Route::get('/spo/index/ns/', [SpoController::class, 'listSpoNs'])->middleware('notSekre')->name('spo.index-ns');
 Route::post('/spo/tambah', [SpoController::class, 'store']);
 Route::post('/spo/save', [SpoController::class, 'save']);
 Route::post('/unduh-rekap-spo', [SpoController::class, 'rekapSpo']);
@@ -83,14 +83,14 @@ Route::post('/unduh-rekap-spo', [SpoController::class, 'rekapSpo']);
 Route::get('/regulasi/index', [RegulasiController::class, 'create'])->middleware('sekre')->name('regulasi.index');
 Route::get('/regulasi/tambah', [RegulasiController::class, 'tambah'])->middleware('sekre');
 Route::get('/regulasi/edit/{regulasi}', [RegulasiController::class, 'edit'])->middleware('sekre');
-Route::get('/regulasi/index/ns/', [RegulasiController::class, 'listRegulasiNs'])->middleware('notSekre');
+Route::get('/regulasi/index/ns/', [RegulasiController::class, 'listRegulasiNs'])->middleware('notSekre')->name('regulasi.index-ns');
 Route::post('/regulasi/tambah', [RegulasiController::class, 'store']);
 Route::post('/regulasi/save', [RegulasiController::class, 'save']);
 
 Route::get('/informasi/index', [InformasiController::class, 'create'])->middleware('sekre')->name('informasi.index');
 Route::get('/informasi/tambah', [InformasiController::class, 'tambah'])->middleware('sekre');
 Route::get('/informasi/edit/{informasi}', [InformasiController::class, 'edit'])->middleware('sekre');
-Route::get('/informasi/index/ns/', [InformasiController::class, 'listInformasiNs'])->middleware('notSekre');
+Route::get('/informasi/index/ns/', [InformasiController::class, 'listInformasiNs'])->middleware('notSekre')->name('informasi.index-ns');
 Route::post('/informasi/tambah', [InformasiController::class, 'store']);
 Route::post('/informasi/save', [InformasiController::class, 'save']);
 
@@ -105,7 +105,7 @@ Route::get('/undangan/terlalu', [UndanganController::class, 'undanganTerlalu'])-
 Route::get('/pks/index', [PerjanjianKerjaSamaController::class, 'create'])->middleware('sekre')->name('pks.index');
 Route::get('/pks/tambah', [PerjanjianKerjaSamaController::class, 'tambah'])->middleware('sekre');
 Route::get('/pks/edit/{pks}', [PerjanjianKerjaSamaController::class, 'edit'])->middleware('sekre');
-Route::get('/pks/index/ns/', [PerjanjianKerjaSamaController::class, 'listPerjanjianKerjaSamaNs'])->middleware('notSekre');
+Route::get('/pks/index/ns/', [PerjanjianKerjaSamaController::class, 'listPerjanjianKerjaSamaNs'])->middleware('notSekre')->name('pks.index-ns');
 Route::post('/pks/tambah', [PerjanjianKerjaSamaController::class, 'store']);
 Route::post('/pks/save', [PerjanjianKerjaSamaController::class, 'save']);
 

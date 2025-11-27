@@ -19,7 +19,12 @@
             {{-- Sidebar --}}
             <aside class="hidden md:block text-white overflow-y-auto custom-sidebar-scroll"
                 style="background: linear-gradient(180deg, #059669, #047857);">
-                @include('layouts.sidebar')
+                @can('dashboard-sekre')
+                    @include('layouts.sidebar')
+                @endcan
+                @can('dashboard-not-sekre')
+                    @include('layouts.sidebar-ns')
+                @endcan
             </aside>
 
             {{-- Content --}}
