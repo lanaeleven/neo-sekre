@@ -1,68 +1,90 @@
 @extends('layouts.main')
 
 @section('container')
-    <div class="div">
-    @section('container')
-        <div>
+    <div>
+        {{-- Animations --}}
+        <x-animations-style />
 
-            <x-title-with-back-button :title="$judul" backUrl="/" />
+        <x-default-page-container>
+            {{-- NAVBAR --}}
+            <x-navbar title="{{ $title }}" urlTambah="#" />
 
-            <div>
-                <form class="row g-3" action="/informasi/index/ns">
-                    <div class="row g-3">
-                        <x-input-field-filter :isLabel="true" label="Tanggal Awal" name="tanggalAwal" type="date" />
-                        <x-input-field-filter :isLabel="true" label="Tanggal Akhir" name="tanggalAkhir" type="date" />
-                        <x-input-field-filter :isLabel="false" name="index" type="number" placeholder="index" />
-                        <div class="col-auto">
-                            <select name="jenisInformasi" class="form-select form-select-sm"
-                                value="{{ request('jenisInformasi') }}">
-                                <option value="">Semua Jenis Informasi</option>
-                                @foreach ($jenisInformasi as $ji)
-                                    <option value="{{ $ji->id }}"
-                                        {{ request('jenisInformasi') == $ji->id ? 'selected' : '' }}>{{ $ji->nama }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <x-input-field-filter :isLabel="false" name="judul" type="text" placeholder="judul" />
-                        <x-filter-submit-button />
-                    </div>
-                </form>
-            </div>
+            {{-- Pagination Mobile --}}
+            <x-mobile-pagination>
+                {{ $informasi->appends(request()->input())->links('pagination::custom') }}
+            </x-mobile-pagination>
 
-            @if ($informasi->isEmpty())
-                <x-empty-data data='{{ $judul }}' />
-            @else
-                {{-- start set data table --}}
-                @php
-                    $tableHeader = ['Indeks', 'Judul', 'Jenis', 'Tanggal', 'Aksi'];
-                @endphp
+            {{-- ================= MOBILE SIDEBAR (MENU) ================= --}}
+            @include('layouts.mobile-sidebar')
+
+            <x-mobile-filter-drawer urlFilter="/informasi/index/ns">
+                <x-range-date-filter />
+                <x-input-field-filter :isLabel="false" name="index" type="number" placeholder="Index" />
+                <x-mobile-dropdown-field-filter name='jenisInformasi' optionLabelDefault='Semua Jenis' :options="$jenisInformasi" />
+                <x-input-field-filter :isLabel="false" name="judul" type="text" placeholder="Judul" />
+            </x-mobile-filter-drawer>
+
+            {{-- ================= DESKTOP FILTER BAR ================= --}}
+            <x-desktop-filter-bar urlFilter="/informasi/index/ns">
+                <x-range-date-filter />
+                <x-input-field-filter :isLabel="false" name="index" type="number" placeholder="Index"
+                    :isSmall="true" />
+                <x-desktop-dropdown-field-filter name="jenisInformasi" id="jenisInformasi" optionLabelDefault="Semua Jenis"
+                    :options="$jenisInformasi" />
+                <x-input-field-filter :isLabel="false" name="judul" type="text" placeholder="Judul"
+                    :isSmall="true" />
+            </x-desktop-filter-bar>
+
+            {{-- ================= DESKTOP TABLE ================= --}}
+            <x-simple-table :headers="['Indeks', 'Judul', 'Jenis', 'Tanggal', 'Aksi']">
                 @foreach ($informasi as $i)
-                    @php
-                        $rows[] = [
-                            $i->index,
-                            $i->judul,
-                            $i->jenisinformasi->nama,
-                            $i->tanggalSurat,
-                            '<a href="' .
-                            asset('storage/' . $i->filePath) .
-                            '"class="mt-1 btn btn-sm btn-secondary" target="_blank"><i class="fa-solid fa-eye" style="color: #ffffff;"></i></a>',
-                        ];
-                    @endphp
+                    <tr class="hover:bg-green-50 transition-colors">
+                        <x-td-default>{{ $i->index }}</x-td-default>
+                        <x-td-default>{{ $i->judul }}</x-td-default>
+                        <x-td-default>{{ $i->jenisInformasi->nama }}</x-td-default>
+                        <x-td-default>{{ $i->tanggalSurat }}</x-td-default>
+                        <x-td-action>
+                            <x-button-with-tooltip variant="warning" tooltip="Edit"
+                                url="/informasi/edit/{{ $i->id }}"><x-heroicon-s-pencil
+                                    class="w-4 h-4" /></x-button-with-tooltip>
+                            <x-button-with-tooltip variant="light" tooltip="Lihat"
+                                url="{{ asset('storage/' . $i->filePath) }}" target="_blank"><x-heroicon-s-eye
+                                    class="w-4 h-4" /></x-button-with-tooltip>
+                        </x-td-action>
+                    </tr>
                 @endforeach
-                {{-- end set data table --}}
+            </x-simple-table>
 
-                <x-default-table-container>
-                    <x-default-table :tableHeader="$tableHeader" :rows="$rows" />
-                </x-default-table-container>
+            {{-- ================= MOBILE CARD LIST ================= --}}
+            <x-mobile-card-container>
+                @foreach ($informasi as $i)
+                    <x-mobile-card-border>
+                        <x-mobile-card-header title1="{{ $i->jenisInformasi->nama }}" title2="{{ $i->index }}" />
+                        <x-mobile-card-text-bold text="{{ $i->judul }}" />
+                        <x-mobile-card-text-lite text="{{ $i->tanggalSurat }}" />
+                        <x-mobile-card-text-actions>
+                            <x-button-with-tooltip variant="warning" tooltip="Edit"
+                                url="/informasi/edit/{{ $i->id }}">Edit</x-button-with-tooltip>
+                            <x-button-with-tooltip variant="light" tooltip="Lihat"
+                                url="{{ asset('storage/' . $i->filePath) }}" target="_blank">Lihat</x-button-with-tooltip>
+                        </x-mobile-card-text-actions>
+                    </x-mobile-card-border>
+                @endforeach
+            </x-mobile-card-container>
 
-                <x-mobile-table-container>
-                    <x-mobile-table :tableHeader="$tableHeader" :rows="$rows" />
-                </x-mobile-table-container>
+            {{-- Pagination Desktop --}}
+            <x-desktop-pagination>
+                {{ $informasi->appends(request()->input())->links('pagination::custom') }}
+            </x-desktop-pagination>
 
-                <x-pagination-links-container>
-                    {{ $informasi->appends(request()->input())->links() }}
-                </x-pagination-links-container>
-            @endif
-        </div>
+            {{-- Footer --}}
+            <x-footer-desktop>
+                © 2025 E-Sekre. All rights reserved
+            </x-footer-desktop>
+
+        </x-default-page-container>
+
+        {{-- MOBILE + MENU + FILTER Scripts --}}
+        <x-mobile-menu-filter-scripts />
+        <x-range-date-filter-script />
     @endsection

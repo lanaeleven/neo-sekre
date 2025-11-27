@@ -1,60 +1,92 @@
 @extends('layouts.main')
 
 @section('container')
-    <div class="div">
+    {{-- Animations --}}
+    <x-animations-style />
 
-        <x-title-with-back-button title="surat masuk - sudah diarsipkan" backUrl="/" />
-        
-        <div>
-            <form class="row g-1" action="/surat-masuk/ns/sudah-diarsipkan">
-                    <x-input-field-filter :isLabel="true" label="Tanggal Awal" name="tanggalAwal" type="date" />
-                    <x-input-field-filter :isLabel="true" label="Tanggal Akhir" name="tanggalAkhir" type="date" />
-                    <x-input-field-filter :isLabel="false" name="index" type="number" placeholder="index" :isSmall="true" />
-                    <x-input-field-filter :isLabel="false" name="pengirim" type="text" placeholder="pengirim" :isMedium="true" />
-                    <x-input-field-filter :isLabel="false" name="nomorSurat" type="text"
-                        placeholder="nomor surat" :isMedium="true" />
-                    <x-input-field-filter :isLabel="false" name="perihal" type="text" placeholder="perihal" :isMedium="true" />
-                    <x-filter-submit-button />
-            </form>
-        </div>
-        
-        @if ($suratMasuk->isEmpty())
-            <x-empty-data data='Surat Masuk yang Sudah Diarsipkan' />
-        @else
-            {{-- start set data table --}}
-            @php
-                $tableHeader = ['Indeks', 'Direktorat', 'Dari', 'Tgl Surat', 'No Surat', 'Perihal', 'Status', 'Aksi'];
-            @endphp
+    <x-default-page-container>
+
+        {{-- NAVBAR --}}
+        <x-navbar title="{{ $title }}" urlTambah="#" />
+
+        {{-- Pagination Mobile --}}
+        <x-mobile-pagination>
+            {{ $suratMasuk->appends(request()->input())->links('pagination::custom') }}
+        </x-mobile-pagination>
+
+        {{-- ================= MOBILE SIDEBAR (MENU) ================= --}}
+        @include('layouts.mobile-sidebar')
+
+        {{-- ================= MOBILE FILTER DRAWER ================= --}}
+        <x-mobile-filter-drawer urlFilter="/surat-masuk/ns/sudah-diarsipkan">
+            <x-range-date-filter />
+            <x-input-field-filter :isLabel="false" name="index" type="number" placeholder="Index" />
+            <x-input-field-filter :isLabel="false" name="pengirim" type="text" placeholder="Pengirim" />
+            <x-input-field-filter :isLabel="false" name="nomorSurat" type="text" placeholder="No Surat" />
+            <x-input-field-filter :isLabel="false" name="perihal" type="text" placeholder="Perihal" />
+        </x-mobile-filter-drawer>
+
+        {{-- ================= DESKTOP FILTER BAR ================= --}}
+        <x-desktop-filter-bar urlFilter="/surat-masuk/ns/sudah-diarsipkan">
+            <x-range-date-filter />
+            <x-input-field-filter :isLabel="false" name="index" type="number" placeholder="Index" :isSmall="true" />
+            <x-input-field-filter :isLabel="false" name="pengirim" type="text" placeholder="Pengirim"
+                :isMedium="true" />
+            <x-input-field-filter :isLabel="false" name="nomorSurat" type="text" placeholder="No Surat"
+                :isMedium="true" />
+            <x-input-field-filter :isLabel="false" name="perihal" type="text" placeholder="Perihal"
+                :isMedium="true" />
+        </x-desktop-filter-bar>
+
+        {{-- ================= DESKTOP TABLE ================= --}}
+        <x-simple-table :headers="['Indeks', 'Dari', 'Tgl Surat', 'No Surat', 'Perihal', 'Status', 'Aksi']">
             @foreach ($suratMasuk as $sm)
-                @php
-                    $rows[] = [
-                        $sm->index,
-                        $sm->direksi->namaDireksi ?? '',
-                        $sm->pengirim,
-                        $sm->tanggalSurat,
-                        $sm->nomorSurat,
-                        $sm->perihal,
-                        $sm->status,
-                        '<a href="/surat-masuk/lacak-distribusi/' .
-                        $sm->id .
-                        '"class="mt-1 btn btn-info" style="font-size: 0.8rem; padding: 1px 6px;"><i class="fa-solid fa-shoe-prints fa-rotate-270" style="color: #000000;"></i></a>',
-                    ];
-                @endphp
+                <tr class="hover:bg-green-50 transition-colors">
+                    <x-td-default>{{ $sm->index }}</x-td-default>
+                    <x-td-default>{{ $sm->pengirim }}</x-td-default>
+                    <x-td-default>{{ $sm->tanggalSurat }}</x-td-default>
+                    <x-td-default>{{ $sm->nomorSurat }}</x-td-default>
+                    <x-td-default>{{ $sm->perihal }}</x-td-default>
+                    <x-td-badge status="{{ $sm->status }}" />
+                    <x-td-action>
+                        <x-button-with-tooltip variant="info" tooltip="Lacak"
+                            url="/surat-masuk/lacak-distribusi/{{ $sm->id }}"><x-heroicon-s-magnifying-glass-plus
+                                class="w-4 h-4" /></x-button-with-tooltip>
+                    </x-td-action>
+                </tr>
             @endforeach
-            {{-- end set data table --}}
+        </x-simple-table>
 
-            <x-default-table-container>
-                <x-default-table :tableHeader="$tableHeader" :rows="$rows" />
-            </x-default-table-container>
+        {{-- ================= MOBILE CARD LIST ================= --}}
+        <x-mobile-card-container>
+            @foreach ($suratMasuk as $sm)
+                <x-mobile-card-border>
+                    <x-mobile-card-header title1="{{ $sm->nomorSurat }}" title2="{{ $sm->index }}" />
+                    <x-mobile-card-text-bold text="{{ $sm->perihal }}" />
+                    <x-mobile-card-text-normal text="Dari: {{ $sm->pengirim }}" />
+                    <x-mobile-card-text-lite text="{{ $sm->tanggalSurat }}" />
+                    <x-mobile-card-text-badge text="{{ $sm->status }}" />
+                    <x-mobile-card-text-actions>
+                        <x-button-with-tooltip variant="info" tooltip="Lacak"
+                            url="/surat-masuk/lacak-distribusi/{{ $sm->id }}">Lacak</x-button-with-tooltip>
+                    </x-mobile-card-text-actions>
+                </x-mobile-card-border>
+            @endforeach
+        </x-mobile-card-container>
 
-            <x-mobile-table-container>
-                <x-mobile-table :tableHeader="$tableHeader" :rows="$rows" />
-            </x-mobile-table-container>
+        {{-- Pagination Desktop --}}
+        <x-desktop-pagination>
+            {{ $suratMasuk->appends(request()->input())->links('pagination::custom') }}
+        </x-desktop-pagination>
 
-            <x-pagination-links-container>
-                {{ $suratMasuk->appends(request()->input())->links() }}
-            </x-pagination-links-container>
-        @endif
+        {{-- Footer --}}
+        <x-footer-desktop>
+            © 2025 E-Sekre. All rights reserved
+        </x-footer-desktop>
 
-    </div>
+    </x-default-page-container>
+
+    {{-- MOBILE + MENU + FILTER Scripts --}}
+    <x-mobile-menu-filter-scripts />
+    <x-range-date-filter-script />
 @endsection

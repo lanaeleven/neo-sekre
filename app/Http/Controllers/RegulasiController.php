@@ -74,11 +74,22 @@ class RegulasiController extends Controller
             $query->whereIn('unit.id', $userUnitIds);
         });
 
-        $direksi = Direksi::all();
         $judul = "Regulasi";
+
+        $jenisRegulasi = JenisRegulasi::all();
+        $opsiJenisRegulasi = $jenisRegulasi->map(function ($jr) {
+            return (object)[
+                'id' => $jr->id,
+                'label' => $jr->kodeJenisRegulasi . '-' . $jr->keterangan
+            ];
+        });
 
         if (request('index')) {
             $regulasi->where('index', '=', request('index'));
+        }
+
+        if (request('jenisRegulasi')) {
+            $regulasi->where('idJenisRegulasi', request('jenisRegulasi'));
         }
 
         if (request('tanggalAwal')) {
@@ -101,7 +112,7 @@ class RegulasiController extends Controller
             $regulasi->where('keterangan', 'like', '%' . request('keterangan') . '%');
         }
 
-        return view('regulasi.index-ns', ['title' =>  $judul, 'active' => 'regulasi', 'regulasi' => $regulasi->with(['direksi', 'jenisRegulasi'])->orderBy('tahun', 'desc')->orderBy('index', 'desc')->paginate(15), 'direksi' => $direksi, 'judul' => $judul]);
+        return view('regulasi.index-ns', ['title' =>  $judul, 'active' => 'regulasi', 'regulasi' => $regulasi->with(['jenisRegulasi'])->orderBy('tahun', 'desc')->orderBy('index', 'desc')->paginate(25), 'judul' => $judul, 'isForm' => false, 'jenisRegulasi' => $opsiJenisRegulasi]);
     }
 
     public function tambah()

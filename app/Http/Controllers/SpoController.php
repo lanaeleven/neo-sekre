@@ -70,7 +70,6 @@ class SpoController extends Controller
             $query->whereIn('unit.id', $userUnitIds);
         });
 
-        $direksi = Direksi::all();
         $judul = "Standar Prosedur Operasional";
 
         if (request('index')) {
@@ -97,7 +96,7 @@ class SpoController extends Controller
             $spo->where('keterangan', 'like', '%' . request('keterangan') . '%');
         }
 
-        return view('spo.index-ns', ['title' =>  $judul, 'active' => 'spo', 'spo' => $spo->with('direksi')->orderBy('tahun', 'desc')->orderBy('index', 'desc')->paginate(15), 'direksi' => $direksi, 'judul' => $judul]);
+        return view('spo.index-ns', ['title' =>  $judul, 'active' => 'spo', 'spo' => $spo->orderBy('tahun', 'desc')->orderBy('index', 'desc')->paginate(25), 'judul' => $judul, 'isForm' => false]);
     }
 
     public function tambah()

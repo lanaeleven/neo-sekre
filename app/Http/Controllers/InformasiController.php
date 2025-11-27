@@ -65,6 +65,12 @@ class InformasiController extends Controller
             $query->where('users.id', $userId);
         });
         $jenisInformasi = JenisInformasi::all();
+        $opsiJenisInformasi = $jenisInformasi->map(function ($ji) {
+            return (object)[
+                'id' => $ji->id,
+                'label' => $ji->nama
+            ];
+        });
 
         $judul = "Informasi";
 
@@ -88,7 +94,7 @@ class InformasiController extends Controller
             $informasi->where('judul', 'like', '%' . request('judul') . '%');
         }
 
-        return view('informasi.index-ns', ['title' =>  $judul, 'active' => 'informasi', 'informasi' => $informasi->with('jenisInformasi')->orderBy('tahun', 'desc')->orderBy('index', 'desc')->paginate(15), 'judul' => $judul, 'jenisInformasi' => $jenisInformasi]);
+        return view('informasi.index-ns', ['title' =>  $judul, 'active' => 'informasi', 'informasi' => $informasi->with('jenisInformasi')->orderBy('tahun', 'desc')->orderBy('index', 'desc')->paginate(25), 'judul' => $judul, 'jenisInformasi' => $opsiJenisInformasi, 'isForm' => false]);
     }
 
     public function tambah()

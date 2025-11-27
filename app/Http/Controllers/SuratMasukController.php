@@ -1024,7 +1024,7 @@ class SuratMasukController extends Controller
         if (request('status')) {
             $suratMasuk = $suratMasuk->where('status', 'like', '%' . request('status') . '%');
         }
-        return view('surat-masuk.surat-disposisi-belum-diteruskan', ['title' => 'Surat Masuk Belum Diteruskan', 'active' => 'surat masuk', 'suratMasuk' => $suratMasuk->paginate(15)]);
+        return view('surat-masuk.surat-disposisi-belum-diteruskan', ['title' => 'Surat Masuk Belum Diteruskan', 'active' => 'belum diteruskan', 'suratMasuk' => $suratMasuk->paginate(25), 'isForm' => false]);
     }
 
     public function nonSekreDikirim()
@@ -1050,7 +1050,7 @@ class SuratMasukController extends Controller
             $suratMasuk = $suratMasuk->where('perihal', 'like', '%' . request('perihal') . '%');
         }
 
-        return view('surat-masuk.surat-disposisi-dikirim', ['title' => 'Surat Masuk Dikirim', 'active' => 'surat keluar', 'suratMasuk' => $suratMasuk->paginate(15)]);
+        return view('surat-masuk.surat-disposisi-dikirim', ['title' => 'Surat Masuk Dikirim', 'active' => 'yang dikirim', 'suratMasuk' => $suratMasuk->paginate(25), 'isForm' => false]);
     }
 
     public function nonSekreSudahDiteruskan()
@@ -1120,7 +1120,7 @@ class SuratMasukController extends Controller
 
         // Make Pagination
         $currentPage = Paginator::resolveCurrentPage();
-        $perPage = 15;
+        $perPage = 25;
         $currentPageItems = $suratMasuk->slice(($currentPage - 1) * $perPage, $perPage)->all();
         $paginatedItems = new LengthAwarePaginator($currentPageItems, $suratMasuk->count(), $perPage, $currentPage, [
             'path' => Paginator::resolveCurrentPath()
@@ -1128,8 +1128,9 @@ class SuratMasukController extends Controller
 
         return view('surat-masuk.surat-disposisi-sudah-diteruskan', [
             'title' => 'Surat Masuk Sudah Diteruskan',
-            'active' => 'surat masuk',
-            'suratMasuk' => $paginatedItems
+            'active' => 'sudah diteruskan',
+            'suratMasuk' => $paginatedItems,
+            'isForm' => false
         ]);
     }
 
@@ -1192,7 +1193,7 @@ class SuratMasukController extends Controller
 
         // make paginasi
         $currentPage = Paginator::resolveCurrentPage();
-        $perPage = 15;
+        $perPage = 25;
         $currentPageItems = $suratMasuk->slice(($currentPage - 1) * $perPage, $perPage)->all();
         $paginatedItems = new LengthAwarePaginator($currentPageItems, $suratMasuk->count(), $perPage, $currentPage, [
             'path' => Paginator::resolveCurrentPath()
@@ -1200,8 +1201,9 @@ class SuratMasukController extends Controller
 
         return view('surat-masuk.surat-disposisi-sudah-diarsipkan', [
             'title' => 'Surat Masuk Sudah Diarsipkan',
-            'active' => 'surat masuk',
-            'suratMasuk' => $paginatedItems
+            'active' => 'sudah diarsipkan',
+            'suratMasuk' => $paginatedItems,
+            'isForm' => false
         ]);
     }
 

@@ -221,7 +221,6 @@ class PerjanjianKerjaSamaController extends Controller
         });
 
 
-        $direksi = Direksi::all();
         $judul = "Perjanjian Kerja Sama";
 
         if (request('index')) {
@@ -248,6 +247,6 @@ class PerjanjianKerjaSamaController extends Controller
             $pks->where('keterangan', 'like', '%' . request('keterangan') . '%');
         }
 
-        return view('pks.index-ns', ['title' =>  $judul, 'active' => 'pks', 'pks' => $pks->with('direksi')->orderBy('tahun', 'desc')->orderBy('index', 'desc')->paginate(15), 'direksi' => $direksi, 'judul' => $judul]);
+        return view('pks.index-ns', ['title' =>  $judul, 'active' => 'pks', 'pks' => $pks->orderBy('tahun', 'desc')->orderBy('index', 'desc')->paginate(25), 'judul' => $judul, 'isForm' => false]);
     }
 }
