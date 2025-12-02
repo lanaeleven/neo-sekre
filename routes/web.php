@@ -145,6 +145,7 @@ Route::post('/unit/tambah', [UnitController::class, 'store']);
 Route::post('/unit/save', [UnitController::class, 'save']);
 Route::post('/unit/hapus/{id}', [UnitController::class, 'delete']);
 
+Route::get('/data-master/index', [DashboardController::class, 'dataMasterIndex'])->middleware('sekre')->name('data-master.index');
 Route::get('/user/index', [UserController::class, 'create'])->middleware('sekre');
 Route::get('/user/tambah', [UserController::class, 'tambah'])->middleware('sekre');
 Route::get('/user/edit/{user}', [UserController::class, 'edit'])->middleware('sekre');

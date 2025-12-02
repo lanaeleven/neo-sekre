@@ -8,13 +8,15 @@ use Illuminate\Http\RedirectResponse;
 
 class JenisSuratController extends Controller
 {
-    public function create() {
+    public function create()
+    {
         $jenisSurat = JenisSurat::all();
-        return view('jenis-surat.index', ['title' => 'Jenis Surat', 'active' => 'data master', 'jenisSurat' => $jenisSurat]);
+        return view('jenis-surat.index', ['title' => 'Daftar Jenis Surat', 'active' => 'data master', 'jenisSurat' => $jenisSurat, 'isForm' => false]);
     }
 
-    public function tambah() {
-        return view('jenis-surat.tambah', ['title' => 'Tambah Jenis Surat', 'active' => 'data master']);
+    public function tambah()
+    {
+        return view('jenis-surat.tambah', ['title' => 'Tambah Jenis Surat', 'active' => 'data master', 'isForm' => true]);
     }
 
     public function store(Request $request): RedirectResponse
@@ -35,14 +37,15 @@ class JenisSuratController extends Controller
         return redirect('/jenis-surat/index')->with('success', 'Berhasil Menambah Jenis Surat');
     }
 
-    public function edit(JenisSurat $jenisSurat) {
-        return view('jenis-surat.edit', ['title' => 'Edit Direksi', 'active' => 'data master', 'jenisSurat' => $jenisSurat]);
+    public function edit(JenisSurat $jenisSurat)
+    {
+        return view('jenis-surat.edit', ['title' => 'Edit Direksi', 'active' => 'data master', 'jenisSurat' => $jenisSurat, 'isForm' => true]);
     }
 
     public function save(Request $request): RedirectResponse
     {
         // Validate the incoming file. 
-        
+
         $request->validate([
             'kodeJenisSurat' => 'required',
             'keterangan' => 'required'
@@ -63,7 +66,7 @@ class JenisSuratController extends Controller
         }
 
         // Store file information in the database
-        
+
         $jenisSurat->kodeJenisSurat = $request->input('kodeJenisSurat');
         $jenisSurat->keterangan = $request->input('keterangan');
         $jenisSurat->save();

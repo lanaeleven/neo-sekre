@@ -90,6 +90,14 @@ class DashboardController extends Controller
             'isForm' => false
         ]);
     }
+    public function dataMasterIndex()
+    {
+        return view('data-master', [
+            'title' => 'Data Master',
+            'active' => 'data master',
+            'isForm' => false
+        ]);
+    }
 
     public function dashboardLaporan() {}
 }

@@ -1,45 +1,38 @@
-
 @extends('layouts.main')
 
 @section('container')
-<div class="div">
-  @if (session()->has('success'))
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-      {{ session('success') }}
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-  @endif  
-  <div class="d-flex justify-content-between my-2">
     <div>
-      <h3 class="fw-bold fs-4 mb-3">Daftar Jenis Surat</h3>
-    </div>
-    <div>
-      <a href="/jenis-surat/tambah" class="btn btn-primary">Tambah Jenis Surat</a>
-    </div>
-  </div>
+        {{-- Animations --}}
+        <x-animations-style />
 
-    <div class="div">
-        <table class="table table-striped">
-            <thead>
-              <tr>
-                <th scope="col">ID</th>
-                <th scope="col">Kode Jenis Surat</th>
-                <th scope="col">Keterangan</th>
-                <th scope="col">Aksi</th>
-              </tr>
-            </thead>
-            <tbody>
-              @foreach ($jenisSurat as $js)
-                  <tr>
-                    <td>{{ $js->id }}</td>
-                    <td>{{ $js->kodeJenisSurat }}</td>
-                    <td>{{ $js->keterangan }}</td>
-                    <td><a href="/jenis-surat/edit/{{ $js->id }}" class="mt-1 btn btn-sm btn-primary"><i class="fa-solid fa-pencil" style="color: #ffffff;"></i></a></td>
-                  </tr>
-              @endforeach
-            </tbody>
-          </table>
-    </div>
+        <x-default-page-container>
+            {{-- NAVBAR --}}
+            <x-navbar title="{{ $title }}" urlTambah="/jenis-surat/tambah" />
 
-</div>
-@endsection
+            {{-- ================= MOBILE SIDEBAR (MENU) ================= --}}
+            @include('layouts.mobile-sidebar')
+
+
+            {{-- ================= DESKTOP TABLE ================= --}}
+            <x-simple-table :headers="['ID', 'Kode Jenis Surat', 'Keterangan', 'Aksi']">
+                @foreach ($jenisSurat as $js)
+                    <tr class="hover:bg-green-50 transition-colors">
+                        <x-td-default>{{ $js->id }}</x-td-default>
+                        <x-td-default>{{ $js->kodeJenisSurat }}</x-td-default>
+                        <x-td-default>{{ $js->keterangan }}</x-td-default>
+                        <x-td-action>
+                            <x-button-with-tooltip variant="warning" tooltip="Edit"
+                                url="/jenis-surat/edit/{{ $js->id }}"><x-heroicon-s-pencil
+                                    class="w-4 h-4" /></x-button-with-tooltip>
+                        </x-td-action>
+                    </tr>
+                @endforeach
+            </x-simple-table>
+
+            {{-- Footer --}}
+            <x-footer-desktop>
+                © 2025 E-Sekre. All rights reserved
+            </x-footer-desktop>
+
+        </x-default-page-container>
+    @endsection

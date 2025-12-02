@@ -12,12 +12,12 @@ class UnitController extends Controller
     public function index()
     {
         $unit = Unit::all();
-        return view('unit.index', ['title' => 'Unit', 'active' => 'data master', 'unit' => $unit]);
+        return view('unit.index', ['title' => 'Daftar   Unit', 'active' => 'data master', 'unit' => $unit, 'isForm' => false]);
     }
 
     public function tambah()
     {
-        return view('unit.tambah', ['title' => 'Tambah Unit', 'active' => 'data master']);
+        return view('unit.tambah', ['title' => 'Tambah Unit', 'active' => 'data master', 'isForm' => true]);
     }
 
     public function store(Request $request): RedirectResponse
@@ -38,7 +38,7 @@ class UnitController extends Controller
 
     public function edit(Unit $unit)
     {
-        return view('unit.edit', ['title' => 'Edit Unit', 'active' => 'data master', 'unit' => $unit]);
+        return view('unit.edit', ['title' => 'Edit Unit', 'active' => 'data master', 'unit' => $unit, 'isForm' => true]);
     }
 
     public function save(Request $request): RedirectResponse

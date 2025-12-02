@@ -1,47 +1,35 @@
-
 @extends('layouts.main')
 
 @section('container')
-    
-<div>
+    <x-default-page-container>
+        {{-- Navbar --}}
+        <x-navbar-form title="Tambah Jenis Informasi" closeUrl="/jenis-informasi/index" />
 
-  <div class="d-flex justify-content-between align-items-center my-4">
-    <div>
-      <a href="/jenis-informasi/index" class="btn btn-warning btn-sm"><i class="fa-solid fa-arrow-left" style="color: #000;"></i></a>
-    </div>
-    <div>
-      <h3 class="fw-bold fs-4 text-center">Tambah Jenis Informasi</h3>
-    </div>
-    <div>
-    </div>
-  </div>
+        {{-- Error Notif --}}
+        <x-error-notif />
 
-    <div class="d-flex justify-content-center">
-        <div class="col-6">
-            <form method="post" action="/jenis-informasi/tambah">
-              @csrf
+        <x-form-body-container>
+            <form action="/jenis-informasi/tambah" method="post" enctype="multipart/form-data">
+                @csrf
 
-                <div class="row mb-3">
-                  <label for="jenisInformasi" class="col-sm-3 col-form-label">Jenis Informasi</label>
-                  <div class="col-sm-9">
-                    <input name="jenisInformasi" type="text" class="form-control @error('jenisInformasi') is-invalid @enderror" id="jenisInformasi" value="{{ old('jenisInformasi') }}" required>
-                    @error('jenisInformasi')
-                      <div id="jenisInformasi" class="invalid-feedback">
-                        {{ $message }}
-                      </div>
-                      @enderror
-                  </div>
-               </div>
+                <x-block-input-container>
 
-                <div class="d-flex justify-content-center">
-                  <div>
-                    <button type="submit" class="btn btn-success mt-3">Tambah</button>
-                  </div>
-                </div>
-                  
-              </form>
-        </div>
-    </div>
-</div>
+                    <div>
+                        <x-text-input name="jenisInformasi" id="jenisInformasi" value="{{ old('jenisInformasi') }}"
+                            :required="true">Jenis Informasi</x-text-input>
+                    </div>
 
+                </x-block-input-container>
+
+        </x-form-body-container>
+
+        <x-desktop-submit-container>
+            <x-green-submit-button>
+                Simpan
+            </x-green-submit-button>
+        </x-desktop-submit-container>
+
+        </form>
+
+    </x-default-page-container>
 @endsection

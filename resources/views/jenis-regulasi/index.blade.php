@@ -1,46 +1,38 @@
-
 @extends('layouts.main')
 
 @section('container')
-
-<div class="div">
-  @if (session()->has('success'))
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-      {{ session('success') }}
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-  @endif  
-  <div class="d-flex justify-content-between my-2">
     <div>
-      <h3 class="fw-bold fs-4 mb-3">Daftar Jenis Regulasi</h3>
-    </div>
-    <div>
-      <a href="/jenis-regulasi/tambah" class="btn btn-primary">Tambah Jenis Regulasi</a>
-    </div>
-  </div>
+        {{-- Animations --}}
+        <x-animations-style />
 
-    <div class="div">
-        <table class="table table-striped">
-            <thead>
-              <tr>
-                <th scope="col">ID</th>
-                <th scope="col">Kode Jenis Regulasi</th>
-                <th scope="col">Keterangan</th>
-                <th scope="col">Aksi</th>
-              </tr>
-            </thead>
-            <tbody>
-              @foreach ($jenisRegulasi as $jr)
-                  <tr>
-                    <td>{{ $jr->id }}</td>
-                    <td>{{ $jr->kodeJenisRegulasi }}</td>
-                    <td>{{ $jr->keterangan }}</td>
-                    <td><a href="/jenis-regulasi/edit/{{ $jr->id }}" class="mt-1 btn btn-sm btn-primary"><i class="fa-solid fa-pencil" style="color: #ffffff;"></i></a></td>
-                  </tr>
-              @endforeach
-            </tbody>
-          </table>
-    </div>
+        <x-default-page-container>
+            {{-- NAVBAR --}}
+            <x-navbar title="{{ $title }}" urlTambah="/jenis-regulasi/tambah" />
 
-</div>
-@endsection
+            {{-- ================= MOBILE SIDEBAR (MENU) ================= --}}
+            @include('layouts.mobile-sidebar')
+
+
+            {{-- ================= DESKTOP TABLE ================= --}}
+            <x-simple-table :headers="['ID', 'Kode Jenis Regulasi', 'Keterangan', 'Aksi']">
+                @foreach ($jenisRegulasi as $jr)
+                    <tr class="hover:bg-green-50 transition-colors">
+                        <x-td-default>{{ $jr->id }}</x-td-default>
+                        <x-td-default>{{ $jr->kodeJenisRegulasi }}</x-td-default>
+                        <x-td-default>{{ $jr->keterangan }}</x-td-default>
+                        <x-td-action>
+                            <x-button-with-tooltip variant="warning" tooltip="Edit"
+                                url="/jenis-regulasi/edit/{{ $jr->id }}"><x-heroicon-s-pencil
+                                    class="w-4 h-4" /></x-button-with-tooltip>
+                        </x-td-action>
+                    </tr>
+                @endforeach
+            </x-simple-table>
+
+            {{-- Footer --}}
+            <x-footer-desktop>
+                © 2025 E-Sekre. All rights reserved
+            </x-footer-desktop>
+
+        </x-default-page-container>
+    @endsection

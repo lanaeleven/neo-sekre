@@ -27,12 +27,12 @@ class UserController extends Controller
         $user = User::where('id', '<>', 2)->with(['strukturOrganisasi'])->get();
 
         // dd($user);
-        return view('user.index', ['title' => 'User', 'active' => 'data master', 'user' => $user, 'idKepala' => $arrIdKepala]);
+        return view('user.index', ['title' => 'Daftar User', 'active' => 'data master', 'user' => $user, 'idKepala' => $arrIdKepala, 'isForm' => false]);
     }
 
     public function tambah()
     {
-        return view('user.tambah', ['title' => 'Tambah User', 'active' => 'data master']);
+        return view('user.tambah', ['title' => 'Tambah User', 'active' => 'data master', 'isForm' => true]);
     }
 
     public function store(Request $request): RedirectResponse

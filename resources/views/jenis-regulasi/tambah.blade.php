@@ -1,59 +1,40 @@
-
 @extends('layouts.main')
 
 @section('container')
-    
-<div>
+    <x-default-page-container>
+        {{-- Navbar --}}
+        <x-navbar-form title="Tambah Jenis Regulasi" closeUrl="/jenis-regulasi/index" />
 
-  <div class="d-flex justify-content-between align-items-center my-4">
-    <div>
-      <a href="/jenis-regulasi/index" class="btn btn-warning btn-sm"><i class="fa-solid fa-arrow-left" style="color: #000;"></i></a>
-    </div>
-    <div>
-      <h3 class="fw-bold fs-4 text-center">Tambah Jenis Regulasi</h3>
-    </div>
-    <div>
-    </div>
-  </div>
+        {{-- Error Notif --}}
+        <x-error-notif />
 
-    <div class="d-flex justify-content-center">
-        <div class="col-6">
-            <form method="post" action="/jenis-regulasi/tambah">
-              @csrf
+        <x-form-body-container>
+            <form action="/jenis-regulasi/tambah" method="post" enctype="multipart/form-data">
+                @csrf
 
-                <div class="row mb-3">
-                    <label for="kodeJenisRegulasi" class="col-sm-3 col-form-label">Kode Jenis Regulasi</label>
-                    <div class="col-sm-9">
-                      <input name="kodeJenisRegulasi" type="text" class="form-control @error('kodeJenisRegulasi') is-invalid @enderror" id="kodeJenisRegulasi" value="{{ old('kodeJenisRegulasi') }}" required>
-                      @error('kodeJenisRegulasi')
-                      <div id="kodeJenisRegulasi" class="invalid-feedback">
-                        {{ $message }}
-                      </div>
-                      @enderror
+                <x-block-input-container>
+
+                    <div>
+                        <x-text-input name="kodeJenisRegulasi" id="kodeJenisRegulasi" value="{{ old('kodeJenisRegulasi') }}"
+                            :required="true">Kode Jenis Regulasi</x-text-input>
                     </div>
-                </div>
 
-                <div class="row mb-3">
-                  <label for="keterangan" class="col-sm-3 col-form-label">Keterangan</label>
-                  <div class="col-sm-9">
-                    <input name="keterangan" type="text" class="form-control @error('keterangan') is-invalid @enderror" id="keterangan" value="{{ old('keterangan') }}" required>
-                    @error('keterangan')
-                      <div id="keterangan" class="invalid-feedback">
-                        {{ $message }}
-                      </div>
-                      @enderror
-                  </div>
-               </div>
+                    <div>
+                        <x-text-input name="keterangan" id="keterangan" value="{{ old('keterangan') }}"
+                            :required="true">Keterangan</x-text-input>
+                    </div>
 
-                <div class="d-flex justify-content-center">
-                  <div>
-                    <button type="submit" class="btn btn-success mt-3">Tambah</button>
-                  </div>
-                </div>
-                  
-              </form>
-        </div>
-    </div>
-</div>
+                </x-block-input-container>
 
+        </x-form-body-container>
+
+        <x-desktop-submit-container>
+            <x-green-submit-button>
+                Simpan
+            </x-green-submit-button>
+        </x-desktop-submit-container>
+
+        </form>
+
+    </x-default-page-container>
 @endsection

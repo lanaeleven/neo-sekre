@@ -45,6 +45,15 @@
                 'inactive' => 'heroicon-o-chat-bubble-bottom-center-text',
             ],
         ],
+        [
+            'label' => 'Data Master',
+            'key' => 'data master',
+            'route' => 'data-master.index',
+            'icons' => [
+                'active' => 'heroicon-s-circle-stack',
+                'inactive' => 'heroicon-o-circle-stack',
+            ],
+        ],
     ];
 @endphp
 

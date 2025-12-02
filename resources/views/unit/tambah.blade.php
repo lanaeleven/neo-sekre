@@ -1,46 +1,35 @@
-
 @extends('layouts.main')
 
 @section('container')
-    
-<div>
+    <x-default-page-container>
+        {{-- Navbar --}}
+        <x-navbar-form title="Tambah Unit" closeUrl="/unit/index" />
 
-  <div class="d-flex justify-content-between align-items-center my-4">
-    <div>
-      <a href="/unit/index" class="btn btn-warning btn-sm"><i class="fa-solid fa-arrow-left" style="color: #000;"></i></a>
-    </div>
-    <div>
-      <h3 class="fw-bold fs-4 text-center">Tambah Unit</h3>
-    </div>
-    <div>
-    </div>
-  </div>
+        {{-- Error Notif --}}
+        <x-error-notif />
 
-    <div class="d-flex justify-content-center">
-        <div class="col-6">
-            <form method="post" action="/unit/tambah">
-              @csrf
-                <div class="row mb-3">
-                  <label for="namaUnit" class="col-sm-3 col-form-label">Nama Unit</label>
-                  <div class="col-sm-9">
-                    <input name="namaUnit" type="text" class="form-control @error('namaUnit') is-invalid @enderror" id="namaUnit" value="{{ old('namaUnit') }}" required>
-                    @error('namaUnit')
-                      <div id="namaUnit" class="invalid-feedback">
-                        {{ $message }}
-                      </div>
-                      @enderror
-                  </div>
-               </div>
+        <x-form-body-container>
+            <form action="/unit/tambah" method="post" enctype="multipart/form-data">
+                @csrf
 
-                <div class="d-flex justify-content-center">
-                  <div>
-                    <button type="submit" class="btn btn-success mt-3">Tambah</button>
-                  </div>
-                </div>
-                  
-              </form>
-        </div>
-    </div>
-</div>
+                <x-block-input-container>
 
+                    <div>
+                        <x-text-input name="namaUnit" id="namaUnit" value="{{ old('namaUnit') }}" :required="true">Nama
+                            Unit</x-text-input>
+                    </div>
+
+                </x-block-input-container>
+
+        </x-form-body-container>
+
+        <x-desktop-submit-container>
+            <x-green-submit-button>
+                Simpan
+            </x-green-submit-button>
+        </x-desktop-submit-container>
+
+        </form>
+
+    </x-default-page-container>
 @endsection

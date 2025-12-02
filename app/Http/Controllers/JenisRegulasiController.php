@@ -8,13 +8,15 @@ use Illuminate\Http\RedirectResponse;
 
 class JenisRegulasiController extends Controller
 {
-    public function create() {
+    public function create()
+    {
         $jenisRegulasi = JenisRegulasi::all();
-        return view('jenis-regulasi.index', ['title' => 'Jenis Regulasi', 'active' => 'data master', 'jenisRegulasi' => $jenisRegulasi]);
+        return view('jenis-regulasi.index', ['title' => 'Daftar Jenis Regulasi', 'active' => 'data master', 'jenisRegulasi' => $jenisRegulasi, 'isForm' => false]);
     }
 
-    public function tambah() {
-        return view('jenis-regulasi.tambah', ['title' => 'Tambah Jenis Regulasi', 'active' => 'data master']);
+    public function tambah()
+    {
+        return view('jenis-regulasi.tambah', ['title' => 'Tambah Jenis Regulasi', 'active' => 'data master', 'isForm' => true]);
     }
 
     public function store(Request $request): RedirectResponse
@@ -32,8 +34,9 @@ class JenisRegulasiController extends Controller
         return redirect('/jenis-regulasi/index')->with('success', 'Berhasil Menambah Jenis Regulasi');
     }
 
-    public function edit(JenisRegulasi $jenisRegulasi) {
-        return view('jenis-regulasi.edit', ['title' => 'Edit Jenis Regulasi', 'active' => 'data master', 'jenisRegulasi' => $jenisRegulasi]);
+    public function edit(JenisRegulasi $jenisRegulasi)
+    {
+        return view('jenis-regulasi.edit', ['title' => 'Edit Jenis Regulasi', 'active' => 'data master', 'jenisRegulasi' => $jenisRegulasi, 'isForm' => true]);
     }
 
     public function save(Request $request): RedirectResponse
@@ -56,7 +59,7 @@ class JenisRegulasiController extends Controller
                 'keterangan' => 'unique:jenis_regulasi,keterangan',
             ]);
         }
-        
+
         $jenisRegulasi->kodeJenisRegulasi = $request->input('kodeJenisRegulasi');
         $jenisRegulasi->keterangan = $request->input('keterangan');
         $jenisRegulasi->save();
