@@ -4,6 +4,8 @@
     'target' => '_self',
     'variant' => 'primary',
     'size' => 'sm',
+    'isDownload' => false,
+    'downloadName' => '-',
 ])
 
 @php
@@ -31,6 +33,7 @@
 
 <div class="relative group inline-block">
     <a href="{{ $url }}" target="{{ $target }}"
+        @if ($isDownload) download="{{ $downloadName }}" @endif
         class="rounded transition-all duration-200 flex items-center justify-center {{ $btnClass }}">
         <span class="flex items-center">
             {{ $slot }}

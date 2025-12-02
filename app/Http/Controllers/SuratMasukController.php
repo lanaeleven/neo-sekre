@@ -527,7 +527,15 @@ class SuratMasukController extends Controller
         // JIKA SUDAH MELEWATI SEMUA GATE, KEMUDIAN AMBIL DATA DISTRIBUSI SURAT
         $distribusiSurat = DistribusiSurat::where('idSuratMasuk', '=', $suratMasuk->id)->with(['pengirimDisposisi', 'tujuanDisposisi'])->get();
 
-        return view('surat-masuk.disposisi', ['title' => 'Disposisi Surat Masuk', 'active' => 'surat masuk', 'suratMasuk' => $suratMasuk, 'terusan' => $terusan, 'distribusiSurat' => $distribusiSurat]);
+        $opsiTerusan = collect($terusan ?? [])->map(function ($t) {
+            return (object)[
+                'id'   => $t->id ?? null,
+                'nama' => $t->namaJabatan ?? null,
+            ];
+        });
+
+
+        return view('surat-masuk.disposisi', ['title' => 'Disposisi Surat Masuk', 'active' => 'surat masuk', 'suratMasuk' => $suratMasuk, 'terusan' => $opsiTerusan, 'distribusiSurat' => $distribusiSurat, 'isForm' => true]);
     }
 
     public function teruskan(Request $request): RedirectResponse
@@ -675,17 +683,17 @@ class SuratMasukController extends Controller
 
         $penerima = $suratMasuk = User::find($distribusiSurat->idTujuanDisposisi);
 
-        $job = new ProcessNotifDisposisi(
-            $sifatSurat,
-            $nomorSurat,
-            auth()->user()->namaJabatan,
-            $penerima->namaJabatan,
-            $penerima->nama,
-            \Carbon\Carbon::parse($distribusiSurat->tanggalDiteruskan)->format('d/m/Y'),
-            $distribusiSurat->instruksi,
-            $penerima->email
-        );
-        dispatch($job);
+        // $job = new ProcessNotifDisposisi(
+        //     $sifatSurat,
+        //     $nomorSurat,
+        //     auth()->user()->namaJabatan,
+        //     $penerima->namaJabatan,
+        //     $penerima->nama,
+        //     \Carbon\Carbon::parse($distribusiSurat->tanggalDiteruskan)->format('d/m/Y'),
+        //     $distribusiSurat->instruksi,
+        //     $penerima->email
+        // );
+        // dispatch($job);
 
 
 
@@ -710,11 +718,12 @@ class SuratMasukController extends Controller
             }
         }
         // dd($distribusiSurat);
-        return view('surat-masuk.lacak-distribusi', ['title' => 'Disposisi Surat Masuk', 'active' => 'surat masuk', 'suratMasuk' => $suratMasuk, 'distribusiSurat' => $distribusiSurat]);
+        return view('surat-masuk.lacak-distribusi', ['title' => 'Disposisi Surat Masuk', 'active' => 'surat masuk', 'suratMasuk' => $suratMasuk, 'distribusiSurat' => $distribusiSurat, 'isForm' => true]);
     }
 
     public function unduhDisposisi(Request $request)
     {
+
         // $distribusiSurat = DistribusiSurat::where('idSuratMasuk', '=', $request->input('idSuratMasuk'))->with(['pengirimDisposisi', 'tujuanDisposisi'])->get();
         $suratMasuk = SuratMasuk::where('id', '=', $request->input('idSuratMasuk'))->get()[0];
         // $distribusiSurat = DistribusiSurat::where('idSuratMasuk', '=', $request->input('idSuratMasuk'))->get();
@@ -755,12 +764,13 @@ class SuratMasukController extends Controller
             $isProblematic = true;
         }
 
-        $ghostscriptPath = env('GHOSTSCRIPT_PATH');
+        // $ghostscriptPath = env('GHOSTSCRIPT_PATH');
+        $ghostscriptPath = "gswin64c";
+
+        $command = "gswin64c -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/screen -dNOPAUSE -dQUIET -dBATCH -sOutputFile=$uncompressedSuratMasukPath $suratMasukPath";
+        exec($command, $output, $return_var);
 
         if ($isProblematic) {
-            $command = "$ghostscriptPath -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/screen -dNOPAUSE -dQUIET -dBATCH -sOutputFile=$uncompressedSuratMasukPath $suratMasukPath";
-            exec($command, $output, $return_var);
-
             if ($return_var !== 0) {
                 unlink($dompdfFilePath);
                 return redirect()->back()->with('error', 'Failed to process PDF with Ghostscript.');
@@ -770,6 +780,7 @@ class SuratMasukController extends Controller
         } else {
             $finalSuratMasukPath = $suratMasukPath;
         }
+
 
         // Menggabungkan PDF menggunakan Webklex\PDFMerger\PDFMerger
         $pdfMerger = PDFMerger::init();
