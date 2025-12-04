@@ -340,7 +340,7 @@ class SuratMasukController extends Controller
     }
 
 
-    public function disposisi(SuratMasuk $suratMasuk)
+    public function disposisi_lama(SuratMasuk $suratMasuk)
     {
         // $terusan = User::where('id', '<>', auth()->user()->id)->where('id', '<>', 2)->get();
 
@@ -538,6 +538,201 @@ class SuratMasukController extends Controller
         return view('surat-masuk.disposisi', ['title' => 'Disposisi Surat Masuk', 'active' => 'surat masuk', 'suratMasuk' => $suratMasuk, 'terusan' => $opsiTerusan, 'distribusiSurat' => $distribusiSurat, 'isForm' => true]);
     }
 
+    public function disposisi(SuratMasuk $suratMasuk)
+    {
+        // $terusan = User::where('id', '<>', auth()->user()->id)->where('id', '<>', 2)->get();
+
+        // mengambil id kepala dalam bentuk array
+        // dd(request('perihal'));
+        $idUser = auth()->user()->id;
+        $role = auth()->user()->role;
+        // $idKepala = UserKepala::select('idUser')->get();
+        // $arrIdKepala = [];
+        // foreach ($idKepala as $ik) {
+        //     array_push($arrIdKepala, $ik->idUser);
+        // }
+        $terusan = null;
+
+        // $pengirimTerusanKhusus = PenerimaKhusus::where('bisaMenerimaDari', $idUser)->get();
+        // $terusanKhusus = User::whereIn('id', $pengirimTerusanKhusus->select('idUser'))->get();
+
+        // if($idUser == 1 || in_array($idUser, $arrIdKepala)) { // daftar opsi terusan untuk sekre dan kepala 
+        //     $terusan = User::where('id', '<>', $idUser)->where('id', '<>', 2)->where('isKhusus', false)->get();
+        //     if ($terusanKhusus->isNotEmpty()) {
+        //         $terusan = $terusan->merge($terusanKhusus);
+        //     }
+        // } elseif ($idUser == 3){ // daftar opsi terusan untuk direktur
+        //     $terusan = User::whereIn('id', $arrIdKepala)->orWhere('id', 1)->where('isKhusus', false)->get();
+        //     if ($terusanKhusus->isNotEmpty()) {
+        //         $terusan = $terusan->merge($terusanKhusus);
+        //     }
+        // } else { // daftar opsi terusan untuk kasubbag/penjab/dsb
+        //     $terusan = User::where('id', '<>', 2)->where('id', '<>', 3)->where('id', '<>', $idUser)->where('isKhusus', false)->get();
+        //     if ($terusanKhusus->isNotEmpty()) {
+        //         $terusan = $terusan->merge($terusanKhusus);
+        //     }
+        // }
+
+        // MetaData
+        // Level Jabatan
+        // 1 = Sekretariat
+        // 2 = Direktur
+        // 3 = Kabag/Kabid
+        // 4 = Kasubag
+        // 5 = Komite/Tim
+        //
+        // Id User Spesial
+        // 1 = Sekretariat
+        // 2 = Developer
+        // 3 = Direktur
+
+        // $levelJabatan = null;
+        // try {
+        //     $results = StrukturOrganisasi::select('levelJabatan')->where('idUser', $idUser)->get();
+        //     if ($results->isEmpty()) {
+        //         $levelJabatan = null;
+        //     } else {
+        //         $levelJabatan = $results[0]->levelJabatan;
+        //     }
+        // } catch (\Throwable $th) {
+        //     throw $th;
+        // }
+
+        // if ($levelJabatan) {
+        //     if ($levelJabatan == 1) {
+        //         $terusan = User::where('id', '<>', $idUser)->where('id', '<>', 2)->where('isKhusus', false)->where('isAktif', true)->get();
+        //         if ($terusanKhusus->isNotEmpty()) {
+        //             $terusan = $terusan->merge($terusanKhusus);
+        //         }
+        //     } elseif ($levelJabatan == 2) {
+        //         $terusan = DB::select(
+        //             'SELECT *
+        //                     FROM users
+        //                     WHERE ( 
+        //                         id IN (SELECT idUser
+        //                         FROM struktur_organisasi
+        //                         WHERE levelJabatan = 3 OR levelJabatan = 5)
+        //                         -- OR id = 1
+        //                     ) AND isKhusus = false AND id != :idUser AND isAktif = true ;',
+        //             ['idUser' => $idUser]
+        //         );
+        //         if ($terusanKhusus->isNotEmpty()) {
+        //             $terusan = [...$terusan, ...$terusanKhusus];
+        //         }
+        //     } elseif ($levelJabatan == 3) {
+        //         $terusan = DB::select(
+        //             'SELECT *
+        //                 FROM users
+        //                 WHERE (
+        //                     id IN (SELECT idUser
+        //                     FROM struktur_organisasi
+        //                     WHERE levelJabatan = 3 OR levelJabatan = 5
+        //                     OR idAtasan = :idAtasan)
+        //                     -- OR id IN (1,3)
+        //                     OR id = (3)
+        //                     )
+        //                 AND isKhusus = false AND id != :idUser AND isAktif = true ;',
+        //             [
+        //                 'idAtasan' => $idUser,
+        //                 'idUser' => $idUser
+        //             ]
+        //         );
+
+        //         if ($idUser == 9 || $idUser == 10 || $idUser == 44) {
+        //             $terusanKeSekre = User::where('id', 1)->get();
+        //             $terusan = [...$terusan, ...$terusanKeSekre];
+        //         }
+
+        //         if ($terusanKhusus->isNotEmpty()) {
+        //             $terusan = [...$terusan, ...$terusanKhusus];
+        //         }
+        //     } elseif ($levelJabatan == 4) {
+        //         $terusan = DB::select(
+        //             'SELECT *  FROM users 
+        //                 WHERE (
+        //                     id IN (SELECT idUser
+        //                         FROM struktur_organisasi
+        //                         WHERE levelJabatan = 4 OR levelJabatan = 5) 
+        //                     OR id = (SELECT idAtasan 
+        //                         FROM struktur_organisasi
+        //                         WHERE idUser = ?
+        //                         LIMIT 1)
+        //                     -- OR id = 1
+        //                     )
+        //                 AND isKhusus = false AND id != ? AND isAktif = true ;',
+        //             [$idUser, $idUser]
+        //         );
+
+        //         // $terusan = DB::select(
+        //         //     'SELECT *  FROM users 
+        //         //     WHERE id IN (SELECT idUser
+        //         //             FROM struktur_organisasi
+        //         //             WHERE levelJabatan = 4 OR levelJabatan = 3)
+        //         //     AND isKhusus = false AND id != ? ;',
+        //         //     [$idUser]
+        //         //     );
+
+        //         if ($idUser == 9 || $idUser == 10 || $idUser == 44) {
+        //             $terusanKeSekre = User::where('id', 1)->get();
+        //             $terusan = [...$terusan, ...$terusanKeSekre];
+        //         }
+
+        //         if ($terusanKhusus->isNotEmpty()) {
+        //             $terusan = [...$terusan, ...$terusanKhusus];
+        //         }
+        //     } elseif ($levelJabatan == 5) {
+        //         $terusan = DB::select(
+        //             'SELECT *
+        //                     FROM users
+        //                     WHERE ( 
+        //                         id IN (SELECT idUser
+        //                         FROM struktur_organisasi
+        //                         WHERE levelJabatan IN (2,3,4,5))
+        //                     ) AND isKhusus = false AND id != :idUser AND isAktif = true ;',
+        //             ['idUser' => $idUser]
+        //         );
+        //         if ($terusanKhusus->isNotEmpty()) {
+        //             $terusan = [...$terusan, ...$terusanKhusus];
+        //         }
+        //     } else {
+        //         return ('Maaf, posisi Jabatan Akun Anda belum disetting oleh Sekretariat, Silakan hubungi Sekretariat');
+        //     }
+        // }
+        $terusan = User::where('role', '<>', 'dev')->where('isAktif', true)->get();
+
+
+
+        // PENGECEKAN UNTUK USER NON-SEKRE PADA SURAT YANG SUDAH DITERUSKAN
+        // PENGECEKAN APAKAH SURAT MASUK SUDAH PERNAH DITERUSKAN ATAU BELUM, JIKA BELUM MAKA TIDAK MELEWATI GATE DISPOSISI-SURAT
+        if (DistribusiSurat::where('idSuratMasuk', '=', $suratMasuk->id)->exists()) {
+            $cekDS = DistribusiSurat::where('idSuratMasuk', '=', $suratMasuk->id)->orderBy('id', 'desc')->get()[0];
+            if ((! Gate::allows('disposisi-surat', $cekDS) || $cekDS->status == "Diarsipkan") && $role != 'sekre') {
+                abort(403);
+            }
+        }
+
+        // PENGECEKAN UNTUK USER NON-SEKRE PADA SURAT YANG BELUM DITERUSKAN
+        // PENGECEKAN APAKAH SURAT MASUK YANG BELUM DITERUSKAN DIAKSES OLEH ADMIN ATAU BUKAN, JIKA BUKAN ADMIN MAKA TIDAK DIPERBOLEHKAN
+        if ($suratMasuk->status == "Belum Diteruskan" && $role != 'sekre') {
+            abort(403);
+        }
+
+
+
+        // JIKA SUDAH MELEWATI SEMUA GATE, KEMUDIAN AMBIL DATA DISTRIBUSI SURAT
+        $distribusiSurat = DistribusiSurat::where('idSuratMasuk', '=', $suratMasuk->id)->with(['pengirimDisposisi', 'tujuanDisposisi'])->get();
+
+        $opsiTerusan = collect($terusan ?? [])->map(function ($t) {
+            return (object)[
+                'id'   => $t->id ?? null,
+                'nama' => $t->namaJabatan ?? null,
+            ];
+        });
+
+
+        return view('surat-masuk.disposisi', ['title' => 'Disposisi Surat Masuk', 'active' => 'surat masuk', 'suratMasuk' => $suratMasuk, 'terusan' => $opsiTerusan, 'distribusiSurat' => $distribusiSurat, 'isForm' => true]);
+    }
+
     public function teruskan(Request $request): RedirectResponse
     {
         // $perihal = session('search_query_perihal', '');
@@ -706,6 +901,7 @@ class SuratMasukController extends Controller
     public function lacakDistribusi(SuratMasuk $suratMasuk)
     {
         $idUser = auth()->user()->id;
+        $role = auth()->user()->role;
         $distribusiSurat = DistribusiSurat::where('idSuratMasuk', '=', $suratMasuk->id)->with(['pengirimDisposisi', 'tujuanDisposisi'])->get();
         $daftarPengirim = [];
         foreach ($distribusiSurat as $ds) {
@@ -713,7 +909,7 @@ class SuratMasukController extends Controller
         }
 
         if ($suratMasuk->idPengirim != $idUser) {
-            if (! in_array($idUser, $daftarPengirim) && $idUser != 1 && $idUser != 2) {
+            if (! in_array($idUser, $daftarPengirim) && $role != "sekre" && $role != "dev") {
                 abort(403);
             }
         }

@@ -1,5 +1,6 @@
+@props(['idName' => 'password'])
 <script>
-    var myInput = document.getElementById("password");
+    var myInput = document.getElementById("{{ $idName }}");
     var letter = document.getElementById("letter");
     var capital = document.getElementById("capital");
     var number = document.getElementById("number");
@@ -70,7 +71,7 @@
     }
 
     function toggleShowPassword() {
-        const x = document.getElementById("password");
+        const x = document.getElementById("{{ $idName }}");
         x.type = x.type === "password" ? "text" : "password";
     }
 </script>

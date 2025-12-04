@@ -1,10 +1,12 @@
+@props(['idName' => 'password'])
 <div class="col-span-full">
-    <label for="password" class="block text-sm font-medium leading-6 text-gray-900">
+    <label for="{{ $idName }}" class="block text-sm font-medium leading-6 text-gray-900">
         Password
     </label>
 
     <div class="mt-2">
-        <input name="password" type="password" id="password" required pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*\W).{8,}"
+        <input name="{{ $idName }}" type="password" id="{{ $idName }}" required
+            pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*\W).{8,}"
             title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"
             class="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm 
                    ring-1 ring-inset ring-gray-300 

@@ -24,7 +24,7 @@ class UserController extends Controller
             array_push($arrIdKepala, $ik->idUser);
         }
 
-        $user = User::where('id', '<>', 2)->with(['strukturOrganisasi'])->get();
+        $user = User::where('role', '<>', 'dev')->with(['strukturOrganisasi'])->get();
 
         // dd($user);
         return view('user.index', ['title' => 'Daftar User', 'active' => 'data master', 'user' => $user, 'idKepala' => $arrIdKepala, 'isForm' => false]);
@@ -73,7 +73,30 @@ class UserController extends Controller
 
         $user = User::with('units')->findOrFail($user->id);
 
-        return view('user.edit', ['title' => 'Edit User', 'active' => 'data master', 'user' => $user, 'idKepala' => $arrIdKepala, 'atasan' => $atasan, 'units' => $units]);
+        return view('user.edit-profil', ['title' => 'Edit User', 'active' => 'data master', 'user' => $user, 'idKepala' => $arrIdKepala, 'atasan' => $atasan, 'units' => $units]);
+    }
+
+    public function editProfil(User $user)
+    {
+        $user = User::findOrFail($user->id);
+
+        return view('user.edit-profil', ['title' => 'Edit Profil', 'active' => 'data master', 'user' => $user, 'isForm' => true]);
+    }
+
+    public function editPassword(User $user)
+    {
+        $user = User::findOrFail($user->id);
+
+        return view('user.edit-password', ['title' => 'Edit Password', 'active' => 'data master', 'user' => $user, 'isForm' => true]);
+    }
+
+    public function editLingkupUnit(User $user)
+    {
+        $units = Unit::all();
+
+        $user = User::with('units')->findOrFail($user->id);
+
+        return view('user.edit-lingkup-unit', ['title' => 'Edit Password', 'active' => 'data master', 'user' => $user, 'units' => $units, 'isForm' => true]);
     }
 
     public function save(Request $request): RedirectResponse

@@ -101,334 +101,443 @@ class DatabaseSeeder extends Seeder
 
         User::create([
             'username' => 'sekre',
-            'nama' => 'Mr. X',
+            'nama' => 'Fahrurrazi, S.Sos.I',
             'email' => 'maulanaelvn@gmail.com',
-            'namaJabatan' => 'Sekretariat',
+            'namaJabatan' => 'Sekretaris',
+            'role' => 'sekre',
             'password' => Hash::make('1')
         ]);
 
         User::create([
-            'username' => 'developer',
+            'username' => 'dev',
             'nama' => 'Developer',
             'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Developer',
-            'password' => Hash::make('Secret123!')
+            'role' => 'dev',
+            'password' => Hash::make('1')
         ]);
 
         User::create([
-            'username' => 'direktur',
-            'nama' => 'Mr. X',
+            'username' => 'ketua',
+            'nama' => 'dr. H. Rifkiyannor, MARS',
             'email' => 'maulanaelvn@gmail.com',
-            'namaJabatan' => 'Direktur Rumah Sakit',
+            'namaJabatan' => 'Ketua',
+            'role' => 'ketua',
             'password' => Hash::make('1')
         ]);
 
         User::create([
-            'username' => 'kabid pelayanan dan penunjang medik',
-            'nama' => 'Mr. X',
+            'username' => 'bendahara',
+            'nama' => 'H. Ahmad Yapi',
             'email' => 'maulanaelvn@gmail.com',
-            'namaJabatan' => 'Kepala Bidang Pelayanan dan Penunjang Medik',
+            'namaJabatan' => 'Bendahara',
+            'role' => 'umum',
             'password' => Hash::make('1')
         ]);
 
         User::create([
-            'username' => 'kasi pelayanan medik',
-            'nama' => 'Mr. X',
+            'username' => 'kabid_pdmp',
+            'nama' => 'Drs. H. Asnhory Akhmad, M.Pd',
             'email' => 'maulanaelvn@gmail.com',
-            'namaJabatan' => 'Kepala Seksi Pelayanan Medik',
+            'namaJabatan' => 'Kepala Bidang Pendidikan Dasar, Menengah dan Pesantren',
+            'role' => 'umum',
             'password' => Hash::make('1')
         ]);
 
         User::create([
-            'username' => 'kasi penunjang medik',
-            'nama' => 'Mr. X',
+            'username' => 'kabag_uu',
+            'nama' => 'Rizki Iqbal Ansyari, S. Pd',
             'email' => 'maulanaelvn@gmail.com',
-            'namaJabatan' => 'Kepala Seksi Penunjang Medik dan Diklitbang',
+            'namaJabatan' => 'Kepala Bagian Umum dan Usaha',
+            'role' => 'umum',
             'password' => Hash::make('1')
         ]);
 
         User::create([
-            'username' => 'kabid perawatan',
-            'nama' => 'Mr. X',
+            'username' => 'kabid_lis',
+            'nama' => 'Muhammad Agung Al Fatih, MH',
             'email' => 'maulanaelvn@gmail.com',
-            'namaJabatan' => 'Kepala Bidang Perawatan',
+            'namaJabatan' => 'Kepala Bidang Litbang IT dan SDM',
+            'role' => 'umum',
             'password' => Hash::make('1')
         ]);
 
         User::create([
-            'username' => 'kasi keperawatan',
-            'nama' => 'Mr. X',
+            'username' => 'kabid_hwk',
+            'nama' => 'Fulan',
             'email' => 'maulanaelvn@gmail.com',
-            'namaJabatan' => 'Kepala Seksi Keperawatan',
+            'namaJabatan' => 'Kepala Humas, Wakaf & Kemitraan',
+            'role' => 'umum',
             'password' => Hash::make('1')
         ]);
 
         User::create([
-            'username' => 'sdi dan keu',
-            'nama' => 'Mr. X',
+            'username' => 'kepsek_paud',
+            'nama' => 'Fulan',
             'email' => 'maulanaelvn@gmail.com',
-            'namaJabatan' => 'Kepala Bagian SDI dan Keuangan',
+            'namaJabatan' => 'Kepala PAUD PLUS CMI',
+            'role' => 'umum',
             'password' => Hash::make('1')
         ]);
 
         User::create([
-            'username' => 'sdi',
-            'nama' => 'Mr. X',
-            'email' => 'akunlana11@gmail.com',
-            'namaJabatan' => 'Kepala Sub Bagian SDI dan Administrasi',
-            'password' => Hash::make('1')
-        ]);
-
-        User::create([
-            'username' => 'keu',
-            'nama' => 'Mr. X',
-            'email' => 'vuulaan@gmail.com',
-            'namaJabatan' => 'Kepala Sub Bagian Akuntansi dan Keuangan',
-            'password' => Hash::make('1')
-        ]);
-
-        User::create([
-            'username' => 'kepala umum dakwah dan kemitraan',
-            'nama' => 'Mr. X',
+            'username' => 'kepsek_sd',
+            'nama' => 'Fulan',
             'email' => 'maulanaelvn@gmail.com',
-            'namaJabatan' => 'Kepala Bagian Umum, Dakwah, dan Kemitraan',
+            'namaJabatan' => 'Kepala SD PLUS CMI',
+            'role' => 'umum',
             'password' => Hash::make('1')
         ]);
 
         User::create([
-            'username' => 'kasubag dakwah',
-            'nama' => 'Mr. X',
+            'username' => 'kepsek_smp',
+            'nama' => 'Fulan',
             'email' => 'maulanaelvn@gmail.com',
-            'namaJabatan' => 'Kepala Sub Bagian Dakwah',
+            'namaJabatan' => 'Kepala SMP PLUS CMI',
+            'role' => 'umum',
             'password' => Hash::make('1')
         ]);
 
         User::create([
-            'username' => 'kasubag kemitraan dan pkrs',
-            'nama' => 'Mr. X',
+            'username' => 'kepsek_sma',
+            'nama' => 'Fulan',
             'email' => 'maulanaelvn@gmail.com',
-            'namaJabatan' => 'Kepala Sub Bagian Kemitraan dan PKRS',
+            'namaJabatan' => 'Kepala SMA PLUS CMI',
+            'role' => 'umum',
             'password' => Hash::make('1')
         ]);
 
         User::create([
-            'username' => 'penjab umum',
-            'nama' => 'Mr. X',
+            'username' => 'kepsek_ponpes',
+            'nama' => 'Fulan',
             'email' => 'maulanaelvn@gmail.com',
-            'namaJabatan' => 'Penanggung Jawab Umum',
+            'namaJabatan' => 'Kepala PONDOK PESANTREN AL FIKRAH CMI',
+            'role' => 'umum',
             'password' => Hash::make('1')
         ]);
 
-        User::create([
-            'username' => 'kains farmasi',
-            'nama' => 'Mr. X',
-            'email' => 'maulanaelvn@gmail.com',
-            'namaJabatan' => 'Kepala Instalasi Farmasi',
-            'password' => Hash::make('1')
-        ]);
+        // User::create([
+        //     'username' => 'sekre',
+        //     'nama' => 'Mr. X',
+        //     'email' => 'maulanaelvn@gmail.com',
+        //     'namaJabatan' => 'Sekretariat',
+        //     'password' => Hash::make('1')
+        // ]);
 
-        User::create([
-            'username' => 'penjab farmasi',
-            'nama' => 'Mr. X',
-            'email' => 'maulanaelvn@gmail.com',
-            'namaJabatan' => 'Penanggung Jawab Farmasi',
-            'password' => Hash::make('1')
-        ]);
+        // User::create([
+        //     'username' => 'direktur',
+        //     'nama' => 'Mr. X',
+        //     'email' => 'maulanaelvn@gmail.com',
+        //     'namaJabatan' => 'Direktur Rumah Sakit',
+        //     'password' => Hash::make('1')
+        // ]);
 
-        User::create([
-            'username' => 'kains psrs',
-            'nama' => 'Mr. X',
-            'email' => 'maulanaelvn@gmail.com',
-            'namaJabatan' => 'Kepala Instalasi PSRS',
-            'password' => Hash::make('1')
-        ]);
+        // User::create([
+        //     'username' => 'kabid pelayanan dan penunjang medik',
+        //     'nama' => 'Mr. X',
+        //     'email' => 'maulanaelvn@gmail.com',
+        //     'namaJabatan' => 'Kepala Bidang Pelayanan dan Penunjang Medik',
+        //     'password' => Hash::make('1')
+        // ]);
 
-        User::create([
-            'username' => 'penjab psrs',
-            'nama' => 'Mr. X',
-            'email' => 'maulanaelvn@gmail.com',
-            'namaJabatan' => 'Penanggung Jawab PSRS',
-            'password' => Hash::make('1')
-        ]);
+        // User::create([
+        //     'username' => 'kasi pelayanan medik',
+        //     'nama' => 'Mr. X',
+        //     'email' => 'maulanaelvn@gmail.com',
+        //     'namaJabatan' => 'Kepala Seksi Pelayanan Medik',
+        //     'password' => Hash::make('1')
+        // ]);
 
-        User::create([
-            'username' => 'kains rekam medis dan pendaftaran',
-            'nama' => 'Mr. X',
-            'email' => 'maulanaelvn@gmail.com',
-            'namaJabatan' => 'Kepala Instalasi Rekam Medis dan Pendaftaran',
-            'password' => Hash::make('1')
-        ]);
+        // User::create([
+        //     'username' => 'kasi penunjang medik',
+        //     'nama' => 'Mr. X',
+        //     'email' => 'maulanaelvn@gmail.com',
+        //     'namaJabatan' => 'Kepala Seksi Penunjang Medik dan Diklitbang',
+        //     'password' => Hash::make('1')
+        // ]);
 
-        User::create([
-            'username' => 'penjab pendaftaran dan rekam medis',
-            'nama' => 'Mr. X',
-            'email' => 'maulanaelvn@gmail.com',
-            'namaJabatan' => 'Penanggung Jawab Pendaftaran dan Rekam Medis',
-            'password' => Hash::make('1')
-        ]);
+        // User::create([
+        //     'username' => 'kabid perawatan',
+        //     'nama' => 'Mr. X',
+        //     'email' => 'maulanaelvn@gmail.com',
+        //     'namaJabatan' => 'Kepala Bidang Perawatan',
+        //     'password' => Hash::make('1')
+        // ]);
 
-        User::create([
-            'username' => 'kains gizi',
-            'nama' => 'Mr. X',
-            'email' => 'maulanaelvn@gmail.com',
-            'namaJabatan' => 'Kepala Instalasi Gizi',
-            'password' => Hash::make('1')
-        ]);
+        // User::create([
+        //     'username' => 'kasi keperawatan',
+        //     'nama' => 'Mr. X',
+        //     'email' => 'maulanaelvn@gmail.com',
+        //     'namaJabatan' => 'Kepala Seksi Keperawatan',
+        //     'password' => Hash::make('1')
+        // ]);
 
-        User::create([
-            'username' => 'penjab gizi',
-            'nama' => 'Mr. X',
-            'email' => 'maulanaelvn@gmail.com',
-            'namaJabatan' => 'Penanggung Jawab Gizi',
-            'password' => Hash::make('1')
-        ]);
+        // User::create([
+        //     'username' => 'sdi dan keu',
+        //     'nama' => 'Mr. X',
+        //     'email' => 'maulanaelvn@gmail.com',
+        //     'namaJabatan' => 'Kepala Bagian SDI dan Keuangan',
+        //     'password' => Hash::make('1')
+        // ]);
 
-        User::create([
-            'username' => 'kains ranap dan rajal',
-            'nama' => 'Mr. X',
-            'email' => 'maulanaelvn@gmail.com',
-            'namaJabatan' => 'Kepala Instalasi Rawat Inap dan Rawat Jalan',
-            'password' => Hash::make('1')
-        ]);
+        // User::create([
+        //     'username' => 'sdi',
+        //     'nama' => 'Mr. X',
+        //     'email' => 'akunlana11@gmail.com',
+        //     'namaJabatan' => 'Kepala Sub Bagian SDI dan Administrasi',
+        //     'password' => Hash::make('1')
+        // ]);
 
-        User::create([
-            'username' => 'penjab rajal',
-            'nama' => 'Mr. X',
-            'email' => 'maulanaelvn@gmail.com',
-            'namaJabatan' => 'Penanggung Jawab Rawat Jalan',
-            'password' => Hash::make('1')
-        ]);
+        // User::create([
+        //     'username' => 'keu',
+        //     'nama' => 'Mr. X',
+        //     'email' => 'vuulaan@gmail.com',
+        //     'namaJabatan' => 'Kepala Sub Bagian Akuntansi dan Keuangan',
+        //     'password' => Hash::make('1')
+        // ]);
 
-        User::create([
-            'username' => 'penjab ranap',
-            'nama' => 'Mr. X',
-            'email' => 'maulanaelvn@gmail.com',
-            'namaJabatan' => 'Penanggung Jawab Rawat Inap',
-            'password' => Hash::make('1')
-        ]);
+        // User::create([
+        //     'username' => 'kepala umum dakwah dan kemitraan',
+        //     'nama' => 'Mr. X',
+        //     'email' => 'maulanaelvn@gmail.com',
+        //     'namaJabatan' => 'Kepala Bagian Umum, Dakwah, dan Kemitraan',
+        //     'password' => Hash::make('1')
+        // ]);
 
-        User::create([
-            'username' => 'kains igd',
-            'nama' => 'Mr. X',
-            'email' => 'maulanaelvn@gmail.com',
-            'namaJabatan' => 'Kepala Instalasi Gawat Darurat',
-            'password' => Hash::make('1')
-        ]);
+        // User::create([
+        //     'username' => 'kasubag dakwah',
+        //     'nama' => 'Mr. X',
+        //     'email' => 'maulanaelvn@gmail.com',
+        //     'namaJabatan' => 'Kepala Sub Bagian Dakwah',
+        //     'password' => Hash::make('1')
+        // ]);
 
-        User::create([
-            'username' => 'karu igd',
-            'nama' => 'Mr. X',
-            'email' => 'maulanaelvn@gmail.com',
-            'namaJabatan' => 'Kepala Ruang Instalasi Gawat Darurat',
-            'password' => Hash::make('1')
-        ]);
+        // User::create([
+        //     'username' => 'kasubag kemitraan dan pkrs',
+        //     'nama' => 'Mr. X',
+        //     'email' => 'maulanaelvn@gmail.com',
+        //     'namaJabatan' => 'Kepala Sub Bagian Kemitraan dan PKRS',
+        //     'password' => Hash::make('1')
+        // ]);
 
-        User::create([
-            'username' => 'kains icu',
-            'nama' => 'Mr. X',
-            'email' => 'maulanaelvn@gmail.com',
-            'namaJabatan' => 'Kepala Instalasi Intensive Care Unit',
-            'password' => Hash::make('1')
-        ]);
+        // User::create([
+        //     'username' => 'penjab umum',
+        //     'nama' => 'Mr. X',
+        //     'email' => 'maulanaelvn@gmail.com',
+        //     'namaJabatan' => 'Penanggung Jawab Umum',
+        //     'password' => Hash::make('1')
+        // ]);
 
-        User::create([
-            'username' => 'karu icu',
-            'nama' => 'Mr. X',
-            'email' => 'maulanaelvn@gmail.com',
-            'namaJabatan' => 'Kepala Ruang Intensive Care Unit',
-            'password' => Hash::make('1')
-        ]);
+        // User::create([
+        //     'username' => 'kains farmasi',
+        //     'nama' => 'Mr. X',
+        //     'email' => 'maulanaelvn@gmail.com',
+        //     'namaJabatan' => 'Kepala Instalasi Farmasi',
+        //     'password' => Hash::make('1')
+        // ]);
 
-        User::create([
-            'username' => 'kains radiologi',
-            'nama' => 'Mr. X',
-            'email' => 'maulanaelvn@gmail.com',
-            'namaJabatan' => 'Kepala Instalasi Radiologi',
-            'password' => Hash::make('1')
-        ]);
+        // User::create([
+        //     'username' => 'penjab farmasi',
+        //     'nama' => 'Mr. X',
+        //     'email' => 'maulanaelvn@gmail.com',
+        //     'namaJabatan' => 'Penanggung Jawab Farmasi',
+        //     'password' => Hash::make('1')
+        // ]);
 
-        User::create([
-            'username' => 'penjab radiologi',
-            'nama' => 'Mr. X',
-            'email' => 'maulanaelvn@gmail.com',
-            'namaJabatan' => 'Penanggung Jawab Radiologi',
-            'password' => Hash::make('1')
-        ]);
+        // User::create([
+        //     'username' => 'kains psrs',
+        //     'nama' => 'Mr. X',
+        //     'email' => 'maulanaelvn@gmail.com',
+        //     'namaJabatan' => 'Kepala Instalasi PSRS',
+        //     'password' => Hash::make('1')
+        // ]);
 
-        User::create([
-            'username' => 'kains ibs',
-            'nama' => 'Mr. X',
-            'email' => 'maulanaelvn@gmail.com',
-            'namaJabatan' => 'Kepala Instalasi Bedah Sentral',
-            'password' => Hash::make('1')
-        ]);
+        // User::create([
+        //     'username' => 'penjab psrs',
+        //     'nama' => 'Mr. X',
+        //     'email' => 'maulanaelvn@gmail.com',
+        //     'namaJabatan' => 'Penanggung Jawab PSRS',
+        //     'password' => Hash::make('1')
+        // ]);
 
-        User::create([
-            'username' => 'karu ibs',
-            'nama' => 'Mr. X',
-            'email' => 'maulanaelvn@gmail.com',
-            'namaJabatan' => 'Kepala Ruang Instalasi Bedah Sentral',
-            'password' => Hash::make('1')
-        ]);
+        // User::create([
+        //     'username' => 'kains rekam medis dan pendaftaran',
+        //     'nama' => 'Mr. X',
+        //     'email' => 'maulanaelvn@gmail.com',
+        //     'namaJabatan' => 'Kepala Instalasi Rekam Medis dan Pendaftaran',
+        //     'password' => Hash::make('1')
+        // ]);
 
-        User::create([
-            'username' => 'kains lab',
-            'nama' => 'Mr. X',
-            'email' => 'maulanaelvn@gmail.com',
-            'namaJabatan' => 'Kepala Instalasi Laboratorium',
-            'password' => Hash::make('1')
-        ]);
+        // User::create([
+        //     'username' => 'penjab pendaftaran dan rekam medis',
+        //     'nama' => 'Mr. X',
+        //     'email' => 'maulanaelvn@gmail.com',
+        //     'namaJabatan' => 'Penanggung Jawab Pendaftaran dan Rekam Medis',
+        //     'password' => Hash::make('1')
+        // ]);
 
-        User::create([
-            'username' => 'penjab lab',
-            'nama' => 'Mr. X',
-            'email' => 'maulanaelvn@gmail.com',
-            'namaJabatan' => 'Penanggung Jawab Instalasi Laboratorium',
-            'password' => Hash::make('1')
-        ]);
+        // User::create([
+        //     'username' => 'kains gizi',
+        //     'nama' => 'Mr. X',
+        //     'email' => 'maulanaelvn@gmail.com',
+        //     'namaJabatan' => 'Kepala Instalasi Gizi',
+        //     'password' => Hash::make('1')
+        // ]);
 
-        User::create([
-            'username' => 'kains dialis',
-            'nama' => 'Mr. X',
-            'email' => 'maulanaelvn@gmail.com',
-            'namaJabatan' => 'Kepala Instalasi Dialis',
-            'password' => Hash::make('1')
-        ]);
+        // User::create([
+        //     'username' => 'penjab gizi',
+        //     'nama' => 'Mr. X',
+        //     'email' => 'maulanaelvn@gmail.com',
+        //     'namaJabatan' => 'Penanggung Jawab Gizi',
+        //     'password' => Hash::make('1')
+        // ]);
 
-        User::create([
-            'username' => 'penjab dialis',
-            'nama' => 'Mr. X',
-            'email' => 'maulanaelvn@gmail.com',
-            'namaJabatan' => 'Penanggung Jawab Dialis',
-            'password' => Hash::make('1')
-        ]);
+        // User::create([
+        //     'username' => 'kains ranap dan rajal',
+        //     'nama' => 'Mr. X',
+        //     'email' => 'maulanaelvn@gmail.com',
+        //     'namaJabatan' => 'Kepala Instalasi Rawat Inap dan Rawat Jalan',
+        //     'password' => Hash::make('1')
+        // ]);
 
-        User::create([
-            'username' => 'kains mcu',
-            'nama' => 'Mr. X',
-            'email' => 'maulanaelvn@gmail.com',
-            'namaJabatan' => 'Kepala Instalasi MCU',
-            'password' => Hash::make('1')
-        ]);
+        // User::create([
+        //     'username' => 'penjab rajal',
+        //     'nama' => 'Mr. X',
+        //     'email' => 'maulanaelvn@gmail.com',
+        //     'namaJabatan' => 'Penanggung Jawab Rawat Jalan',
+        //     'password' => Hash::make('1')
+        // ]);
+
+        // User::create([
+        //     'username' => 'penjab ranap',
+        //     'nama' => 'Mr. X',
+        //     'email' => 'maulanaelvn@gmail.com',
+        //     'namaJabatan' => 'Penanggung Jawab Rawat Inap',
+        //     'password' => Hash::make('1')
+        // ]);
+
+        // User::create([
+        //     'username' => 'kains igd',
+        //     'nama' => 'Mr. X',
+        //     'email' => 'maulanaelvn@gmail.com',
+        //     'namaJabatan' => 'Kepala Instalasi Gawat Darurat',
+        //     'password' => Hash::make('1')
+        // ]);
+
+        // User::create([
+        //     'username' => 'karu igd',
+        //     'nama' => 'Mr. X',
+        //     'email' => 'maulanaelvn@gmail.com',
+        //     'namaJabatan' => 'Kepala Ruang Instalasi Gawat Darurat',
+        //     'password' => Hash::make('1')
+        // ]);
+
+        // User::create([
+        //     'username' => 'kains icu',
+        //     'nama' => 'Mr. X',
+        //     'email' => 'maulanaelvn@gmail.com',
+        //     'namaJabatan' => 'Kepala Instalasi Intensive Care Unit',
+        //     'password' => Hash::make('1')
+        // ]);
+
+        // User::create([
+        //     'username' => 'karu icu',
+        //     'nama' => 'Mr. X',
+        //     'email' => 'maulanaelvn@gmail.com',
+        //     'namaJabatan' => 'Kepala Ruang Intensive Care Unit',
+        //     'password' => Hash::make('1')
+        // ]);
+
+        // User::create([
+        //     'username' => 'kains radiologi',
+        //     'nama' => 'Mr. X',
+        //     'email' => 'maulanaelvn@gmail.com',
+        //     'namaJabatan' => 'Kepala Instalasi Radiologi',
+        //     'password' => Hash::make('1')
+        // ]);
+
+        // User::create([
+        //     'username' => 'penjab radiologi',
+        //     'nama' => 'Mr. X',
+        //     'email' => 'maulanaelvn@gmail.com',
+        //     'namaJabatan' => 'Penanggung Jawab Radiologi',
+        //     'password' => Hash::make('1')
+        // ]);
+
+        // User::create([
+        //     'username' => 'kains ibs',
+        //     'nama' => 'Mr. X',
+        //     'email' => 'maulanaelvn@gmail.com',
+        //     'namaJabatan' => 'Kepala Instalasi Bedah Sentral',
+        //     'password' => Hash::make('1')
+        // ]);
+
+        // User::create([
+        //     'username' => 'karu ibs',
+        //     'nama' => 'Mr. X',
+        //     'email' => 'maulanaelvn@gmail.com',
+        //     'namaJabatan' => 'Kepala Ruang Instalasi Bedah Sentral',
+        //     'password' => Hash::make('1')
+        // ]);
+
+        // User::create([
+        //     'username' => 'kains lab',
+        //     'nama' => 'Mr. X',
+        //     'email' => 'maulanaelvn@gmail.com',
+        //     'namaJabatan' => 'Kepala Instalasi Laboratorium',
+        //     'password' => Hash::make('1')
+        // ]);
+
+        // User::create([
+        //     'username' => 'penjab lab',
+        //     'nama' => 'Mr. X',
+        //     'email' => 'maulanaelvn@gmail.com',
+        //     'namaJabatan' => 'Penanggung Jawab Instalasi Laboratorium',
+        //     'password' => Hash::make('1')
+        // ]);
+
+        // User::create([
+        //     'username' => 'kains dialis',
+        //     'nama' => 'Mr. X',
+        //     'email' => 'maulanaelvn@gmail.com',
+        //     'namaJabatan' => 'Kepala Instalasi Dialis',
+        //     'password' => Hash::make('1')
+        // ]);
+
+        // User::create([
+        //     'username' => 'penjab dialis',
+        //     'nama' => 'Mr. X',
+        //     'email' => 'maulanaelvn@gmail.com',
+        //     'namaJabatan' => 'Penanggung Jawab Dialis',
+        //     'password' => Hash::make('1')
+        // ]);
+
+        // User::create([
+        //     'username' => 'kains mcu',
+        //     'nama' => 'Mr. X',
+        //     'email' => 'maulanaelvn@gmail.com',
+        //     'namaJabatan' => 'Kepala Instalasi MCU',
+        //     'password' => Hash::make('1')
+        // ]);
 
 
 
-        \App\Models\SuratKeluar::factory(100)->create();
-        \App\Models\Spo::factory(100)->create();
+        // \App\Models\SuratKeluar::factory(100)->create();
+        // \App\Models\Spo::factory(100)->create();
 
 
         // \App\Models\SuratMasuk::factory(100)->create();
 
-        $total = 50; // misalnya ingin membuat 20 data
-        $setengah = $total / 2;
+        // $total = 50; // misalnya ingin membuat 20 data
+        // $setengah = $total / 2;
 
-        for ($i = 0; $i < $total; $i++) {
-            \App\Models\SuratMasuk::factory()->create([
-                'status' => $i < $setengah
-                    ? 'Diarsipkan'
-                    : 'Diteruskan ke Kepala Instalasi PSRS'
-            ]);
-        }
+        // for ($i = 0; $i < $total; $i++) {
+        //     \App\Models\SuratMasuk::factory()->create([
+        //         'status' => $i < $setengah
+        //             ? 'Diarsipkan'
+        //             : 'Diteruskan ke Kepala Instalasi PSRS'
+        //     ]);
+        // }
 
 
         // \App\Models\SuratMasuk::factory(30)->create();
@@ -458,246 +567,246 @@ class DatabaseSeeder extends Seeder
 
         // SEEDER TABEL STRUKTUR ORGANISASI
 
-        StrukturOrganisasi::create([
-            'idUser' => 1,
-            'idAtasan' => 1,
-            'levelJabatan' => 1
-        ]);
+        // StrukturOrganisasi::create([
+        //     'idUser' => 1,
+        //     'idAtasan' => 1,
+        //     'levelJabatan' => 1
+        // ]);
 
-        StrukturOrganisasi::create([
-            'idUser' => 2,
-            'idAtasan' => 2,
-            'levelJabatan' => 2
-        ]);
+        // StrukturOrganisasi::create([
+        //     'idUser' => 2,
+        //     'idAtasan' => 2,
+        //     'levelJabatan' => 2
+        // ]);
 
-        StrukturOrganisasi::create([
-            'idUser' => 3,
-            'idAtasan' => 3,
-            'levelJabatan' => 2
-        ]);
+        // StrukturOrganisasi::create([
+        //     'idUser' => 3,
+        //     'idAtasan' => 3,
+        //     'levelJabatan' => 2
+        // ]);
 
-        StrukturOrganisasi::create([
-            'idUser' => 4,
-            'idAtasan' => 3,
-            'levelJabatan' => 3
-        ]);
+        // StrukturOrganisasi::create([
+        //     'idUser' => 4,
+        //     'idAtasan' => 3,
+        //     'levelJabatan' => 3
+        // ]);
 
-        StrukturOrganisasi::create([
-            'idUser' => 5,
-            'idAtasan' => 4,
-            'levelJabatan' => 4
-        ]);
+        // StrukturOrganisasi::create([
+        //     'idUser' => 5,
+        //     'idAtasan' => 4,
+        //     'levelJabatan' => 4
+        // ]);
 
-        StrukturOrganisasi::create([
-            'idUser' => 6,
-            'idAtasan' => 4,
-            'levelJabatan' => 4
-        ]);
+        // StrukturOrganisasi::create([
+        //     'idUser' => 6,
+        //     'idAtasan' => 4,
+        //     'levelJabatan' => 4
+        // ]);
 
-        StrukturOrganisasi::create([
-            'idUser' => 7,
-            'idAtasan' => 3,
-            'levelJabatan' => 3
-        ]);
+        // StrukturOrganisasi::create([
+        //     'idUser' => 7,
+        //     'idAtasan' => 3,
+        //     'levelJabatan' => 3
+        // ]);
 
-        StrukturOrganisasi::create([
-            'idUser' => 8,
-            'idAtasan' => 7,
-            'levelJabatan' => 4
-        ]);
+        // StrukturOrganisasi::create([
+        //     'idUser' => 8,
+        //     'idAtasan' => 7,
+        //     'levelJabatan' => 4
+        // ]);
 
-        StrukturOrganisasi::create([
-            'idUser' => 9,
-            'idAtasan' => 3,
-            'levelJabatan' => 3
-        ]);
+        // StrukturOrganisasi::create([
+        //     'idUser' => 9,
+        //     'idAtasan' => 3,
+        //     'levelJabatan' => 3
+        // ]);
 
-        StrukturOrganisasi::create([
-            'idUser' => 10,
-            'idAtasan' => 9,
-            'levelJabatan' => 4
-        ]);
+        // StrukturOrganisasi::create([
+        //     'idUser' => 10,
+        //     'idAtasan' => 9,
+        //     'levelJabatan' => 4
+        // ]);
 
-        StrukturOrganisasi::create([
-            'idUser' => 11,
-            'idAtasan' => 9,
-            'levelJabatan' => 4
-        ]);
+        // StrukturOrganisasi::create([
+        //     'idUser' => 11,
+        //     'idAtasan' => 9,
+        //     'levelJabatan' => 4
+        // ]);
 
-        StrukturOrganisasi::create([
-            'idUser' => 12,
-            'idAtasan' => 3,
-            'levelJabatan' => 3
-        ]);
+        // StrukturOrganisasi::create([
+        //     'idUser' => 12,
+        //     'idAtasan' => 3,
+        //     'levelJabatan' => 3
+        // ]);
 
-        StrukturOrganisasi::create([
-            'idUser' => 13,
-            'idAtasan' => 12,
-            'levelJabatan' => 4
-        ]);
+        // StrukturOrganisasi::create([
+        //     'idUser' => 13,
+        //     'idAtasan' => 12,
+        //     'levelJabatan' => 4
+        // ]);
 
-        StrukturOrganisasi::create([
-            'idUser' => 14,
-            'idAtasan' => 12,
-            'levelJabatan' => 4
-        ]);
+        // StrukturOrganisasi::create([
+        //     'idUser' => 14,
+        //     'idAtasan' => 12,
+        //     'levelJabatan' => 4
+        // ]);
 
-        StrukturOrganisasi::create([
-            'idUser' => 15,
-            'idAtasan' => 12,
-            'levelJabatan' => 4
-        ]);
+        // StrukturOrganisasi::create([
+        //     'idUser' => 15,
+        //     'idAtasan' => 12,
+        //     'levelJabatan' => 4
+        // ]);
 
-        StrukturOrganisasi::create([
-            'idUser' => 16,
-            'idAtasan' => 3,
-            'levelJabatan' => 3
-        ]);
+        // StrukturOrganisasi::create([
+        //     'idUser' => 16,
+        //     'idAtasan' => 3,
+        //     'levelJabatan' => 3
+        // ]);
 
-        StrukturOrganisasi::create([
-            'idUser' => 17,
-            'idAtasan' => 16,
-            'levelJabatan' => 4
-        ]);
+        // StrukturOrganisasi::create([
+        //     'idUser' => 17,
+        //     'idAtasan' => 16,
+        //     'levelJabatan' => 4
+        // ]);
 
-        StrukturOrganisasi::create([
-            'idUser' => 18,
-            'idAtasan' => 3,
-            'levelJabatan' => 3
-        ]);
+        // StrukturOrganisasi::create([
+        //     'idUser' => 18,
+        //     'idAtasan' => 3,
+        //     'levelJabatan' => 3
+        // ]);
 
-        StrukturOrganisasi::create([
-            'idUser' => 19,
-            'idAtasan' => 18,
-            'levelJabatan' => 4
-        ]);
+        // StrukturOrganisasi::create([
+        //     'idUser' => 19,
+        //     'idAtasan' => 18,
+        //     'levelJabatan' => 4
+        // ]);
 
-        StrukturOrganisasi::create([
-            'idUser' => 20,
-            'idAtasan' => 3,
-            'levelJabatan' => 3
-        ]);
+        // StrukturOrganisasi::create([
+        //     'idUser' => 20,
+        //     'idAtasan' => 3,
+        //     'levelJabatan' => 3
+        // ]);
 
-        StrukturOrganisasi::create([
-            'idUser' => 21,
-            'idAtasan' => 20,
-            'levelJabatan' => 4
-        ]);
+        // StrukturOrganisasi::create([
+        //     'idUser' => 21,
+        //     'idAtasan' => 20,
+        //     'levelJabatan' => 4
+        // ]);
 
-        StrukturOrganisasi::create([
-            'idUser' => 22,
-            'idAtasan' => 3,
-            'levelJabatan' => 3
-        ]);
+        // StrukturOrganisasi::create([
+        //     'idUser' => 22,
+        //     'idAtasan' => 3,
+        //     'levelJabatan' => 3
+        // ]);
 
-        StrukturOrganisasi::create([
-            'idUser' => 23,
-            'idAtasan' => 22,
-            'levelJabatan' => 4
-        ]);
+        // StrukturOrganisasi::create([
+        //     'idUser' => 23,
+        //     'idAtasan' => 22,
+        //     'levelJabatan' => 4
+        // ]);
 
-        StrukturOrganisasi::create([
-            'idUser' => 24,
-            'idAtasan' => 3,
-            'levelJabatan' => 3
-        ]);
+        // StrukturOrganisasi::create([
+        //     'idUser' => 24,
+        //     'idAtasan' => 3,
+        //     'levelJabatan' => 3
+        // ]);
 
-        StrukturOrganisasi::create([
-            'idUser' => 25,
-            'idAtasan' => 24,
-            'levelJabatan' => 4
-        ]);
+        // StrukturOrganisasi::create([
+        //     'idUser' => 25,
+        //     'idAtasan' => 24,
+        //     'levelJabatan' => 4
+        // ]);
 
-        StrukturOrganisasi::create([
-            'idUser' => 26,
-            'idAtasan' => 24,
-            'levelJabatan' => 4
-        ]);
+        // StrukturOrganisasi::create([
+        //     'idUser' => 26,
+        //     'idAtasan' => 24,
+        //     'levelJabatan' => 4
+        // ]);
 
-        StrukturOrganisasi::create([
-            'idUser' => 27,
-            'idAtasan' => 3,
-            'levelJabatan' => 3
-        ]);
+        // StrukturOrganisasi::create([
+        //     'idUser' => 27,
+        //     'idAtasan' => 3,
+        //     'levelJabatan' => 3
+        // ]);
 
-        StrukturOrganisasi::create([
-            'idUser' => 28,
-            'idAtasan' => 27,
-            'levelJabatan' => 4
-        ]);
+        // StrukturOrganisasi::create([
+        //     'idUser' => 28,
+        //     'idAtasan' => 27,
+        //     'levelJabatan' => 4
+        // ]);
 
-        StrukturOrganisasi::create([
-            'idUser' => 29,
-            'idAtasan' => 3,
-            'levelJabatan' => 3
-        ]);
+        // StrukturOrganisasi::create([
+        //     'idUser' => 29,
+        //     'idAtasan' => 3,
+        //     'levelJabatan' => 3
+        // ]);
 
-        StrukturOrganisasi::create([
-            'idUser' => 30,
-            'idAtasan' => 29,
-            'levelJabatan' => 4
-        ]);
+        // StrukturOrganisasi::create([
+        //     'idUser' => 30,
+        //     'idAtasan' => 29,
+        //     'levelJabatan' => 4
+        // ]);
 
-        StrukturOrganisasi::create([
-            'idUser' => 31,
-            'idAtasan' => 3,
-            'levelJabatan' => 3
-        ]);
+        // StrukturOrganisasi::create([
+        //     'idUser' => 31,
+        //     'idAtasan' => 3,
+        //     'levelJabatan' => 3
+        // ]);
 
-        StrukturOrganisasi::create([
-            'idUser' => 32,
-            'idAtasan' => 31,
-            'levelJabatan' => 4
-        ]);
+        // StrukturOrganisasi::create([
+        //     'idUser' => 32,
+        //     'idAtasan' => 31,
+        //     'levelJabatan' => 4
+        // ]);
 
-        StrukturOrganisasi::create([
-            'idUser' => 33,
-            'idAtasan' => 3,
-            'levelJabatan' => 3
-        ]);
+        // StrukturOrganisasi::create([
+        //     'idUser' => 33,
+        //     'idAtasan' => 3,
+        //     'levelJabatan' => 3
+        // ]);
 
-        StrukturOrganisasi::create([
-            'idUser' => 34,
-            'idAtasan' => 33,
-            'levelJabatan' => 4
-        ]);
+        // StrukturOrganisasi::create([
+        //     'idUser' => 34,
+        //     'idAtasan' => 33,
+        //     'levelJabatan' => 4
+        // ]);
 
-        StrukturOrganisasi::create([
-            'idUser' => 35,
-            'idAtasan' => 3,
-            'levelJabatan' => 3
-        ]);
+        // StrukturOrganisasi::create([
+        //     'idUser' => 35,
+        //     'idAtasan' => 3,
+        //     'levelJabatan' => 3
+        // ]);
 
-        StrukturOrganisasi::create([
-            'idUser' => 36,
-            'idAtasan' => 35,
-            'levelJabatan' => 4
-        ]);
+        // StrukturOrganisasi::create([
+        //     'idUser' => 36,
+        //     'idAtasan' => 35,
+        //     'levelJabatan' => 4
+        // ]);
 
-        StrukturOrganisasi::create([
-            'idUser' => 37,
-            'idAtasan' => 3,
-            'levelJabatan' => 3
-        ]);
+        // StrukturOrganisasi::create([
+        //     'idUser' => 37,
+        //     'idAtasan' => 3,
+        //     'levelJabatan' => 3
+        // ]);
 
-        StrukturOrganisasi::create([
-            'idUser' => 38,
-            'idAtasan' => 37,
-            'levelJabatan' => 4
-        ]);
+        // StrukturOrganisasi::create([
+        //     'idUser' => 38,
+        //     'idAtasan' => 37,
+        //     'levelJabatan' => 4
+        // ]);
 
-        StrukturOrganisasi::create([
-            'idUser' => 39,
-            'idAtasan' => 3,
-            'levelJabatan' => 3
-        ]);
+        // StrukturOrganisasi::create([
+        //     'idUser' => 39,
+        //     'idAtasan' => 3,
+        //     'levelJabatan' => 3
+        // ]);
 
 
 
         // SEEDER UNIT
 
-        Unit::create(['nama' => 'SDI & Administrasi']);
-        Unit::create(['nama' => 'Keuangan & Akuntansi']);
+        Unit::create(['nama' => 'Manajemen']);
+        Unit::create(['nama' => 'Kepala Sekolah']);
         Unit::create(['nama' => 'Umum']);
 
 
@@ -705,76 +814,76 @@ class DatabaseSeeder extends Seeder
 
         JenisRegulasi::create(['kodeJenisRegulasi' => 'KPTS', 'keterangan' => 'Keputusan']);
         JenisRegulasi::create(['kodeJenisRegulasi' => 'PER', 'keterangan' => 'Persetujuan']);
-        \App\Models\Regulasi::factory(100)->create();
-        DB::table('unit_user')->insert([
-            'user_id' => 10,
-            'unit_id' => 1,
-        ]);
+        // \App\Models\Regulasi::factory(100)->create();
+        // DB::table('unit_user')->insert([
+        //     'user_id' => 10,
+        //     'unit_id' => 1,
+        // ]);
 
-        $dataSpoUnit = [];
-        for ($i = 1; $i <= 100; $i++) {
-            $dataSpoUnit[] = [
-                'spo_id' => $i,
-                'unit_id' => 1,
-            ];
-        }
-        DB::table('spo_unit')->insert($dataSpoUnit);
+        // $dataSpoUnit = [];
+        // for ($i = 1; $i <= 100; $i++) {
+        //     $dataSpoUnit[] = [
+        //         'spo_id' => $i,
+        //         'unit_id' => 1,
+        //     ];
+        // }
+        // DB::table('spo_unit')->insert($dataSpoUnit);
 
-        $dataRegulasiUnit = [];
-        for ($i = 1; $i <= 100; $i++) {
-            $dataRegulasiUnit[] = [
-                'regulasi_id' => $i,
-                'unit_id' => 1,
-            ];
-        }
-        DB::table('regulasi_unit')->insert($dataRegulasiUnit);
+        // $dataRegulasiUnit = [];
+        // for ($i = 1; $i <= 100; $i++) {
+        //     $dataRegulasiUnit[] = [
+        //         'regulasi_id' => $i,
+        //         'unit_id' => 1,
+        //     ];
+        // }
+        // DB::table('regulasi_unit')->insert($dataRegulasiUnit);
 
-        $dataSudahDiteruskan = [];
-        for ($i = 1; $i <= 50; $i++) {
-            $dataSudahDiteruskan[] = [
-                'idSuratMasuk' => $i,
-                'idTujuanDisposisi' => 11,
-                'idPengirimDisposisi' => 10,
-                'tanggalDiteruskan' => Carbon::now(),
-                'status' => 'Diteruskan ke Kepala Sub Bagian Akuntansi dan Keuangan',
-                'instruksi' => 'tes'
-            ];
-        }
-        DB::table('distribusi_surat')->insert($dataSudahDiteruskan);
+        // $dataSudahDiteruskan = [];
+        // for ($i = 1; $i <= 50; $i++) {
+        //     $dataSudahDiteruskan[] = [
+        //         'idSuratMasuk' => $i,
+        //         'idTujuanDisposisi' => 5,
+        //         'idPengirimDisposisi' => 10,
+        //         'tanggalDiteruskan' => Carbon::now(),
+        //         'status' => 'Diteruskan ke Kepala Sub Bagian Akuntansi dan Keuangan',
+        //         'instruksi' => 'tes'
+        //     ];
+        // }
+        // DB::table('distribusi_surat')->insert($dataSudahDiteruskan);
 
 
 
-        \App\Models\PerjanjianKerjaSama::factory(100)->create();
-        $dataPksUser = [];
-        for ($i = 1; $i <= 100; $i++) {
-            $dataPksUser[] = [
-                'perjanjian_kerja_sama_id' => $i,
-                'user_id' => 10,
-            ];
-        }
-        DB::table('perjanjian_kerja_sama_user')->insert($dataPksUser);
+        // \App\Models\PerjanjianKerjaSama::factory(100)->create();
+        // $dataPksUser = [];
+        // for ($i = 1; $i <= 100; $i++) {
+        //     $dataPksUser[] = [
+        //         'perjanjian_kerja_sama_id' => $i,
+        //         'user_id' => 10,
+        //     ];
+        // }
+        // DB::table('perjanjian_kerja_sama_user')->insert($dataPksUser);
 
-        \App\Models\Undangan::factory(100)->create();
-        $dataUndanganUser = [];
-        for ($i = 1; $i <= 100; $i++) {
-            $dataUndanganUser[] = [
-                'undangan_id' => $i,
-                'user_id' => 10,
-            ];
-        }
-        DB::table('undangan_user')->insert($dataUndanganUser);
+        // \App\Models\Undangan::factory(100)->create();
+        // $dataUndanganUser = [];
+        // for ($i = 1; $i <= 100; $i++) {
+        //     $dataUndanganUser[] = [
+        //         'undangan_id' => $i,
+        //         'user_id' => 10,
+        //     ];
+        // }
+        // DB::table('undangan_user')->insert($dataUndanganUser);
 
         JenisInformasi::create(['nama' => 'Pengumuman/Himbauan']);
         JenisInformasi::create(['nama' => 'Edaran']);
 
-        \App\Models\Informasi::factory(100)->create();
-        $dataInformasiUser = [];
-        for ($i = 1; $i <= 100; $i++) {
-            $dataInformasiUser[] = [
-                'informasi_id' => $i,
-                'user_id' => 10,
-            ];
-        }
-        DB::table('informasi_user')->insert($dataInformasiUser);
+        // \App\Models\Informasi::factory(100)->create();
+        // $dataInformasiUser = [];
+        // for ($i = 1; $i <= 100; $i++) {
+        //     $dataInformasiUser[] = [
+        //         'informasi_id' => $i,
+        //         'user_id' => 10,
+        //     ];
+        // }
+        // DB::table('informasi_user')->insert($dataInformasiUser);
     }
 }

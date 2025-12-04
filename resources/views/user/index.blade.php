@@ -14,54 +14,48 @@
 
 
             {{-- ================= DESKTOP TABLE ================= --}}
-            <x-simple-table :headers="['ID', 'Nama', 'Jabatan', 'Level', 'Atasan', 'Aksi']">
+            <x-simple-table :headers="['ID', 'Nama', 'Jabatan', 'Status', 'Aksi']">
                 @foreach ($user as $u)
                     <tr class="hover:bg-green-50 transition-colors">
                         <x-td-default>{{ $u->id }}</x-td-default>
                         <x-td-default>{{ $u->nama }}</x-td-default>
-                        <x-td-default>{{ $u->namaJabatan }} @if ($u->isKhusus)
-                                (Akun Khusus)
-                            @endif </x-td-default>
+                        <x-td-default>{{ $u->namaJabatan }}</x-td-default>
                         <x-td-default>
-                            @if (is_null($u->strukturOrganisasi))
-                                Belum Diisi
+                            @if ($u->isAktif)
+                                <span>Aktif</span>
                             @else
-                                @switch($u->strukturOrganisasi->levelJabatan)
-                                    @case(1)
-                                        Sekretariat
-                                    @break
-
-                                    @case(2)
-                                        Direktur
-                                    @break
-
-                                    @case(3)
-                                        Kabag/Kabid
-                                    @break
-
-                                    @case(4)
-                                        Kains/Kasubbag/Kasi/Penjab
-                                    @break
-
-                                    @case(5)
-                                        Komite/Tim
-                                    @break
-
-                                    @default
-                                @endswitch
+                                <span class="text-red-700">Non Aktif</span>
                             @endif
                         </x-td-default>
-                        <x-td-default>
-                            @if (is_null($u->strukturOrganisasi))
-                                Belum Diisi
-                            @else
-                                {{ $u->strukturOrganisasi->atasan->namaJabatan }}
-                            @endif
-                        </x-td-default>
+
                         <x-td-action>
-                            <x-button-with-tooltip variant="warning" tooltip="Edit"
-                                url="/user/edit/{{ $u->id }}"><x-heroicon-s-pencil
+                            <x-button-with-tooltip variant="warning" tooltip="Edit Profil"
+                                url="/user/edit-profil/{{ $u->id }}"><x-heroicon-s-user
                                     class="w-4 h-4" /></x-button-with-tooltip>
+                            <x-button-with-tooltip variant="warning" tooltip="Edit Password"
+                                url="/user/edit-password/{{ $u->id }}"><x-heroicon-s-key
+                                    class="w-4 h-4" /></x-button-with-tooltip>
+                            <x-button-with-tooltip variant="warning" tooltip="Edit Lingkup Unit"
+                                url="/user/edit-lingkup-unit/{{ $u->id }}"><x-heroicon-s-building-office
+                                    class="w-4 h-4" /></x-button-with-tooltip>
+                            @if ($u->isAktif)
+                                <form action="/user/nonaktifkan" method="post">
+                                    @csrf
+                                    <input type="hidden" name="id" value="{{ $u->id }}">
+                                    <x-submit-button-with-tooltip tooltip="Nonaktifkan User" variant="danger">
+                                        <x-heroicon-s-x-mark class="w-4 h-4" />
+                                    </x-submit-button-with-tooltip>
+                                </form>
+                            @else
+                                <form action="/user/aktifkan" method="post">
+                                    @csrf
+                                    <input type="hidden" name="id" value="{{ $u->id }}">
+                                    <x-submit-button-with-tooltip tooltip="Aktifkan User" variant="success">
+                                        <x-heroicon-s-check class="w-4 h-4" />
+                                    </x-submit-button-with-tooltip>
+                                </form>
+                            @endif
+
                         </x-td-action>
                     </tr>
                 @endforeach

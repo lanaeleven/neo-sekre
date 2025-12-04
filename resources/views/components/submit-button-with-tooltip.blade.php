@@ -30,7 +30,7 @@
 
 <div class="relative group inline-block">
     <button type="{{ $type }}"
-        class="rounded transition-all duration-200 flex items-center justify-center {{ $btnClass }}">
+        class="cursor-pointer rounded transition-all duration-200 flex items-center justify-center {{ $btnClass }}">
         <span class="flex items-center">
             {{ $slot }}
         </span>
