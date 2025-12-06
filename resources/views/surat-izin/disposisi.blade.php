@@ -6,7 +6,7 @@
     <x-default-page-container>
         @include('components.alert-session')
 
-        <x-navbar-form title="Disposisi Surat" closeUrl="/surat-masuk/index" />
+        <x-navbar-form title="Disposisi Surat" closeUrl="/surat-izin/index" />
 
         <x-desktop-disposisi-wrapper>
             <x-desktop-disposisi-left-side>
@@ -14,22 +14,22 @@
                 <div class="flex justify-center">
                     <form action="/unduh-disposisi" method="post">
                         @csrf
-                        <input type="hidden" name="idSuratMasuk" value="{{ $suratMasuk->id }}">
+                        <input type="hidden" name="idSuratIzin" value="{{ $suratIzin->id }}">
                         <x-submit-button-with-tooltip tooltip="Download" variant="success">
                             Unduh Lembar Disposisi
                         </x-submit-button-with-tooltip>
                     </form>
                 </div>
-                <x-desktop-disposisi-left-side-item text1="Sifat Surat" text2="{{ $suratMasuk->sifatSurat }}" />
-                <x-desktop-disposisi-left-side-item text1="Status" text2="{{ $suratMasuk->status }}" />
-                <x-desktop-disposisi-left-side-item text1="Indeks" text2="{{ $suratMasuk->index }}" />
-                <x-desktop-disposisi-left-side-item text1="Nomor Surat" text2="{{ $suratMasuk->nomorSurat }}" />
-                <x-desktop-disposisi-left-side-item text1="Tanggal Surat" text2="{{ $suratMasuk->tanggalSurat }}" />
-                <x-desktop-disposisi-left-side-item text1="Tanggal Agenda" text2="{{ $suratMasuk->tanggalAgenda }}" />
-                <x-desktop-disposisi-left-side-item text1="Pengirim" text2="{{ $suratMasuk->pengirim }}" />
-                <x-desktop-disposisi-left-side-item text1="Perihal" text2="{{ $suratMasuk->perihal }}" />
-                <x-desktop-disposisi-left-side-item-viewdownload filePath="{{ $suratMasuk->filePath }}"
-                    fileName="{{ $suratMasuk->fileName }}" />
+                <x-desktop-disposisi-left-side-item text1="Sifat Surat" text2="{{ $suratIzin->sifatSurat }}" />
+                <x-desktop-disposisi-left-side-item text1="Status" text2="{{ $suratIzin->status }}" />
+                <x-desktop-disposisi-left-side-item text1="Indeks" text2="{{ $suratIzin->index }}" />
+                <x-desktop-disposisi-left-side-item text1="Nomor Surat" text2="{{ $suratIzin->nomorSurat }}" />
+                <x-desktop-disposisi-left-side-item text1="Tanggal Surat" text2="{{ $suratIzin->tanggalSurat }}" />
+                <x-desktop-disposisi-left-side-item text1="Tanggal Agenda" text2="{{ $suratIzin->tanggalAgenda }}" />
+                <x-desktop-disposisi-left-side-item text1="Pengirim" text2="{{ $suratIzin->pengirim }}" />
+                <x-desktop-disposisi-left-side-item text1="Perihal" text2="{{ $suratIzin->perihal }}" />
+                <x-desktop-disposisi-left-side-item-viewdownload filePath="{{ $suratIzin->filePath }}"
+                    fileName="{{ $suratIzin->fileName }}" />
             </x-desktop-disposisi-left-side>
 
 
@@ -46,12 +46,11 @@
                     @endif
                 </x-desktop-disposisi-right-side-top-item>
 
-                @if ($suratMasuk->statusArsip == 1 && auth()->user()->id == 1)
-                    <x-desktop-disposisi-buka-arsip name="idSuratMasuk" value="{{ $suratMasuk->id }}"
-                        urlName="surat-masuk" />
+                @if ($suratIzin->statusArsip == 1 && auth()->user()->id == 1)
+                    <x-desktop-disposisi-buka-arsip name="idSuratIzin" value="{{ $suratIzin->id }}" urlName="surat-izin" />
                 @else
-                    <x-desktop-teruskan-arsipkan idSurat="{{ $suratMasuk->id }}" :terusan="$terusan" name="idSuratMasuk"
-                        urlName='surat-masuk' />
+                    <x-desktop-teruskan-arsipkan :idSurat="$suratIzin->id" :terusan="$terusan" name="idSuratIzin"
+                        urlName='surat-izin' />
                 @endif
 
             </x-desktop-disposisi-right-side>
@@ -60,17 +59,17 @@
         <x-mobile-card-container>
             <x-mobile-card-border>
                 <div class="text-center font-semibold p-2">Informasi Surat</div>
-                <x-mobile-card-text-bold text="Perihal: {{ $suratMasuk->perihal }}" />
-                <x-mobile-card-text-normal text="Sifat: {{ $suratMasuk->sifatSurat }}" />
-                <x-mobile-card-text-normal text="Nomor: {{ $suratMasuk->nomorSurat }}" />
-                <x-mobile-card-text-normal text="Dari: {{ $suratMasuk->pengirim }}" />
-                <x-mobile-card-text-lite text="Tgl Surat: {{ $suratMasuk->tanggalSurat }}" />
-                <x-mobile-card-text-lite text="Tgl Agenda: {{ $suratMasuk->tanggalSurat }}" />
-                <x-mobile-card-text-badge text="{{ $suratMasuk->status }}" />
+                <x-mobile-card-text-bold text="Perihal: {{ $suratIzin->perihal }}" />
+                <x-mobile-card-text-normal text="Sifat: {{ $suratIzin->sifatSurat }}" />
+                <x-mobile-card-text-normal text="Nomor: {{ $suratIzin->nomorSurat }}" />
+                <x-mobile-card-text-normal text="Dari: {{ $suratIzin->pengirim }}" />
+                <x-mobile-card-text-lite text="Tgl Surat: {{ $suratIzin->tanggalSurat }}" />
+                <x-mobile-card-text-lite text="Tgl Agenda: {{ $suratIzin->tanggalSurat }}" />
+                <x-mobile-card-text-badge text="{{ $suratIzin->status }}" />
                 <div class="flex justify-end">
                     <form action="/unduh-disposisi" method="post">
                         @csrf
-                        <input type="hidden" name="idSuratMasuk" value="{{ $suratMasuk->id }}">
+                        <input type="hidden" name="idSuratIzin" value="{{ $suratIzin->id }}">
                         <x-submit-button-with-tooltip tooltip="Download" variant="success">
                             Unduh Lembar Disposisi
                         </x-submit-button-with-tooltip>
@@ -91,11 +90,11 @@
 
             <x-mobile-card-border>
                 <div class="text-center font-semibold p-2">Teruskan Surat</div>
-                @if ($suratMasuk->statusArsip == 1 && auth()->user()->id == 1)
-                    <form action="/surat-masuk/buka-arsip" method="post" id="bukaArsipForm"
+                @if ($suratIzin->statusArsip == 1 && auth()->user()->id == 1)
+                    <form action="/surat-izin/buka-arsip" method="post" id="bukaArsipForm"
                         class="flex justify-center items-center">
                         @csrf
-                        <input type="hidden" name="idSuratMasuk" value="{{ $suratMasuk->id }}">
+                        <input type="hidden" name="idSuratIzin" value="{{ $suratIzin->id }}">
                         <x-green-submit-button-option-form formId="bukaArsipForm">
                             Buka Arsip
                         </x-green-submit-button-option-form>
@@ -103,12 +102,12 @@
                 @else
                     {{-- FORM TERUSKAN --}}
                     <div id="teruskanInputSection">
-                        <form action="/surat-masuk/teruskan" id="formTeruskanMobile" method="post"
+                        <form action="/surat-izin/teruskan" id="formTeruskanMobile" method="post"
                             enctype="multipart/form-data">
                             @csrf
                             <div class="flex justify-evenly">
                                 <input type="hidden" name="idPengirimDisposisi" value="{{ auth()->user()->id }}">
-                                <input type="hidden" name="idSuratMasuk" value="{{ $suratMasuk->id }}">
+                                <input type="hidden" name="idSuratIzin" value="{{ $suratIzin->id }}">
 
                                 <div>
                                     <x-dropdown-input-no-label labelPilihan="Pilih Tujuan Terusan" :name="'idTujuanDisposisi'"
@@ -122,7 +121,7 @@
                             </div>
 
                             <div>
-                                <x-text-area-input-no-label placeholder="Masukkan Instruksi terusan ..." name="instruksi"
+                                <x-text-area-input-no-label placeholder="Izinkan Instruksi terusan ..." name="instruksi"
                                     id="instruksiTeruskan" value="{{ old('instruksi') }}" :required="true" />
                             </div>
                             <div id="teruskanActionSection" class="flex justify-center">
@@ -139,11 +138,11 @@
 
                     {{-- FORM ARSIPKAN --}}
                     <div id="arsipkanInputSection">
-                        <form action="/surat-masuk/arsipkan" id="formArsipkanMobile" method="post"
+                        <form action="/surat-izin/arsipkan" id="formArsipkanMobile" method="post"
                             enctype="multipart/form-data">
                             @csrf
 
-                            <input type="hidden" name="idSuratMasuk" value="{{ $suratMasuk->id }}">
+                            <input type="hidden" name="idSuratIzin" value="{{ $suratIzin->id }}">
                             <input type="hidden" name="idTujuanDisposisi" value="1">
                             <input type="hidden" name="idPengirimDisposisi" value="{{ auth()->user()->id }}">
 
@@ -152,7 +151,7 @@
                             </div>
 
                             <div>
-                                <x-text-area-input-no-label placeholder="Masukkan keterangan arsip ..." name="instruksi"
+                                <x-text-area-input-no-label placeholder="Izinkan keterangan arsip ..." name="instruksi"
                                     id="instruksiArsip" value="{{ old('instruksi') }}" :required="true" />
                             </div>
                             <div id="arsipkanActionSection" class="flex justify-center">
@@ -166,7 +165,6 @@
             </x-mobile-card-border>
         </x-mobile-card-container>
     </x-default-page-container>
-
     <script>
         document.querySelectorAll('.close-alert').forEach(btn => {
             btn.addEventListener('click', function() {
@@ -174,5 +172,4 @@
             });
         });
     </script>
-
 @endsection

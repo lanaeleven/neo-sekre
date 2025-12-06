@@ -735,6 +735,7 @@ class SuratMasukController extends Controller
 
     public function teruskan(Request $request): RedirectResponse
     {
+
         // $perihal = session('search_query_perihal', '');
 
         // pembedaan redirect user sekre dan non-sekre
@@ -1660,5 +1661,14 @@ class SuratMasukController extends Controller
         }
 
         return view('surat-masuk.laporan-per-tujuan', ['title' => 'Surat Masuk Per Tujuan Disposisi', 'active' => 'laporan', 'rekap' => $rekap->get()]);
+    }
+
+    public function indexNs()
+    {
+        return view('surat-masuk.index-ns', [
+            'title' => 'Surat Masuk',
+            'active' => 'surat masuk',
+            'isForm' => false
+        ]);
     }
 }

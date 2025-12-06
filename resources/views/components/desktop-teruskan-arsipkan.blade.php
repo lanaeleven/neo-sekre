@@ -1,4 +1,4 @@
-@props(['idSuratMasuk', 'terusan' => []])
+@props(['idSurat', 'terusan' => [], 'name' => 'surat', 'urlName' => 'surat-default'])
 
 <x-desktop-disposisi-right-side-bottom-item>
 
@@ -26,11 +26,11 @@
 
         {{-- FORM TERUSKAN --}}
         <div id="teruskanInputSection">
-            <form action="/surat-masuk/teruskan" id="formTeruskan" method="post" enctype="multipart/form-data">
+            <form action="/{{ $urlName }}/teruskan" id="formTeruskan" method="post" enctype="multipart/form-data">
                 @csrf
                 <div class="flex justify-evenly">
                     <input type="hidden" name="idPengirimDisposisi" value="{{ auth()->user()->id }}">
-                    <input type="hidden" name="idSuratMasuk" value="{{ $idSuratMasuk }}">
+                    <input type="hidden" name="{{ $name }}" value="{{ $idSurat }}">
 
                     <div>
                         <x-dropdown-input-no-label labelPilihan="Pilih Tujuan Terusan" :name="'idTujuanDisposisi'"
@@ -51,10 +51,10 @@
 
         {{-- FORM ARSIPKAN --}}
         <div id="arsipkanInputSection" class="hidden">
-            <form action="/surat-masuk/arsipkan" id="formArsipkan" method="post" enctype="multipart/form-data">
+            <form action="/{{ $urlName }}/arsipkan" id="formArsipkan" method="post" enctype="multipart/form-data">
                 @csrf
 
-                <input type="hidden" name="idSuratMasuk" value="{{ $idSuratMasuk }}">
+                <input type="hidden" name="{{ $name }}" value="{{ $idSurat }}">
                 <input type="hidden" name="idTujuanDisposisi" value="1">
                 <input type="hidden" name="idPengirimDisposisi" value="{{ auth()->user()->id }}">
 

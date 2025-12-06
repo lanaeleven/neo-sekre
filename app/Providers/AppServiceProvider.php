@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\DistribusiSurat;
+use App\Models\DistribusiSuratIzin;
 use App\Models\User;
 use App\Models\SuratMasuk;
 use Carbon\Carbon;
@@ -54,6 +55,10 @@ class AppServiceProvider extends ServiceProvider
         });
 
         Gate::define('disposisi-surat', function (User $user, DistribusiSurat $distribusiSurat) {
+            return $user->id == $distribusiSurat->idTujuanDisposisi;
+        });
+
+        Gate::define('disposisi-surat-izin', function (User $user, DistribusiSuratIzin $distribusiSurat) {
             return $user->id == $distribusiSurat->idTujuanDisposisi;
         });
 

@@ -52,6 +52,16 @@ class User extends Authenticatable
         return $this->hasMany(DistribusiSurat::class, 'idTujuanDisposisi');
     }
 
+    public function mengirimDSIzin(): HasMany
+    {
+        return $this->hasMany(DistribusiSuratIzin::class, 'idPengirimDisposisi');
+    }
+
+    public function menerimaDSIzin(): HasMany
+    {
+        return $this->hasMany(DistribusiSuratIzin::class, 'idTujuanDisposisi');
+    }
+
     public function senderPengirimKhusus(): HasMany
     {
         return $this->hasMany(PengirimKhusus::class, 'idUser');
@@ -85,6 +95,11 @@ class User extends Authenticatable
     public function suratMasuk(): HasMany
     {
         return $this->hasMany(SuratMasuk::class, 'idPengirim');
+    }
+
+    public function suratIzin(): HasMany
+    {
+        return $this->hasMany(SuratIzin::class, 'idPengirim');
     }
 
     public function units(): BelongsToMany

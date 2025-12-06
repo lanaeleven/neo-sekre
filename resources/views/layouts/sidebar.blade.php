@@ -13,6 +13,15 @@
             'icons' => ['active' => 'heroicon-s-inbox-arrow-down', 'inactive' => 'heroicon-o-inbox-arrow-down'],
         ],
         [
+            'label' => 'Surat Izin',
+            'key' => 'surat izin',
+            'route' => 'surat-izin.index',
+            'icons' => [
+                'active' => 'heroicon-s-clipboard-document-check',
+                'inactive' => 'heroicon-o-clipboard-document-check',
+            ],
+        ],
+        [
             'label' => 'Surat Keluar',
             'key' => 'surat keluar',
             'route' => 'surat-keluar.index',

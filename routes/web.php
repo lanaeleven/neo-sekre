@@ -18,6 +18,7 @@ use App\Http\Controllers\UnitController;
 use App\Http\Controllers\SuratMasukController;
 use App\Http\Controllers\SuratKeluarController;
 use App\Http\Controllers\StrukturOrganisasiController;
+use App\Http\Controllers\SuratIzinController;
 use App\Http\Controllers\UndanganController;
 
 /*
@@ -37,6 +38,7 @@ Route::get('/', [DashboardController::class, 'create'])->middleware('auth')->nam
 // Route::get('/email', [EmailController::class, 'index']);
 
 Route::get('/surat-masuk/index', [SuratMasukController::class, 'create'])->middleware('sekre')->name('surat-masuk.index');
+Route::get('/surat-masuk/index-ns', [SuratMasukController::class, 'indexNs'])->middleware('notSekre')->name('surat-masuk.index-ns');
 Route::get('/surat-masuk/s/{keterangan}', [SuratMasukController::class, 'create'])->middleware('sekre');
 Route::get('/laporan/distribusi-surat/{keterangan}', [SuratMasukController::class, 'laporanDistribusiSurat'])->middleware('sekre');
 Route::get('/surat-masuk/tambah', [SuratMasukController::class, 'tambah'])->middleware('sekre');
@@ -58,6 +60,27 @@ Route::post('/surat-masuk/arsipkan', [SuratMasukController::class, 'arsipkan']);
 Route::post('/surat-masuk/buka-arsip', [SuratMasukController::class, 'bukaArsip']);
 Route::post('/unduh-disposisi', [SuratMasukController::class, 'unduhDisposisi']);
 Route::post('/unduh-rekap-suratmasuk', [SuratMasukController::class, 'rekapSuratMasuk']);
+
+Route::get('/surat-izin/index', [SuratIzinController::class, 'create'])->middleware('sekre')->name('surat-izin.index');
+Route::get('/surat-izin/index-ns', [SuratIzinController::class, 'indexNs'])->middleware('notSekre')->name('surat-izin.index-ns');
+Route::get('/surat-izin/s/{keterangan}', [SuratIzinController::class, 'create'])->middleware('sekre');
+Route::get('/laporan/distribusi-surat/{keterangan}', [SuratIzinController::class, 'laporanDistribusiSurat'])->middleware('sekre');
+Route::get('/surat-izin/tambah', [SuratIzinController::class, 'tambah'])->middleware('sekre');
+Route::get('/surat-izin/edit/{suratIzin}', [SuratIzinController::class, 'edit'])->middleware('sekre');
+Route::get('/surat-izin/disposisi/{suratIzin}', [SuratIzinController::class, 'disposisi'])->middleware('auth');
+Route::get('/surat-izin/lacak-distribusi/{suratIzin}', [SuratIzinController::class, 'lacakDistribusi'])->middleware('auth');
+Route::get('/surat-izin/ns/belum-diteruskan', [SuratIzinController::class, 'nonSekreBelumDiteruskan'])->middleware('notSekre')->name('surat-izin.belum-diteruskan');
+Route::get('/surat-izin/ns/sudah-diteruskan', [SuratIzinController::class, 'nonSekreSudahDiteruskan'])->middleware('notSekre')->name('surat-izin.sudah-diteruskan');
+Route::get('/surat-izin/ns/sudah-diarsipkan', [SuratIzinController::class, 'nonSekreSudahDiarsipkan'])->middleware('notSekre')->name('surat-izin.sudah-diarsipkan');
+Route::get('/surat-izin/ns/dikirim', [SuratIzinController::class, 'nonSekreDikirim'])->middleware('notSekre')->name('surat-izin.yang-dikirim');
+// Route::get('/surat-izin/terusan-surat/{idSuratMasuk}/{terusanSurat}/edit', [SuratIzinController::class, 'editTerusanSurat'])->middleware('sekre');
+Route::post('/surat-izin/tambah', [SuratIzinController::class, 'store']);
+Route::post('/surat-izin/save', [SuratIzinController::class, 'save']);
+Route::post('/surat-izin/teruskan', [SuratIzinController::class, 'teruskan']);
+Route::post('/surat-izin/arsipkan', [SuratIzinController::class, 'arsipkan']);
+Route::post('/surat-izin/buka-arsip', [SuratIzinController::class, 'bukaArsip']);
+Route::post('/unduh-disposisi', [SuratIzinController::class, 'unduhDisposisi']);
+// Route::post('/unduh-rekap-suratmasuk', [SuratIzinController::class, 'rekapSuratMasuk']);
 
 Route::get('/surat-keluar/index', [SuratKeluarController::class, 'create'])->middleware('sekre')->name('surat-keluar.index');
 Route::get('/surat-keluar/tambah', [SuratKeluarController::class, 'tambah'])->middleware('sekre');
