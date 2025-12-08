@@ -21,33 +21,6 @@
                 'inactive' => 'heroicon-o-clipboard-document-check',
             ],
         ],
-        // [
-        //     'label' => 'Surat Masuk Belum Diteruskan',
-        //     'key' => 'belum diteruskan',
-        //     'route' => 'surat-masuk.belum-diteruskan',
-        //     'icons' => ['active' => 'heroicon-s-exclamation-triangle', 'inactive' => 'heroicon-o-exclamation-triangle'],
-        // ],
-        // [
-        //     'label' => 'Surat Masuk Sudah Diteruskan',
-        //     'key' => 'sudah diteruskan',
-        //     'route' => 'surat-masuk.sudah-diteruskan',
-        //     'icons' => ['active' => 'heroicon-s-check-circle', 'inactive' => 'heroicon-o-check-circle'],
-        // ],
-        // [
-        //     'label' => 'Surat Masuk Sudah Diarsipkan',
-        //     'key' => 'sudah diarsipkan',
-        //     'route' => 'surat-masuk.sudah-diarsipkan',
-        //     'icons' => ['active' => 'heroicon-s-briefcase', 'inactive' => 'heroicon-o-briefcase'],
-        // ],
-        // [
-        //     'label' => 'Surat Masuk yang Dikirim',
-        //     'key' => 'yang dikirim',
-        //     'route' => 'surat-masuk.yang-dikirim',
-        //     'icons' => [
-        //         'active' => 'heroicon-s-arrow-top-right-on-square',
-        //         'inactive' => 'heroicon-o-arrow-top-right-on-square',
-        //     ],
-        // ],
         [
             'label' => 'Standar Prosedur Operasional',
             'key' => 'spo',

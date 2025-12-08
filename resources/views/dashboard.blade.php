@@ -3,16 +3,16 @@
     <x-default-page-container>
         {{-- NAVBAR --}}
         <x-navbar title="{{ $title }}" urlTambah="/surat-masuk/tambah" />
-        @include('layouts.mobile-sidebar')
-
-        @if (session()->has('success'))
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                {{ session('success') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        @endif
 
         @can('dashboard-sekre')
+            @include('layouts.mobile-sidebar')
+
+            @if (session()->has('success'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
             {{-- DASHBOARD SEKRETARIAT --}}
             <x-mobile-card-container>
                 <x-dashboard-card title="Surat Masuk" value="{{ $suratMasukBulanIni }}" icon="heroicon-s-inbox-arrow-down"
@@ -49,6 +49,14 @@
 
         @can('dashboard-not-sekre')
             {{-- DASHBOARD NON SEKRETARIAT --}}
+            @include('layouts.mobile-sidebar-ns')
+
+            @if (session()->has('success'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
 
             <div class="col">
                 <h3 class="fw-semibold fs-3 mb-3 text-center">DASHBOARD</h3>

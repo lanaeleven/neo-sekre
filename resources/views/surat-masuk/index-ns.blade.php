@@ -3,6 +3,7 @@
     <x-default-page-container>
         {{-- NAVBAR --}}
         <x-navbar title="{{ $title }}" urlTambah="#" />
+        @include('layouts.mobile-sidebar-ns')
 
         @if (session()->has('success'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">

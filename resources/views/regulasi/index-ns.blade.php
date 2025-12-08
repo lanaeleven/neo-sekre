@@ -8,6 +8,7 @@
         <x-default-page-container>
             {{-- NAVBAR --}}
             <x-navbar title="{{ $title }}" urlTambah="#" />
+            @include('layouts.mobile-sidebar-ns')
 
             {{-- Pagination Mobile --}}
             <x-mobile-pagination>

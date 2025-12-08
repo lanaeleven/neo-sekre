@@ -8,37 +8,37 @@
         [
             'label' => 'Surat Masuk',
             'key' => 'surat masuk',
-            'route' => 'surat-masuk.index',
+            'route' => 'surat-masuk.index-ns',
         ],
         [
             'label' => 'Surat Izin',
             'key' => 'surat izin',
-            'route' => 'surat-izin.index',
-        ],
-        [
-            'label' => 'Surat Keluar',
-            'key' => 'surat keluar',
-            'route' => 'surat-keluar.index',
+            'route' => 'surat-izin.index-ns',
         ],
         [
             'label' => 'Standar Prosedur Operasional',
             'key' => 'spo',
-            'route' => 'spo.index',
+            'route' => 'spo.index-ns',
         ],
         [
             'label' => 'Regulasi',
             'key' => 'regulasi',
-            'route' => 'regulasi.index',
+            'route' => 'regulasi.index-ns',
         ],
         [
             'label' => 'Perjanjian Kerja Sama',
             'key' => 'pks',
-            'route' => 'pks.index',
+            'route' => 'pks.index-ns',
         ],
         [
             'label' => 'Informasi',
             'key' => 'informasi',
-            'route' => 'informasi.index',
+            'route' => 'informasi.index-ns',
+        ],
+        [
+            'label' => 'Profil Akun',
+            'key' => 'profil akun',
+            'route' => 'user.atur-akun-ns',
         ],
     ];
 @endphp
@@ -148,4 +148,27 @@
     function closeLogoutModal() {
         document.getElementById('logoutModalNs').classList.add('hidden');
     }
+</script>
+
+<script>
+    document.getElementById('openMenu').onclick = () => {
+        console.log('openMenu clicked');
+
+        document.getElementById('mobileSidebar').classList.remove('hidden');
+    };
+    document.getElementById('mobileSidebar').onclick = (e) => {
+        if (e.target.id === 'mobileSidebar')
+            document.getElementById('mobileSidebar').classList.add('hidden');
+    };
+
+    document.getElementById('openFilter').onclick = () =>
+        document.getElementById('filterDrawer').classList.remove('hidden');
+
+    document.getElementById('closeFilter').onclick = () =>
+        document.getElementById('filterDrawer').classList.add('hidden');
+
+    document.getElementById('filterDrawer').onclick = (e) => {
+        if (e.target.id === 'filterDrawer')
+            document.getElementById('filterDrawer').classList.add('hidden');
+    };
 </script>
