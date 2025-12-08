@@ -1,12 +1,85 @@
-<div id="mobileSidebar" class="fixed inset-0 bg-black/30 backdrop-blur-sm hidden z-50 lg:hidden">
+@php
+    $menus = [
+        [
+            'label' => 'Dashboard',
+            'key' => 'dashboard',
+            'route' => 'dashboard',
+        ],
+        [
+            'label' => 'Surat Masuk',
+            'key' => 'surat masuk',
+            'route' => 'surat-masuk.index',
+        ],
+        [
+            'label' => 'Surat Izin',
+            'key' => 'surat izin',
+            'route' => 'surat-izin.index',
+        ],
+        [
+            'label' => 'Surat Keluar',
+            'key' => 'surat keluar',
+            'route' => 'surat-keluar.index',
+        ],
+        [
+            'label' => 'Standar Prosedur Operasional',
+            'key' => 'spo',
+            'route' => 'spo.index',
+        ],
+        [
+            'label' => 'Regulasi',
+            'key' => 'regulasi',
+            'route' => 'regulasi.index',
+        ],
+        [
+            'label' => 'Perjanjian Kerja Sama',
+            'key' => 'pks',
+            'route' => 'pks.index',
+        ],
+        [
+            'label' => 'Informasi',
+            'key' => 'informasi',
+            'route' => 'informasi.index',
+        ],
+    ];
+@endphp
 
-    <div class="w-64 bg-white h-full shadow-xl p-4 animate-slideIn">
-        <h2 class="text-lg font-semibold mb-4 text-green-700">Menu</h2>
+<div id="mobileSidebar" class="fixed inset-0 bg-black/40 backdrop-blur-sm hidden z-50 lg:hidden">
 
-        <a href="/surat-masuk/index" class="block px-3 py-2 rounded hover:bg-gray-100">Surat Masuk</a>
-        <a href="/surat-masuk/tambah" class="block px-3 py-2 rounded hover:bg-gray-100">Tambah Surat Masuk</a>
-        <a href="/surat-keluar/index" class="block px-3 py-2 rounded hover:bg-gray-100">Surat Keluar</a>
-        <a href="/surat-keluar/tambah" class="block px-3 py-2 rounded hover:bg-gray-100">Tambah Surat Keluar</a>
+    <div class="w-72 bg-white h-full shadow-2xl p-5 rounded-r-2xl animate-[slideIn_0.3s_ease-out]">
 
+        <h2 class="font-semibold mb-5 text-green-700 text-lg tracking-wide">
+            Menu
+        </h2>
+
+        <div class="space-y-2">
+            @foreach ($menus as $menu)
+                @php
+                    $isActive = isset($active) && $active === $menu['key'];
+                @endphp
+
+                <a href="{{ route($menu['route']) }}"
+                    class="
+                        block px-4 py-2.5 rounded-lg transition-all text-sm
+                        hover:bg-green-50 hover:text-green-700
+                        {{ $isActive ? 'bg-green-100 text-green-700 font-semibold shadow-sm' : 'text-gray-700' }}
+                    ">
+                    {{ $menu['label'] }}
+                </a>
+            @endforeach
+        </div>
     </div>
 </div>
+
+<style>
+    @keyframes slideIn {
+        from {
+            transform: translateX(-100%);
+            opacity: 0;
+        }
+
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+</style>

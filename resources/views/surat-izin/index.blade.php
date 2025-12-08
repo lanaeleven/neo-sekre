@@ -18,7 +18,7 @@
         @include('layouts.mobile-sidebar')
 
         {{-- ================= MOBILE FILTER DRAWER ================= --}}
-        <x-mobile-filter-drawer urlFilter="/surat-izin/index">
+        <x-mobile-filter-drawer urlFilter="/surat-izin/index" :withAddOption="true" addOptionUrl="/surat-izin/tambah">
             <x-range-date-filter />
             <x-input-field-filter :isLabel="false" name="index" type="number" placeholder="Index" />
             <x-input-field-filter :isLabel="false" name="pengirim" type="text" placeholder="Pengirim" />

@@ -1,5 +1,7 @@
 <script>
     document.getElementById('openMenu').onclick = () => {
+        console.log('openMenu clicked');
+
         document.getElementById('mobileSidebar').classList.remove('hidden');
     };
     document.getElementById('mobileSidebar').onclick = (e) => {

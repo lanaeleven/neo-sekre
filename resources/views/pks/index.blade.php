@@ -17,7 +17,7 @@
             {{-- ================= MOBILE SIDEBAR (MENU) ================= --}}
             @include('layouts.mobile-sidebar')
 
-            <x-mobile-filter-drawer urlFilter="/pks/index">
+            <x-mobile-filter-drawer urlFilter="/pks/index" :withAddOption="true" addOptionUrl="/pks/tambah">
                 <x-range-date-filter />
                 <x-input-field-filter :isLabel="false" name="index" type="number" placeholder="Index" />
                 <x-input-field-filter :isLabel="false" name="tujuan" type="text" placeholder="Tujuan" />

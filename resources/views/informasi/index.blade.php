@@ -17,7 +17,7 @@
             {{-- ================= MOBILE SIDEBAR (MENU) ================= --}}
             @include('layouts.mobile-sidebar')
 
-            <x-mobile-filter-drawer urlFilter="/informasi/index">
+            <x-mobile-filter-drawer urlFilter="/informasi/index" :withAddOption="true" addOptionUrl="/informasi/tambah">
                 <x-range-date-filter />
                 <x-input-field-filter :isLabel="false" name="index" type="number" placeholder="Index" />
                 <x-mobile-dropdown-field-filter name='jenisInformasi' optionLabelDefault='Semua Jenis' :options="$jenisInformasi" />

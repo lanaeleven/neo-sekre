@@ -17,7 +17,7 @@
             {{-- ================= MOBILE SIDEBAR (MENU) ================= --}}
             @include('layouts.mobile-sidebar')
 
-            <x-mobile-filter-drawer urlFilter="/spo/index">
+            <x-mobile-filter-drawer urlFilter="/spo/index" :withAddOption="true" addOptionUrl="/spo/tambah">
                 <x-range-date-filter />
                 <x-input-field-filter :isLabel="false" name="index" type="number" placeholder="Index" />
                 <x-input-field-filter :isLabel="false" name="tujuan" type="text" placeholder="Tujuan" />

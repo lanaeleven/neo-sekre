@@ -2,7 +2,7 @@
 @section('container')
     <x-default-page-container>
         {{-- NAVBAR --}}
-        <x-navbar title="{{ $title }}" urlTambah="#" />
+        <x-navbar title="{{ $title }}" urlTambah="/surat-izin/tambah-ns" />
 
         @if (session()->has('success'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">

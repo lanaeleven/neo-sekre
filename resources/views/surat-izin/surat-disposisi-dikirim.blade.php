@@ -8,6 +8,7 @@
 
         {{-- NAVBAR --}}
         <x-navbar title="{{ $title }}" urlTambah="#" />
+        @include('components.alert-session')
 
         {{-- Pagination Mobile --}}
         <x-mobile-pagination>
@@ -89,4 +90,11 @@
     {{-- MOBILE + MENU + FILTER Scripts --}}
     <x-mobile-menu-filter-scripts />
     <x-range-date-filter-script />
+    <script>
+        document.querySelectorAll('.close-alert').forEach(btn => {
+            btn.addEventListener('click', function() {
+                this.parentElement.style.display = 'none';
+            });
+        });
+    </script>
 @endsection

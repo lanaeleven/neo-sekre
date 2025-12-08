@@ -3,6 +3,7 @@
     <x-default-page-container>
         {{-- NAVBAR --}}
         <x-navbar title="{{ $title }}" urlTambah="/surat-masuk/tambah" />
+        @include('layouts.mobile-sidebar')
 
         @if (session()->has('success'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -117,4 +118,5 @@
             {{-- END DASHBOARD NON SEKRETARIAT --}}
         @endcan
     </x-default-page-container>
+    <x-mobile-menu-filter-scripts />
 @endsection

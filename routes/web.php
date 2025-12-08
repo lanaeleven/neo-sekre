@@ -66,6 +66,7 @@ Route::get('/surat-izin/index-ns', [SuratIzinController::class, 'indexNs'])->mid
 Route::get('/surat-izin/s/{keterangan}', [SuratIzinController::class, 'create'])->middleware('sekre');
 Route::get('/laporan/distribusi-surat/{keterangan}', [SuratIzinController::class, 'laporanDistribusiSurat'])->middleware('sekre');
 Route::get('/surat-izin/tambah', [SuratIzinController::class, 'tambah'])->middleware('sekre');
+Route::get('/surat-izin/tambah-ns', [SuratIzinController::class, 'tambahNs'])->middleware('notSekre');
 Route::get('/surat-izin/edit/{suratIzin}', [SuratIzinController::class, 'edit'])->middleware('sekre');
 Route::get('/surat-izin/disposisi/{suratIzin}', [SuratIzinController::class, 'disposisi'])->middleware('auth');
 Route::get('/surat-izin/lacak-distribusi/{suratIzin}', [SuratIzinController::class, 'lacakDistribusi'])->middleware('auth');
@@ -75,6 +76,7 @@ Route::get('/surat-izin/ns/sudah-diarsipkan', [SuratIzinController::class, 'nonS
 Route::get('/surat-izin/ns/dikirim', [SuratIzinController::class, 'nonSekreDikirim'])->middleware('notSekre')->name('surat-izin.yang-dikirim');
 // Route::get('/surat-izin/terusan-surat/{idSuratMasuk}/{terusanSurat}/edit', [SuratIzinController::class, 'editTerusanSurat'])->middleware('sekre');
 Route::post('/surat-izin/tambah', [SuratIzinController::class, 'store']);
+Route::post('/surat-izin/tambah-ns', [SuratIzinController::class, 'storeNs']);
 Route::post('/surat-izin/save', [SuratIzinController::class, 'save']);
 Route::post('/surat-izin/teruskan', [SuratIzinController::class, 'teruskan']);
 Route::post('/surat-izin/arsipkan', [SuratIzinController::class, 'arsipkan']);

@@ -17,7 +17,7 @@
             {{-- ================= MOBILE SIDEBAR (MENU) ================= --}}
             @include('layouts.mobile-sidebar')
 
-            <x-mobile-filter-drawer urlFilter="/regulasi/index">
+            <x-mobile-filter-drawer urlFilter="/regulasi/index" :withAddOption="true" addOptionUrl="/regulasi/tambah">
                 <x-range-date-filter />
                 <x-input-field-filter :isLabel="false" name="index" type="number" placeholder="Index" />
                 <x-mobile-dropdown-field-filter name='jenisRegulasi' optionLabelDefault='Semua Jenis' :options="$jenisRegulasi" />
