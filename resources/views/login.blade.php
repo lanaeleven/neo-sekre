@@ -62,6 +62,7 @@
 
 <body class="min-h-screen flex flex-col md:flex-row">
 
+
     <!-- Left Section -->
     <div class="w-full md:w-1/2 text-white flex flex-col justify-center items-center p-10 relative overflow-hidden"
         style="background: linear-gradient(180deg, #059669, #047857);">
@@ -88,6 +89,7 @@
     <!-- Right Section -->
     <div class="w-full md:w-1/2 flex justify-center items-center bg-white p-8 md:p-0">
         <div class="w-full max-w-md">
+            @include('components.alert-session')
             <h2 class="text-2xl font-semibold text-emerald-700 mb-2 text-center md:text-left">LOGIN</h2>
             <p class="text-gray-500 text-sm mb-6 text-center md:text-left">
                 Silakan masuk menggunakan username dan password Anda.
@@ -128,6 +130,14 @@
             </form>
         </div>
     </div>
+
+    <script>
+        document.querySelectorAll('.close-alert').forEach(btn => {
+            btn.addEventListener('click', function() {
+                this.parentElement.style.display = 'none';
+            });
+        });
+    </script>
 
     <script>
         function togglePassword() {

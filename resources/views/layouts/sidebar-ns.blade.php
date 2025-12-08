@@ -75,6 +75,15 @@
                 'inactive' => 'heroicon-o-chat-bubble-bottom-center-text',
             ],
         ],
+        [
+            'label' => 'Profil Akun',
+            'key' => 'profil akun',
+            'route' => 'user.atur-akun-ns',
+            'icons' => [
+                'active' => 'heroicon-s-user',
+                'inactive' => 'heroicon-o-user',
+            ],
+        ],
     ];
 @endphp
 

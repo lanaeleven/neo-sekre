@@ -206,7 +206,7 @@ class UserController extends Controller
         $user->save();
 
         // Redirect back to the index page with a success message
-        return redirect('/user/akun-ns')->with('success', 'Berhasil Mengubah Password');
+        return redirect('/user/atur-akun-ns')->with('success', 'Berhasil Mengubah Password');
     }
 
     public function updatePassword(Request $request): RedirectResponse
@@ -360,5 +360,32 @@ class UserController extends Controller
         $user->units()->sync($request->input('units'));
 
         return redirect()->back()->with('success', "Berhasil Mengupdate Lingkup Unit");
+    }
+
+    public function aturAkunNs()
+    {
+        return view('user.atur-akun-ns', [
+            'title' => 'Profil Akun',
+            'active' => 'profil akun',
+            'isForm' => false
+        ]);
+    }
+
+    public function editProfilNs()
+    {
+        return view('user.edit-profil-ns', [
+            'title' => 'Edit Profil',
+            'active' => 'profil akun',
+            'isForm' => true
+        ]);
+    }
+
+    public function editPasswordNs()
+    {
+        return view('user.edit-password-ns', [
+            'title' => 'Edit Password',
+            'active' => 'profil akun',
+            'isForm' => true
+        ]);
     }
 }

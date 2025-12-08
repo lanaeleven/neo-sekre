@@ -175,6 +175,9 @@ Route::get('/user/edit-profil/{user}', [UserController::class, 'editProfil'])->m
 Route::get('/user/edit-password/{user}', [UserController::class, 'editPassword'])->middleware('sekre');
 Route::get('/user/edit-lingkup-unit/{user}', [UserController::class, 'editLingkupUnit'])->middleware('sekre');
 Route::get('/user/akun-ns', [UserController::class, 'akunNs'])->middleware('notSekre');
+Route::get('/user/atur-akun-ns', [UserController::class, 'aturAkunNs'])->middleware('notSekre')->name('user.atur-akun-ns');
+Route::get('/user/edit-profil-ns', [UserController::class, 'editProfilNs'])->middleware('notSekre')->name('user.edit-profil-ns');
+Route::get('/user/edit-password-ns', [UserController::class, 'editPasswordNs'])->middleware('notSekre')->name('user.edit-password-ns');
 Route::get('/user/kelola-khusus/{user}', [UserController::class, 'kelolaKhusus'])->middleware('sekre');
 Route::get('/hapusPengirim/{id}', [UserController::class, 'hapusPengirim']);
 Route::get('/hapusPenerima/{id}', [UserController::class, 'hapusPenerima']);

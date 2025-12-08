@@ -52,7 +52,7 @@ class LoginController extends Controller
         // Jika autentikasi gagal, tambahkan hit
         RateLimiter::hit($key, 60); // 60 detik decay time
 
-        return back()->with('failed', 'Username atau Password tidak sesuai');
+        return back()->with('error', 'Username atau Password tidak sesuai');
     }
 
     public function logout(Request $request): RedirectResponse
