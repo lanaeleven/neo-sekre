@@ -12,7 +12,7 @@
             <x-desktop-disposisi-left-side>
                 <x-desktop-disposisi-title-component text="Informasi Surat" />
                 <div class="flex justify-center">
-                    <form action="/unduh-disposisi" method="post">
+                    <form action="/unduh-disposisi-surat-izin" method="post">
                         @csrf
                         <input type="hidden" name="idSuratIzin" value="{{ $suratIzin->id }}">
                         <x-submit-button-with-tooltip tooltip="Download" variant="success">

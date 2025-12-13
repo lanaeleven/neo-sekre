@@ -58,7 +58,7 @@ Route::post('/surat-masuk/save', [SuratMasukController::class, 'save']);
 Route::post('/surat-masuk/teruskan', [SuratMasukController::class, 'teruskan']);
 Route::post('/surat-masuk/arsipkan', [SuratMasukController::class, 'arsipkan']);
 Route::post('/surat-masuk/buka-arsip', [SuratMasukController::class, 'bukaArsip']);
-Route::post('/unduh-disposisi', [SuratMasukController::class, 'unduhDisposisi']);
+Route::post('/unduh-disposisi-surat-masuk', [SuratMasukController::class, 'unduhDisposisi']);
 Route::post('/unduh-rekap-suratmasuk', [SuratMasukController::class, 'rekapSuratMasuk']);
 
 Route::get('/surat-izin/index', [SuratIzinController::class, 'create'])->middleware('sekre')->name('surat-izin.index');
@@ -81,7 +81,7 @@ Route::post('/surat-izin/save', [SuratIzinController::class, 'save']);
 Route::post('/surat-izin/teruskan', [SuratIzinController::class, 'teruskan']);
 Route::post('/surat-izin/arsipkan', [SuratIzinController::class, 'arsipkan']);
 Route::post('/surat-izin/buka-arsip', [SuratIzinController::class, 'bukaArsip']);
-Route::post('/unduh-disposisi', [SuratIzinController::class, 'unduhDisposisi']);
+Route::post('/unduh-disposisi-surat-izin', [SuratIzinController::class, 'unduhDisposisi']);
 // Route::post('/unduh-rekap-suratmasuk', [SuratIzinController::class, 'rekapSuratMasuk']);
 
 Route::get('/surat-keluar/index', [SuratKeluarController::class, 'create'])->middleware('sekre')->name('surat-keluar.index');
