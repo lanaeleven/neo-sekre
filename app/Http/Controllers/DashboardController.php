@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Informasi;
 use App\Models\Spo;
+use App\Models\SuratIzin;
 use App\Models\User;
 use App\Models\SuratMasuk;
 use App\Models\SuratKeluar;
@@ -17,10 +18,12 @@ class DashboardController extends Controller
     public function create()
     {
         $belumDiteruskan = 0;
+        $suratIzinBelumDiteruskan = 0;
         $sudahDiteruskan = 0;
         $arsip = 0;
         $suratMasukHariIni = 0;
         $suratMasukBulanIni = 0;
+        $suratIzinBulanIni = 0;
         $suratKeluarHariIni = 0;
         $suratKeluarBulanIni = 0;
         $dikirim = 0;
@@ -31,11 +34,15 @@ class DashboardController extends Controller
         $bulanSekarang = Carbon::now()->translatedFormat('F');
 
         $waktuSekarang = Carbon::today()->setTime(00, 00);
+
+        $awalBulan  = Carbon::now()->startOfMonth()->toDateString();
+        $akhirBulan = Carbon::now()->endOfMonth()->toDateString();
         // dd($waktuSekarang->year);
 
         if (auth()->user()->id == 1 || auth()->user()->id == 2) {
             $suratMasukHariIni = SuratMasuk::whereDate('tanggalSurat', '=', now())->count();
             $suratMasukBulanIni = SuratMasuk::whereMonth('tanggalSurat', '=', now()->format('m'))->whereYear('tanggalSurat', '=', now()->format('Y'))->count();
+            $suratIzinBulanIni = SuratIzin::whereMonth('tanggalSurat', '=', now()->format('m'))->whereYear('tanggalSurat', '=', now()->format('Y'))->count();
             $suratKeluarHariIni = SuratKeluar::whereDate('tanggalSurat', '=', now())->count();
             $suratKeluarBulanIni = SuratKeluar::whereMonth('tanggalSurat', '=', now()->format('m'))->whereYear('tanggalSurat', '=', now()->format('Y'))->count();
             $spoBulanIni = Spo::whereMonth('tanggalSurat', '=', now()->format('m'))->whereYear('tanggalSurat', '=', now()->format('Y'))->count();
@@ -46,6 +53,7 @@ class DashboardController extends Controller
 
         if (auth()->user()->id != 1 && auth()->user()->id != 2) {
             $belumDiteruskan = SuratMasuk::where('idPosisiDisposisi', '=', auth()->user()->id)->count();
+            $suratIzinBelumDiteruskan = SuratIzin::where('idPosisiDisposisi', '=', auth()->user()->id)->count();
             // $sudahDiteruskan = User::where('id', '=', auth()->user()->id)->get()[0]->mengirimDS->unique('idSuratMasuk')->count();
             $distribusiSurat = User::where('id', '=', auth()->user()->id)->get()[0]->mengirimDS->unique('idSuratMasuk');
             $suratDiteruskan = collect([]);
@@ -75,10 +83,12 @@ class DashboardController extends Controller
             'title' => 'Dashboard',
             'active' => 'dashboard',
             'belumDiteruskan' => $belumDiteruskan,
+            'suratIzinBelumDiteruskan' => $suratIzinBelumDiteruskan,
             'sudahDiteruskan' => $sudahDiteruskan,
             'arsip' => $arsip,
             'suratMasukHariIni' => $suratMasukHariIni,
             'suratMasukBulanIni' => $suratMasukBulanIni,
+            'suratIzinBulanIni' => $suratIzinBulanIni,
             'suratKeluarHariIni' => $suratKeluarHariIni,
             'suratKeluarBulanIni' => $suratKeluarBulanIni,
             'dikirim' => $dikirim,
@@ -87,6 +97,8 @@ class DashboardController extends Controller
             'edaran' => $edaran,
             'bulanSekarang' => $bulanSekarang,
             'spoBulanIni' => $spoBulanIni,
+            'awalBulan' => $awalBulan,
+            'akhirBulan' => $akhirBulan,
             'isForm' => false
         ]);
     }
