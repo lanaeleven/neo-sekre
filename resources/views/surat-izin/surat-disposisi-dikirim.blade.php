@@ -7,7 +7,7 @@
     <x-default-page-container>
 
         {{-- NAVBAR --}}
-        <x-navbar title="{{ $title }}" urlTambah="#" />
+        <x-navbar title="{{ $title }}" :showTambahButton="false"/>
         @include('components.alert-session')
 
         {{-- Pagination Mobile --}}
