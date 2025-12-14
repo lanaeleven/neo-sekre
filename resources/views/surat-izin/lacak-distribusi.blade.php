@@ -5,8 +5,11 @@
     <x-animations-style />
 
     <x-default-page-container>
+        @php
+            $closeUrl = auth()->user()->role === 'sekre' ? '/surat-izin/index' : '/surat-izin/index-ns';
+        @endphp
 
-        <x-navbar-form title="Disposisi Surat" closeUrl="/surat-izin/index" />
+        <x-navbar-form title="Disposisi Surat Izin" closeUrl="{{ $closeUrl }}" />
 
         <x-desktop-disposisi-wrapper>
             <x-desktop-disposisi-left-side>

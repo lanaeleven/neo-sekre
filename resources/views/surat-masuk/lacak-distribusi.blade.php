@@ -6,7 +6,11 @@
 
     <x-default-page-container>
 
-        <x-navbar-form title="Disposisi Surat" closeUrl="/surat-masuk/index" />
+        @php
+            $closeUrl = auth()->user()->role === 'sekre' ? '/surat-masuk/index' : '/surat-masuk/index-ns';
+        @endphp
+
+        <x-navbar-form title="Disposisi Surat Masuk" closeUrl="{{ $closeUrl }}" />
 
         <x-desktop-disposisi-wrapper>
             <x-desktop-disposisi-left-side>
