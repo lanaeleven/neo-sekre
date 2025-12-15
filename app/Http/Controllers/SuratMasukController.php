@@ -195,11 +195,11 @@ class SuratMasukController extends Controller
         $suratMasuk->save();
 
 
-        // if (!($request->input('idPengirim') == 'lainnya')) {
-        //     $user = User::find($request->input('idPengirim'));
-        //     $job = new ProcessNotifSuratMasukBaru($user->email, $user->namaJabatan, $request->input('nomorSurat'));
-        //     dispatch($job);
-        // }
+        if (!($request->input('idPengirim') == 'lainnya')) {
+            $user = User::find($request->input('idPengirim'));
+            $job = new ProcessNotifSuratMasukBaru($user->email, $user->namaJabatan, $request->input('nomorSurat'));
+            dispatch($job);
+        }
 
 
         return redirect('/surat-masuk/index?tahun=' . config('app.tahun'))
