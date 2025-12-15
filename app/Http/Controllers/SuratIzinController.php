@@ -223,11 +223,11 @@ class SuratIzinController extends Controller
         $suratIzin->save();
 
 
-        // if (!($request->input('idPengirim') == 'lainnya')) {
-        //     $user = User::find($request->input('idPengirim'));
-        //     $job = new ProcessNotifSuratizinBaru($user->email, $user->namaJabatan, $request->input('nomorSurat'));
-        //     dispatch($job);
-        // }
+        if (!($request->input('idPengirim') == 'lainnya')) {
+            $user = User::find($request->input('idPengirim'));
+            $job = new ProcessNotifSuratMasukBaru($user->email, $user->namaJabatan, $request->input('nomorSurat'));
+            dispatch($job);
+        }
 
 
         return redirect('/surat-izin/index?tahun=' . config('app.tahun'))
@@ -302,11 +302,25 @@ class SuratIzinController extends Controller
         $suratIzin->save();
 
 
-        // if (!($request->input('idPengirim') == 'lainnya')) {
-        //     $user = User::find($request->input('idPengirim'));
-        //     $job = new ProcessNotifSuratizinBaru($user->email, $user->namaJabatan, $request->input('nomorSurat'));
-        //     dispatch($job);
-        // }
+        if (!($request->input('idPengirim') == 'lainnya')) {
+            $user = User::find($request->input('idPengirim'));
+            $job = new ProcessNotifSuratMasukBaru($user->email, $user->namaJabatan, $request->input('nomorSurat'));
+            dispatch($job);
+        }
+
+        $penerima = $suratIzin = User::find($ketua->id);
+
+        $job = new ProcessNotifDisposisi(
+            $request->input('sifatSurat'),
+            $request->input('nomorSurat'),
+            auth()->user()->namaJabatan,
+            $penerima->namaJabatan,
+            $penerima->nama,
+            \Carbon\Carbon::now()->format('d/m/Y'),
+            "Surat Izin Masuk",
+            $penerima->email
+        );
+        dispatch($job);
 
 
         return redirect('/surat-izin/ns/dikirim')
@@ -620,17 +634,17 @@ class SuratIzinController extends Controller
 
         $penerima = $suratIzin = User::find($distribusiSurat->idTujuanDisposisi);
 
-        // $job = new ProcessNotifDisposisi(
-        //     $sifatSurat,
-        //     $nomorSurat,
-        //     auth()->user()->namaJabatan,
-        //     $penerima->namaJabatan,
-        //     $penerima->nama,
-        //     \Carbon\Carbon::parse($distribusiSurat->tanggalDiteruskan)->format('d/m/Y'),
-        //     $distribusiSurat->instruksi,
-        //     $penerima->email
-        // );
-        // dispatch($job);
+        $job = new ProcessNotifDisposisi(
+            $sifatSurat,
+            $nomorSurat,
+            auth()->user()->namaJabatan,
+            $penerima->namaJabatan,
+            $penerima->nama,
+            \Carbon\Carbon::parse($distribusiSurat->tanggalDiteruskan)->format('d/m/Y'),
+            $distribusiSurat->instruksi,
+            $penerima->email
+        );
+        dispatch($job);
 
 
 

@@ -879,17 +879,17 @@ class SuratMasukController extends Controller
 
         $penerima = $suratMasuk = User::find($distribusiSurat->idTujuanDisposisi);
 
-        // $job = new ProcessNotifDisposisi(
-        //     $sifatSurat,
-        //     $nomorSurat,
-        //     auth()->user()->namaJabatan,
-        //     $penerima->namaJabatan,
-        //     $penerima->nama,
-        //     \Carbon\Carbon::parse($distribusiSurat->tanggalDiteruskan)->format('d/m/Y'),
-        //     $distribusiSurat->instruksi,
-        //     $penerima->email
-        // );
-        // dispatch($job);
+        $job = new ProcessNotifDisposisi(
+            $sifatSurat,
+            $nomorSurat,
+            auth()->user()->namaJabatan,
+            $penerima->namaJabatan,
+            $penerima->nama,
+            \Carbon\Carbon::parse($distribusiSurat->tanggalDiteruskan)->format('d/m/Y'),
+            $distribusiSurat->instruksi,
+            $penerima->email
+        );
+        dispatch($job);
 
 
 

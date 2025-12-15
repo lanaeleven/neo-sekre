@@ -160,14 +160,14 @@ class InformasiController extends Controller
 
         $informasi->users()->attach($request->input('users'));
 
-        // $recipientUser = User::whereIn('id', $request->input('users'))->get();
+        $recipientUser = User::whereIn('id', $request->input('users'))->get();
 
-        // $namaJenisInformasi = JenisInformasi::find($request->input('jenisInformasi'))->nama;
+        $namaJenisInformasi = JenisInformasi::find($request->input('jenisInformasi'))->nama;
 
-        // foreach ($recipientUser as $ru) {
-        //     $job = new ProcessNotifInformasiBaru($ru->email, $ru->namaJabatan, $namaJenisInformasi, $request->input('judul'));
-        //     dispatch($job);
-        // }
+        foreach ($recipientUser as $ru) {
+            $job = new ProcessNotifInformasiBaru($ru->email, $ru->namaJabatan, $namaJenisInformasi, $request->input('judul'));
+            dispatch($job);
+        }
 
         return redirect($redirect)
             ->with('success', 'Berhasil Menambahkan Informasi');

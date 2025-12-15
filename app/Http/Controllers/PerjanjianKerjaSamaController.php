@@ -114,25 +114,14 @@ class PerjanjianKerjaSamaController extends Controller
         $pks->filePath = $filePath;
         $pks->save();
 
-        // $pks->units()->attach($request->input('units'));
-
-        // $userUnit = User::whereHas('units', function ($query) use ($request) {
-        //     $query->whereIn('unit_id', $request->input('units'));
-        // })->get();
-
-        // foreach ($userUnit as $un) {
-        //     $job = new ProcessNotifPerjanjianKerjaSamaBaru($un->email, $un->namaJabatan, $request->input('perihal'));
-        //     dispatch($job);
-        // }
-
         $pks->users()->attach($request->input('users'));
 
-        // $recipientUser = User::whereIn('id', $request->input('users'))->get();
+        $recipientUser = User::whereIn('id', $request->input('users'))->get();
 
-        // foreach ($recipientUser as $ru) {
-        //     $job = new ProcessNotifPerjanjianKerjaSamaBaru($ru->email, $ru->namaJabatan, $request->input('perihal'));
-        //     dispatch($job);
-        // }
+        foreach ($recipientUser as $ru) {
+            $job = new ProcessNotifPerjanjianKerjaSamaBaru($ru->email, $ru->namaJabatan, $request->input('perihal'));
+            dispatch($job);
+        }
 
         return redirect($redirect)
             ->with('success', 'Berhasil Menambahkan Perjanjian Kerja Sama');

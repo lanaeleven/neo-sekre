@@ -174,14 +174,14 @@ class RegulasiController extends Controller
 
         $regulasi->units()->attach($request->input('units'));
 
-        // $userUnit = User::whereHas('units', function ($query) use ($request) {
-        //     $query->whereIn('unit_id', $request->input('units'));
-        // })->get();
+        $userUnit = User::whereHas('units', function ($query) use ($request) {
+            $query->whereIn('unit_id', $request->input('units'));
+        })->get();
 
-        // foreach ($userUnit as $un) {
-        //     $job = new ProcessNotifRegulasiBaru($un->email, $un->namaJabatan, $request->input('perihal'));
-        //     dispatch($job);
-        // }
+        foreach ($userUnit as $un) {
+            $job = new ProcessNotifRegulasiBaru($un->email, $un->namaJabatan, $request->input('perihal'));
+            dispatch($job);
+        }
 
         return redirect($redirect)
             ->with('success', 'Berhasil Menambahkan Regulasi');
