@@ -7,7 +7,7 @@
 
         <x-default-page-container>
             {{-- NAVBAR --}}
-            <x-navbar title="{{ $title }}" :showTambahButton="false"/>
+            <x-navbar title="{{ $title }}" :showTambahButton="false" />
             @include('layouts.mobile-sidebar-ns')
 
             {{-- Pagination Mobile --}}
@@ -36,25 +36,29 @@
                     :isSmall="true" />
             </x-desktop-filter-bar>
 
-            {{-- ================= DESKTOP TABLE ================= --}}
-            <x-simple-table :headers="['Indeks', 'Judul', 'Jenis', 'Tanggal', 'Aksi']">
-                @foreach ($informasi as $i)
-                    <tr class="hover:bg-green-50 transition-colors">
-                        <x-td-default>{{ $i->index }}</x-td-default>
-                        <x-td-default>{{ $i->judul }}</x-td-default>
-                        <x-td-default>{{ $i->jenisInformasi->nama }}</x-td-default>
-                        <x-td-default>{{ $i->tanggalSurat }}</x-td-default>
-                        <x-td-action>
-                            <x-button-with-tooltip variant="warning" tooltip="Edit"
-                                url="/informasi/edit/{{ $i->id }}"><x-heroicon-s-pencil
-                                    class="w-4 h-4" /></x-button-with-tooltip>
-                            <x-button-with-tooltip variant="light" tooltip="Lihat"
-                                url="{{ asset('storage/' . $i->filePath) }}" target="_blank"><x-heroicon-s-eye
-                                    class="w-4 h-4" /></x-button-with-tooltip>
-                        </x-td-action>
-                    </tr>
-                @endforeach
-            </x-simple-table>
+            @if ($informasi->isEmpty())
+                <x-empty-content />
+            @else
+                {{-- ================= DESKTOP TABLE ================= --}}
+                <x-simple-table :headers="['Indeks', 'Judul', 'Jenis', 'Tanggal', 'Aksi']">
+                    @foreach ($informasi as $i)
+                        <tr class="hover:bg-green-50 transition-colors">
+                            <x-td-default>{{ $i->index }}</x-td-default>
+                            <x-td-default>{{ $i->judul }}</x-td-default>
+                            <x-td-default>{{ $i->jenisInformasi->nama }}</x-td-default>
+                            <x-td-default>{{ $i->tanggalSurat }}</x-td-default>
+                            <x-td-action>
+                                <x-button-with-tooltip variant="warning" tooltip="Edit"
+                                    url="/informasi/edit/{{ $i->id }}"><x-heroicon-s-pencil
+                                        class="w-4 h-4" /></x-button-with-tooltip>
+                                <x-button-with-tooltip variant="light" tooltip="Lihat"
+                                    url="{{ asset('storage/' . $i->filePath) }}" target="_blank"><x-heroicon-s-eye
+                                        class="w-4 h-4" /></x-button-with-tooltip>
+                            </x-td-action>
+                        </tr>
+                    @endforeach
+                </x-simple-table>
+            @endif
 
             {{-- ================= MOBILE CARD LIST ================= --}}
             <x-mobile-card-container>

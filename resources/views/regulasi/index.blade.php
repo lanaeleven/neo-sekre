@@ -41,27 +41,31 @@
                     :isMedium="true" />
             </x-desktop-filter-bar>
 
-            {{-- ================= DESKTOP TABLE ================= --}}
-            <x-simple-table :headers="['Indeks', 'Tanggal', 'Tujuan', 'Perihal', 'Keterangan', 'Jenis', 'Aksi']">
-                @foreach ($regulasi as $r)
-                    <tr class="hover:bg-green-50 transition-colors">
-                        <x-td-default>{{ $r->index }}</x-td-default>
-                        <x-td-default>{{ $r->tanggalSurat }}</x-td-default>
-                        <x-td-default>{{ $r->tujuan }}</x-td-default>
-                        <x-td-default>{{ $r->perihal }}</x-td-default>
-                        <x-td-default>{{ $r->keterangan }}</x-td-default>
-                        <x-td-default>{{ $r->jenisRegulasi->keterangan }}</x-td-default>
-                        <x-td-action>
-                            <x-button-with-tooltip variant="warning" tooltip="Edit"
-                                url="/regulasi/edit/{{ $r->id }}"><x-heroicon-s-pencil
-                                    class="w-4 h-4" /></x-button-with-tooltip>
-                            <x-button-with-tooltip variant="light" tooltip="Lihat"
-                                url="{{ asset('storage/' . $r->filePath) }}" target="_blank"><x-heroicon-s-eye
-                                    class="w-4 h-4" /></x-button-with-tooltip>
-                        </x-td-action>
-                    </tr>
-                @endforeach
-            </x-simple-table>
+            @if ($regulasi->isEmpty())
+                <x-empty-content />
+            @else
+                {{-- ================= DESKTOP TABLE ================= --}}
+                <x-simple-table :headers="['Indeks', 'Tanggal', 'Tujuan', 'Perihal', 'Keterangan', 'Jenis', 'Aksi']">
+                    @foreach ($regulasi as $r)
+                        <tr class="hover:bg-green-50 transition-colors">
+                            <x-td-default>{{ $r->index }}</x-td-default>
+                            <x-td-default>{{ $r->tanggalSurat }}</x-td-default>
+                            <x-td-default>{{ $r->tujuan }}</x-td-default>
+                            <x-td-default>{{ $r->perihal }}</x-td-default>
+                            <x-td-default>{{ $r->keterangan }}</x-td-default>
+                            <x-td-default>{{ $r->jenisRegulasi->keterangan }}</x-td-default>
+                            <x-td-action>
+                                <x-button-with-tooltip variant="warning" tooltip="Edit"
+                                    url="/regulasi/edit/{{ $r->id }}"><x-heroicon-s-pencil
+                                        class="w-4 h-4" /></x-button-with-tooltip>
+                                <x-button-with-tooltip variant="light" tooltip="Lihat"
+                                    url="{{ asset('storage/' . $r->filePath) }}" target="_blank"><x-heroicon-s-eye
+                                        class="w-4 h-4" /></x-button-with-tooltip>
+                            </x-td-action>
+                        </tr>
+                    @endforeach
+                </x-simple-table>
+            @endif
 
             {{-- ================= MOBILE CARD LIST ================= --}}
             <x-mobile-card-container>

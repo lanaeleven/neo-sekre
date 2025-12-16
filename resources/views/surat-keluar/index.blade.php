@@ -41,27 +41,31 @@
                     :isMedium="true" />
             </x-desktop-filter-bar>
 
-            {{-- ================= DESKTOP TABLE ================= --}}
-            <x-simple-table :headers="['Indeks', 'Tanggal', 'Tujuan', 'Perihal', 'Keterangan', 'Jenis', 'Aksi']">
-                @foreach ($suratKeluar as $sk)
-                    <tr class="hover:bg-green-50 transition-colors">
-                        <x-td-default>{{ $sk->index }}</x-td-default>
-                        <x-td-default>{{ $sk->tanggalSurat }}</x-td-default>
-                        <x-td-default>{{ $sk->tujuan }}</x-td-default>
-                        <x-td-default>{{ $sk->perihal }}</x-td-default>
-                        <x-td-default>{{ $sk->keterangan }}</x-td-default>
-                        <x-td-default>{{ $sk->jenisSurat->keterangan }}</x-td-default>
-                        <x-td-action>
-                            <x-button-with-tooltip variant="warning" tooltip="Edit"
-                                url="/surat-keluar/edit/{{ $sk->id }}"><x-heroicon-s-pencil
-                                    class="w-4 h-4" /></x-button-with-tooltip>
-                            <x-button-with-tooltip variant="light" tooltip="Lihat"
-                                url="{{ asset('storage/' . $sk->filePath) }}" target="_blank"><x-heroicon-s-eye
-                                    class="w-4 h-4" /></x-button-with-tooltip>
-                        </x-td-action>
-                    </tr>
-                @endforeach
-            </x-simple-table>
+            @if ($suratKeluar->isEmpty())
+                <x-empty-content />
+            @else
+                {{-- ================= DESKTOP TABLE ================= --}}
+                <x-simple-table :headers="['Indeks', 'Tanggal', 'Tujuan', 'Perihal', 'Keterangan', 'Jenis', 'Aksi']">
+                    @foreach ($suratKeluar as $sk)
+                        <tr class="hover:bg-green-50 transition-colors">
+                            <x-td-default>{{ $sk->index }}</x-td-default>
+                            <x-td-default>{{ $sk->tanggalSurat }}</x-td-default>
+                            <x-td-default>{{ $sk->tujuan }}</x-td-default>
+                            <x-td-default>{{ $sk->perihal }}</x-td-default>
+                            <x-td-default>{{ $sk->keterangan }}</x-td-default>
+                            <x-td-default>{{ $sk->jenisSurat->keterangan }}</x-td-default>
+                            <x-td-action>
+                                <x-button-with-tooltip variant="warning" tooltip="Edit"
+                                    url="/surat-keluar/edit/{{ $sk->id }}"><x-heroicon-s-pencil
+                                        class="w-4 h-4" /></x-button-with-tooltip>
+                                <x-button-with-tooltip variant="light" tooltip="Lihat"
+                                    url="{{ asset('storage/' . $sk->filePath) }}" target="_blank"><x-heroicon-s-eye
+                                        class="w-4 h-4" /></x-button-with-tooltip>
+                            </x-td-action>
+                        </tr>
+                    @endforeach
+                </x-simple-table>
+            @endif
 
             {{-- ================= MOBILE CARD LIST ================= --}}
             <x-mobile-card-container>

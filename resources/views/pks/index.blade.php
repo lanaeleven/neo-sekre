@@ -38,26 +38,30 @@
                     :isMedium="true" />
             </x-desktop-filter-bar>
 
-            {{-- ================= DESKTOP TABLE ================= --}}
-            <x-simple-table :headers="['Indeks', 'Tanggal', 'Tujuan', 'Perihal', 'Keterangan', 'Aksi']">
-                @foreach ($pks as $p)
-                    <tr class="hover:bg-green-50 transition-colors">
-                        <x-td-default>{{ $p->index }}</x-td-default>
-                        <x-td-default>{{ $p->tanggalSurat }}</x-td-default>
-                        <x-td-default>{{ $p->tujuan }}</x-td-default>
-                        <x-td-default>{{ $p->perihal }}</x-td-default>
-                        <x-td-default>{{ $p->keterangan }}</x-td-default>
-                        <x-td-action>
-                            <x-button-with-tooltip variant="warning" tooltip="Edit"
-                                url="/pks/edit/{{ $p->id }}"><x-heroicon-s-pencil
-                                    class="w-4 h-4" /></x-button-with-tooltip>
-                            <x-button-with-tooltip variant="light" tooltip="Lihat"
-                                url="{{ asset('storage/' . $p->filePath) }}" target="_blank"><x-heroicon-s-eye
-                                    class="w-4 h-4" /></x-button-with-tooltip>
-                        </x-td-action>
-                    </tr>
-                @endforeach
-            </x-simple-table>
+            @if ($pks->isEmpty())
+                <x-empty-content />
+            @else
+                {{-- ================= DESKTOP TABLE ================= --}}
+                <x-simple-table :headers="['Indeks', 'Tanggal', 'Tujuan', 'Perihal', 'Keterangan', 'Aksi']">
+                    @foreach ($pks as $p)
+                        <tr class="hover:bg-green-50 transition-colors">
+                            <x-td-default>{{ $p->index }}</x-td-default>
+                            <x-td-default>{{ $p->tanggalSurat }}</x-td-default>
+                            <x-td-default>{{ $p->tujuan }}</x-td-default>
+                            <x-td-default>{{ $p->perihal }}</x-td-default>
+                            <x-td-default>{{ $p->keterangan }}</x-td-default>
+                            <x-td-action>
+                                <x-button-with-tooltip variant="warning" tooltip="Edit"
+                                    url="/pks/edit/{{ $p->id }}"><x-heroicon-s-pencil
+                                        class="w-4 h-4" /></x-button-with-tooltip>
+                                <x-button-with-tooltip variant="light" tooltip="Lihat"
+                                    url="{{ asset('storage/' . $p->filePath) }}" target="_blank"><x-heroicon-s-eye
+                                        class="w-4 h-4" /></x-button-with-tooltip>
+                            </x-td-action>
+                        </tr>
+                    @endforeach
+                </x-simple-table>
+            @endif
 
             {{-- ================= MOBILE CARD LIST ================= --}}
             <x-mobile-card-container>

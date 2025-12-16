@@ -38,24 +38,28 @@
                 :isMedium="true" />
         </x-desktop-filter-bar>
 
-        {{-- ================= DESKTOP TABLE ================= --}}
-        <x-simple-table :headers="['Indeks', 'Dari', 'Tgl Surat', 'No Surat', 'Perihal', 'Status', 'Aksi']">
-            @foreach ($suratIzin as $si)
-                <tr class="hover:bg-green-50 transition-colors">
-                    <x-td-default>{{ $si->index }}</x-td-default>
-                    <x-td-default>{{ $si->pengirim }}</x-td-default>
-                    <x-td-default>{{ $si->tanggalSurat }}</x-td-default>
-                    <x-td-default>{{ $si->nomorSurat }}</x-td-default>
-                    <x-td-default>{{ $si->perihal }}</x-td-default>
-                    <x-td-badge status="{{ $si->status }}" />
-                    <x-td-action>
-                        <x-button-with-tooltip variant="info" tooltip="Lacak"
-                            url="/surat-izin/lacak-distribusi/{{ $si->id }}"><x-heroicon-s-magnifying-glass-plus
-                                class="w-4 h-4" /></x-button-with-tooltip>
-                    </x-td-action>
-                </tr>
-            @endforeach
-        </x-simple-table>
+        @if ($suratIzin->isEmpty())
+            <x-empty-content />
+        @else
+            {{-- ================= DESKTOP TABLE ================= --}}
+            <x-simple-table :headers="['Indeks', 'Dari', 'Tgl Surat', 'No Surat', 'Perihal', 'Status', 'Aksi']">
+                @foreach ($suratIzin as $si)
+                    <tr class="hover:bg-green-50 transition-colors">
+                        <x-td-default>{{ $si->index }}</x-td-default>
+                        <x-td-default>{{ $si->pengirim }}</x-td-default>
+                        <x-td-default>{{ $si->tanggalSurat }}</x-td-default>
+                        <x-td-default>{{ $si->nomorSurat }}</x-td-default>
+                        <x-td-default>{{ $si->perihal }}</x-td-default>
+                        <x-td-badge status="{{ $si->status }}" />
+                        <x-td-action>
+                            <x-button-with-tooltip variant="info" tooltip="Lacak"
+                                url="/surat-izin/lacak-distribusi/{{ $si->id }}"><x-heroicon-s-magnifying-glass-plus
+                                    class="w-4 h-4" /></x-button-with-tooltip>
+                        </x-td-action>
+                    </tr>
+                @endforeach
+            </x-simple-table>
+        @endif
 
         {{-- ================= MOBILE CARD LIST ================= --}}
         <x-mobile-card-container>

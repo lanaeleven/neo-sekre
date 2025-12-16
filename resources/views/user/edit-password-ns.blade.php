@@ -3,7 +3,7 @@
 @section('container')
     <x-default-page-container>
         {{-- Navbar --}}
-        <x-navbar-form title="Edit Password User" closeUrl="/user/index" />
+        <x-navbar-form title="Edit Password User" closeUrl="/user/atur-akun-ns" />
 
         {{-- Error Notif --}}
         <x-error-notif />

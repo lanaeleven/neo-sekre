@@ -41,33 +41,37 @@
                 :isMedium="true" />
         </x-desktop-filter-bar>
 
-        {{-- ================= DESKTOP TABLE ================= --}}
-        <x-simple-table :headers="['Indeks', 'Dari', 'Tgl Surat', 'No Surat', 'Perihal', 'Status', 'Aksi']">
-            @foreach ($suratMasuk as $sm)
-                <tr class="hover:bg-green-50 transition-colors">
-                    <x-td-default>{{ $sm->index }}</x-td-default>
-                    <x-td-default>{{ $sm->pengirim }}</x-td-default>
-                    <x-td-default>{{ $sm->tanggalSurat }}</x-td-default>
-                    <x-td-default>{{ $sm->nomorSurat }}</x-td-default>
-                    <x-td-default>{{ $sm->perihal }}</x-td-default>
-                    <x-td-badge status="{{ $sm->status }}" />
-                    <x-td-action>
-                        <x-button-with-tooltip variant="warning" tooltip="Edit"
-                            url="/surat-masuk/edit/{{ $sm->id }}"><x-heroicon-s-pencil
-                                class="w-4 h-4" /></x-button-with-tooltip>
-                        <x-button-with-tooltip variant="light" tooltip="Lihat" url="{{ asset('storage/' . $sm->filePath) }}"
-                            target="_blank"><x-heroicon-s-eye class="w-4 h-4" /></x-button-with-tooltip>
-                        <x-button-with-tooltip variant="info" tooltip="Lacak"
-                            url="/surat-masuk/lacak-distribusi/{{ $sm->id }}"><x-heroicon-s-magnifying-glass-plus
-                                class="w-4 h-4" /></x-button-with-tooltip>
-                        <x-button-with-tooltip variant="success" tooltip="Disposisi"
-                            url="/surat-masuk/disposisi/{{ $sm->id }}"><x-heroicon-s-arrow-up-right
-                                class="w-4 h-4" /></x-button-with-tooltip>
-                    </x-td-action>
-                </tr>
-            @endforeach
-        </x-simple-table>
-
+        @if ($suratMasuk->isEmpty())
+            <x-empty-content />
+        @else
+            {{-- ================= DESKTOP TABLE ================= --}}
+            <x-simple-table :headers="['Indeks', 'Dari', 'Tgl Surat', 'No Surat', 'Perihal', 'Status', 'Aksi']">
+                @foreach ($suratMasuk as $sm)
+                    <tr class="hover:bg-green-50 transition-colors">
+                        <x-td-default>{{ $sm->index }}</x-td-default>
+                        <x-td-default>{{ $sm->pengirim }}</x-td-default>
+                        <x-td-default>{{ $sm->tanggalSurat }}</x-td-default>
+                        <x-td-default>{{ $sm->nomorSurat }}</x-td-default>
+                        <x-td-default>{{ $sm->perihal }}</x-td-default>
+                        <x-td-badge status="{{ $sm->status }}" />
+                        <x-td-action>
+                            <x-button-with-tooltip variant="warning" tooltip="Edit"
+                                url="/surat-masuk/edit/{{ $sm->id }}"><x-heroicon-s-pencil
+                                    class="w-4 h-4" /></x-button-with-tooltip>
+                            <x-button-with-tooltip variant="light" tooltip="Lihat"
+                                url="{{ asset('storage/' . $sm->filePath) }}" target="_blank"><x-heroicon-s-eye
+                                    class="w-4 h-4" /></x-button-with-tooltip>
+                            <x-button-with-tooltip variant="info" tooltip="Lacak"
+                                url="/surat-masuk/lacak-distribusi/{{ $sm->id }}"><x-heroicon-s-magnifying-glass-plus
+                                    class="w-4 h-4" /></x-button-with-tooltip>
+                            <x-button-with-tooltip variant="success" tooltip="Disposisi"
+                                url="/surat-masuk/disposisi/{{ $sm->id }}"><x-heroicon-s-arrow-up-right
+                                    class="w-4 h-4" /></x-button-with-tooltip>
+                        </x-td-action>
+                    </tr>
+                @endforeach
+            </x-simple-table>
+        @endif
         {{-- ================= MOBILE CARD LIST ================= --}}
         <x-mobile-card-container>
             @foreach ($suratMasuk as $sm)

@@ -7,7 +7,7 @@
 
         <x-default-page-container>
             {{-- NAVBAR --}}
-            <x-navbar title="{{ $title }}" :showTambahButton="false"/>
+            <x-navbar title="{{ $title }}" :showTambahButton="false" />
             @include('layouts.mobile-sidebar-ns')
 
             {{-- Pagination Mobile --}}
@@ -39,23 +39,27 @@
                     :isMedium="true" />
             </x-desktop-filter-bar>
 
-            {{-- ================= DESKTOP TABLE ================= --}}
-            <x-simple-table :headers="['Indeks', 'Tanggal', 'Tujuan', 'Perihal', 'Keterangan', 'Aksi']">
-                @foreach ($spo as $s)
-                    <tr class="hover:bg-green-50 transition-colors">
-                        <x-td-default>{{ $s->index }}</x-td-default>
-                        <x-td-default>{{ $s->tanggalSurat }}</x-td-default>
-                        <x-td-default>{{ $s->tujuan }}</x-td-default>
-                        <x-td-default>{{ $s->perihal }}</x-td-default>
-                        <x-td-default>{{ $s->keterangan }}</x-td-default>
-                        <x-td-action>
-                            <x-button-with-tooltip variant="light" tooltip="Lihat"
-                                url="{{ asset('storage/' . $s->filePath) }}" target="_blank"><x-heroicon-s-eye
-                                    class="w-4 h-4" /></x-button-with-tooltip>
-                        </x-td-action>
-                    </tr>
-                @endforeach
-            </x-simple-table>
+            @if ($spo->isEmpty())
+                <x-empty-content />
+            @else
+                {{-- ================= DESKTOP TABLE ================= --}}
+                <x-simple-table :headers="['Indeks', 'Tanggal', 'Tujuan', 'Perihal', 'Keterangan', 'Aksi']">
+                    @foreach ($spo as $s)
+                        <tr class="hover:bg-green-50 transition-colors">
+                            <x-td-default>{{ $s->index }}</x-td-default>
+                            <x-td-default>{{ $s->tanggalSurat }}</x-td-default>
+                            <x-td-default>{{ $s->tujuan }}</x-td-default>
+                            <x-td-default>{{ $s->perihal }}</x-td-default>
+                            <x-td-default>{{ $s->keterangan }}</x-td-default>
+                            <x-td-action>
+                                <x-button-with-tooltip variant="light" tooltip="Lihat"
+                                    url="{{ asset('storage/' . $s->filePath) }}" target="_blank"><x-heroicon-s-eye
+                                        class="w-4 h-4" /></x-button-with-tooltip>
+                            </x-td-action>
+                        </tr>
+                    @endforeach
+                </x-simple-table>
+            @endif
 
             {{-- ================= MOBILE CARD LIST ================= --}}
             <x-mobile-card-container>

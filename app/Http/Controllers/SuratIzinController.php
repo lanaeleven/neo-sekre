@@ -886,7 +886,7 @@ class SuratIzinController extends Controller
         if (request('status')) {
             $suratIzin = $suratIzin->where('status', 'like', '%' . request('status') . '%');
         }
-        return view('surat-izin.surat-disposisi-belum-diteruskan', ['title' => 'Surat Izin Belum Diteruskan', 'active' => 'belum diteruskan', 'suratIzin' => $suratIzin->paginate(25), 'isForm' => false]);
+        return view('surat-izin.surat-disposisi-belum-diteruskan', ['title' => 'Surat Izin Belum Diteruskan', 'active' => 'surat izin', 'suratIzin' => $suratIzin->paginate(25), 'isForm' => false]);
     }
 
     public function nonSekreDikirim()
@@ -912,7 +912,7 @@ class SuratIzinController extends Controller
             $suratIzin = $suratIzin->where('perihal', 'like', '%' . request('perihal') . '%');
         }
 
-        return view('surat-izin.surat-disposisi-dikirim', ['title' => 'Surat Izin Dikirim', 'active' => 'yang dikirim', 'suratIzin' => $suratIzin->paginate(25), 'isForm' => false]);
+        return view('surat-izin.surat-disposisi-dikirim', ['title' => 'Surat Izin Dikirim', 'active' => 'surat izin', 'suratIzin' => $suratIzin->paginate(25), 'isForm' => false]);
     }
 
     public function nonSekreSudahDiteruskan()
@@ -979,7 +979,7 @@ class SuratIzinController extends Controller
 
         return view('surat-izin.surat-disposisi-sudah-diteruskan', [
             'title' => 'Surat Izin Sudah Diteruskan',
-            'active' => 'sudah diteruskan',
+            'active' => 'surat izin',
             'suratIzin' => $paginatedItems,
             'isForm' => false
         ]);
@@ -1041,7 +1041,7 @@ class SuratIzinController extends Controller
 
         return view('surat-izin.surat-disposisi-sudah-diarsipkan', [
             'title' => 'Surat Izin Sudah Diarsipkan',
-            'active' => 'sudah diarsipkan',
+            'active' => 'surat izin',
             'suratIzin' => $paginatedItems,
             'isForm' => false
         ]);

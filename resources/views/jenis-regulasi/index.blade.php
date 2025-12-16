@@ -12,22 +12,25 @@
             {{-- ================= MOBILE SIDEBAR (MENU) ================= --}}
             @include('layouts.mobile-sidebar')
 
-
-            {{-- ================= DESKTOP TABLE ================= --}}
-            <x-simple-table :headers="['ID', 'Kode Jenis Regulasi', 'Keterangan', 'Aksi']">
-                @foreach ($jenisRegulasi as $jr)
-                    <tr class="hover:bg-green-50 transition-colors">
-                        <x-td-default>{{ $jr->id }}</x-td-default>
-                        <x-td-default>{{ $jr->kodeJenisRegulasi }}</x-td-default>
-                        <x-td-default>{{ $jr->keterangan }}</x-td-default>
-                        <x-td-action>
-                            <x-button-with-tooltip variant="warning" tooltip="Edit"
-                                url="/jenis-regulasi/edit/{{ $jr->id }}"><x-heroicon-s-pencil
-                                    class="w-4 h-4" /></x-button-with-tooltip>
-                        </x-td-action>
-                    </tr>
-                @endforeach
-            </x-simple-table>
+            @if ($jenisRegulasi->isEmpty())
+                <x-empty-content />
+            @else
+                {{-- ================= DESKTOP TABLE ================= --}}
+                <x-simple-table :headers="['ID', 'Kode Jenis Regulasi', 'Keterangan', 'Aksi']">
+                    @foreach ($jenisRegulasi as $jr)
+                        <tr class="hover:bg-green-50 transition-colors">
+                            <x-td-default>{{ $jr->id }}</x-td-default>
+                            <x-td-default>{{ $jr->kodeJenisRegulasi }}</x-td-default>
+                            <x-td-default>{{ $jr->keterangan }}</x-td-default>
+                            <x-td-action>
+                                <x-button-with-tooltip variant="warning" tooltip="Edit"
+                                    url="/jenis-regulasi/edit/{{ $jr->id }}"><x-heroicon-s-pencil
+                                        class="w-4 h-4" /></x-button-with-tooltip>
+                            </x-td-action>
+                        </tr>
+                    @endforeach
+                </x-simple-table>
+            @endif
 
             {{-- Footer --}}
             <x-footer-desktop>
