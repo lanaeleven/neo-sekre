@@ -7,12 +7,6 @@
         @can('dashboard-sekre')
             @include('layouts.mobile-sidebar')
 
-            @if (session()->has('success'))
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    {{ session('success') }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            @endif
             {{-- DASHBOARD SEKRETARIAT --}}
 
             <x-mobile-card-container>

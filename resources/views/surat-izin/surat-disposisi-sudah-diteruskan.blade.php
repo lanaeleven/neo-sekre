@@ -40,6 +40,9 @@
             <x-input-field-filter :isLabel="false" name="status" type="text" placeholder="Status"
                 :isMedium="true" />
         </x-desktop-filter-bar>
+
+        @include('components.alert-session')
+        
         @if ($suratIzin->isEmpty())
             <x-empty-content />
         @else

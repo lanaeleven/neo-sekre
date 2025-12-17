@@ -132,14 +132,6 @@
     </div>
 
     <script>
-        document.querySelectorAll('.close-alert').forEach(btn => {
-            btn.addEventListener('click', function() {
-                this.parentElement.style.display = 'none';
-            });
-        });
-    </script>
-
-    <script>
         function togglePassword() {
             const password = document.getElementById('password');
             password.type = password.type === 'password' ? 'text' : 'password';

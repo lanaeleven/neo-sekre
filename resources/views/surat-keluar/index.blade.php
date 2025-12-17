@@ -41,6 +41,8 @@
                     :isMedium="true" />
             </x-desktop-filter-bar>
 
+            @include('components.alert-session')
+            
             @if ($suratKeluar->isEmpty())
                 <x-empty-content />
             @else

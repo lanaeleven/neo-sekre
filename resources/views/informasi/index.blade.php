@@ -35,6 +35,8 @@
                     :isSmall="true" />
             </x-desktop-filter-bar>
 
+            @include('components.alert-session')
+            
             @if ($informasi->isEmpty())
                 <x-empty-content />
             @else

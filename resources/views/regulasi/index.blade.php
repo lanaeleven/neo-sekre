@@ -41,6 +41,8 @@
                     :isMedium="true" />
             </x-desktop-filter-bar>
 
+            @include('components.alert-session')
+            
             @if ($regulasi->isEmpty())
                 <x-empty-content />
             @else

@@ -38,6 +38,8 @@
                     :isMedium="true" />
             </x-desktop-filter-bar>
 
+            @include('components.alert-session')
+            
             @if ($pks->isEmpty())
                 <x-empty-content />
             @else

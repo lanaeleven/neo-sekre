@@ -12,6 +12,8 @@
             {{-- ================= MOBILE SIDEBAR (MENU) ================= --}}
             @include('layouts.mobile-sidebar')
 
+            @include('components.alert-session')
+            
             @if ($user->isEmpty())
                 <x-empty-content />
             @else

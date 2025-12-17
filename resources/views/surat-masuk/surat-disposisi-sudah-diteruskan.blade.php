@@ -41,6 +41,8 @@
                 :isMedium="true" />
         </x-desktop-filter-bar>
 
+        @include('components.alert-session')
+        
         @if ($suratMasuk->isEmpty())
             <x-empty-content />
         @else

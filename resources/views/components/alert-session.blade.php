@@ -31,3 +31,11 @@
         </button>
     </div>
 @endif
+
+<script>
+        document.querySelectorAll('.close-alert').forEach(btn => {
+            btn.addEventListener('click', function() {
+                this.parentElement.style.display = 'none';
+            });
+        });
+    </script>

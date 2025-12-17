@@ -14,9 +14,10 @@
             {{ $suratMasuk->appends(request()->input())->links('pagination::custom') }}
         </x-mobile-pagination>
 
+        
         {{-- ================= MOBILE SIDEBAR (MENU) ================= --}}
         @include('layouts.mobile-sidebar')
-
+        
         {{-- ================= MOBILE FILTER DRAWER ================= --}}
         <x-mobile-filter-drawer urlFilter="/surat-masuk/index" :withAddOption="true" addOptionUrl="/surat-masuk/tambah">
             <x-range-date-filter />
@@ -26,21 +27,23 @@
             <x-input-field-filter :isLabel="false" name="perihal" type="text" placeholder="Perihal" />
             <x-input-field-filter :isLabel="false" name="status" type="text" placeholder="Status" />
         </x-mobile-filter-drawer>
-
+        
         {{-- ================= DESKTOP FILTER BAR ================= --}}
         <x-desktop-filter-bar urlFilter="/surat-masuk/index">
             <x-range-date-filter />
             <x-input-field-filter :isLabel="false" name="index" type="number" placeholder="Index" :isSmall="true" />
             <x-input-field-filter :isLabel="false" name="pengirim" type="text" placeholder="Pengirim"
-                :isMedium="true" />
+            :isMedium="true" />
             <x-input-field-filter :isLabel="false" name="nomorSurat" type="text" placeholder="No Surat"
-                :isMedium="true" />
+            :isMedium="true" />
             <x-input-field-filter :isLabel="false" name="perihal" type="text" placeholder="Perihal"
-                :isMedium="true" />
+            :isMedium="true" />
             <x-input-field-filter :isLabel="false" name="status" type="text" placeholder="Status"
-                :isMedium="true" />
+            :isMedium="true" />
         </x-desktop-filter-bar>
-
+        
+        @include('components.alert-session')
+        
         @if ($suratMasuk->isEmpty())
             <x-empty-content />
         @else

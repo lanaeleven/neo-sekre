@@ -491,7 +491,7 @@ class SuratIzinController extends Controller
         // $perihal = session('search_query_perihal', '');
 
         // pembedaan redirect user sekre dan non-sekre
-        if (auth()->user()->id == 1) {
+        if (auth()->user()->role == 'sekre' || auth()->user()->role == 'dev') {
             $redirect = '/surat-izin/index'
                 . '?tanggalAwal=' . urlencode(session('search_tanggalAwal', ''))
                 . '&tanggalAkhir=' . urlencode(session('search_tanggalAkhir', ''))
@@ -501,7 +501,7 @@ class SuratIzinController extends Controller
                 . '&perihal=' . urlencode(session('search_perihal', ''))
                 . '&status=' . urlencode(session('search_status', ''));
         } else {
-            $redirect = '/';
+            $redirect = '/surat-izin/ns/sudah-diteruskan';
         }
 
         session()->forget('search_tanggalAwal');
@@ -1058,8 +1058,8 @@ class SuratIzinController extends Controller
             'fileLampiranArsip' => 'mimes:pdf,jpg,png|max:5120'
         ]);
 
-        $redirect = "/";
-        if (auth()->user()->id == 1) {
+
+        if (auth()->user()->role == 'sekre' || auth()->user()->role == 'dev') {
             $redirect = "/surat-izin/index"
                 . '?tanggalAwal=' . urlencode(session('search_tanggalAwal', ''))
                 . '&tanggalAkhir=' . urlencode(session('search_tanggalAkhir', ''))
@@ -1068,6 +1068,8 @@ class SuratIzinController extends Controller
                 . '&nomorSurat=' . urlencode(session('search_nomorSurat', ''))
                 . '&perihal=' . urlencode(session('search_perihal', ''))
                 . '&status=' . urlencode(session('search_status', ''));
+        } else {
+            $redirect = '/surat-izin/ns/sudah-diarsipkan';
         }
 
         session()->forget('search_tanggalAwal');
