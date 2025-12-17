@@ -62,6 +62,13 @@
 
 <body class="min-h-screen flex flex-col md:flex-row">
 
+    <div id="page-loading" class="fixed inset-0 bg-white/70 backdrop-blur-sm z-50 hidden items-center justify-center">
+        <div class="flex flex-col items-center gap-3">
+            <div class="w-10 h-10 border-4 border-green-600 border-t-transparent rounded-full animate-spin"></div>
+            <span class="text-sm text-gray-600">Loading...</span>
+        </div>
+    </div>
+
 
     <!-- Left Section -->
     <div class="w-full md:w-1/2 text-white flex flex-col justify-center items-center p-10 relative overflow-hidden"
@@ -136,6 +143,26 @@
             const password = document.getElementById('password');
             password.type = password.type === 'password' ? 'text' : 'password';
         }
+    </script>
+
+    <script>
+        const loading = document.getElementById('page-loading');
+
+        // saat klik link
+        document.querySelectorAll('a[href]').forEach(link => {
+            link.addEventListener('click', () => {
+                loading.classList.remove('hidden');
+                loading.classList.add('flex');
+            });
+        });
+
+        // saat submit form
+        document.querySelectorAll('form').forEach(form => {
+            form.addEventListener('submit', () => {
+                loading.classList.remove('hidden');
+                loading.classList.add('flex');
+            });
+        });
     </script>
 
 </body>

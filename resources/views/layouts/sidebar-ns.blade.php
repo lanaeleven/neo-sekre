@@ -86,82 +86,12 @@
             <span class="tooltip-sidebar hidden">{{ $menu['label'] }}</span>
         </div>
     @endforeach
-    <form action="/logout" method="post">
-        @csrf
+    <div class="w-full flex justify-center mt-2">
         <button type="button" onclick="openLogoutModal()"
-            class="w-full bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded text-sm transition-colors">
-            Logout
+            class="w-8 h-8 flex items-center justify-center bg-red-600 hover:bg-red-700 text-white rounded transition-colors"
+            title="Logout">
+            <x-heroicon-o-arrow-left-on-rectangle class="w-6 h-6" />
         </button>
+    </div>
 
-        <!-- Modal Backdrop -->
-        <div id="logoutModal"
-            class="hidden fixed inset-0 bg-gray-900 bg-opacity-50 z-50 flex items-center justify-center p-4">
-
-            <!-- Modal Content -->
-            <div class="bg-white rounded-lg shadow-xl max-w-md w-full transform transition-all">
-
-                <!-- Modal Header -->
-                <div class="flex items-center justify-between p-4 border-b border-gray-200">
-                    <h3 class="text-lg font-semibold text-gray-900">
-                        Keluar dari aplikasi
-                    </h3>
-                    <button type="button" onclick="closeLogoutModal()"
-                        class="text-gray-400 hover:text-gray-600 transition-colors">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                    </button>
-                </div>
-
-                <!-- Modal Body -->
-                <div class="p-6">
-                    <p class="text-gray-600">
-                        Anda yakin ingin keluar dari aplikasi?
-                    </p>
-                </div>
-
-                <!-- Modal Footer -->
-                <div class="flex items-center justify-center gap-3 p-4 border-t border-gray-200">
-                    <button type="submit"
-                        class="bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-6 rounded transition-colors">
-                        Logout
-                    </button>
-                    <button type="button" onclick="closeLogoutModal()"
-                        class="bg-gray-500 hover:bg-gray-600 text-white font-medium py-2 px-6 rounded transition-colors">
-                        Cancel
-                    </button>
-                </div>
-
-            </div>
-        </div>
-    </form>
-
-    <script>
-        function openLogoutModal() {
-            const modal = document.getElementById('logoutModal');
-            modal.classList.remove('hidden');
-            document.body.style.overflow = 'hidden'; // Prevent background scroll
-        }
-
-        function closeLogoutModal() {
-            const modal = document.getElementById('logoutModal');
-            modal.classList.add('hidden');
-            document.body.style.overflow = ''; // Restore scroll
-        }
-
-        // Close modal when clicking outside
-        document.getElementById('logoutModal')?.addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeLogoutModal();
-            }
-        });
-
-        // Close modal with Escape key
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                closeLogoutModal();
-            }
-        });
-    </script>
 </div>
