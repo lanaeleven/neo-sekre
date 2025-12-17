@@ -173,7 +173,7 @@ class DatabaseSeeder extends Seeder
 
         User::create([
             'username' => 'kepsek_paud',
-            'nama' => 'Fulan',
+            'nama' => 'Fulan Kepsek PAUD',
             'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Kepala PAUD PLUS CMI',
             'role' => 'umum',
@@ -182,7 +182,7 @@ class DatabaseSeeder extends Seeder
 
         User::create([
             'username' => 'kepsek_sd',
-            'nama' => 'Fulan',
+            'nama' => 'Fulan Kepsek SD',
             'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Kepala SD PLUS CMI',
             'role' => 'umum',
@@ -191,7 +191,7 @@ class DatabaseSeeder extends Seeder
 
         User::create([
             'username' => 'kepsek_smp',
-            'nama' => 'Fulan',
+            'nama' => 'Fulan Kepsek SMP',
             'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Kepala SMP PLUS CMI',
             'role' => 'umum',
@@ -200,7 +200,7 @@ class DatabaseSeeder extends Seeder
 
         User::create([
             'username' => 'kepsek_sma',
-            'nama' => 'Fulan',
+            'nama' => 'Fulan Kepsek SMA',
             'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Kepala SMA PLUS CMI',
             'role' => 'umum',
@@ -209,7 +209,7 @@ class DatabaseSeeder extends Seeder
 
         User::create([
             'username' => 'kepsek_ponpes',
-            'nama' => 'Fulan',
+            'nama' => 'Fulan Kepsek Ponpes',
             'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Kepala PONDOK PESANTREN AL FIKRAH CMI',
             'role' => 'umum',
