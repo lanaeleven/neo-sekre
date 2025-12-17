@@ -15,7 +15,11 @@
         {{ $title }}
     </span>
     <div class="hidden md:block">
+        <span class="text-sm text-gray-600">
+            {{ auth()->user()->nama }}
+        </span>
         @if ($showTambahButton)
+            <span class="mx-3 h-5 border-l border-gray-600"></span>
             <x-button-with-link title="Buat Baru" url="{{ $urlTambah }}" variant="success" />
         @endif
     </div>

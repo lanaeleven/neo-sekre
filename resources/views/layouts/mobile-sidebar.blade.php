@@ -70,9 +70,14 @@
                 </a>
             @endforeach
         </div>
-
+        
+        <div class="text-center">
+            <span class="text-sm text-gray-600">
+                {{ auth()->user()->nama }}
+            </span>
+        </div>
         <!-- LOGOUT BUTTON -->
-        <form action="/logout" method="post" class="pt-4 border-t">
+        <form action="/logout" method="post" class="pt-4 border-t border-gray-600">
             @csrf
             <button type="button" onclick="openLogoutModal()"
                 class="w-full bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded text-sm transition-colors">
