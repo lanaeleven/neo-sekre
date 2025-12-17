@@ -15,7 +15,7 @@
         </x-mobile-pagination>
 
         {{-- ================= MOBILE SIDEBAR (MENU) ================= --}}
-        @include('layouts.mobile-sidebar')
+        @include('layouts.mobile-sidebar-ns')
 
         {{-- ================= MOBILE FILTER DRAWER ================= --}}
         <x-mobile-filter-drawer urlFilter="/surat-masuk/ns/belum-diteruskan">

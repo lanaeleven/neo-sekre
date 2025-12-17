@@ -43,7 +43,7 @@
     $text = $sizePresets[$size] ?? $sizePresets['normal'];
 @endphp
 
-<a class="bg-white rounded-2xl shadow hover:shadow-lg transition p-6 border border-gray-100" href="{{ $link }}">
+<a class="block bg-white rounded-2xl shadow hover:shadow-lg transition p-6 border border-gray-100" href="{{ $link }}">
     <div class="flex items-center justify-between">
         <h4 class="{{ $text['title'] }} font-bold text-gray-800 ">{{ $title }}</h4>
 
