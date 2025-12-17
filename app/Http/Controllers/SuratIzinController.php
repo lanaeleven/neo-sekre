@@ -170,6 +170,21 @@ class SuratIzinController extends Controller
             'fileSurat' => 'required|mimes:pdf,jpg,png|max:10240'
         ]);
 
+
+        if (auth()->user()->role == 'sekre' || auth()->user()->role == 'dev') {
+            $redirect = '/surat-izin/index'
+                . '?tanggalAwal=' . urlencode(session('search_tanggalAwal', ''))
+                . '&tanggalAkhir=' . urlencode(session('search_tanggalAkhir', ''))
+                . '&index=' . urlencode(session('search_index', ''))
+                . '&pengirim=' . urlencode(session('search_pengirim', ''))
+                . '&nomorSurat=' . urlencode(session('search_nomorSurat', ''))
+                . '&perihal=' . urlencode(session('search_perihal', ''))
+                . '&status=' . urlencode(session('search_status', ''));
+        } else {
+            $redirect = '/surat-izin/ns/dikirim';
+        }
+
+
         $tahun = Carbon::createFromFormat('Y-m-d', $request->input('tanggalSurat'))->format('Y');
         $bulan = Carbon::createFromFormat('Y-m-d', $request->input('tanggalSurat'))->format('m');
         // Get the maximum id for the given year
@@ -230,7 +245,7 @@ class SuratIzinController extends Controller
         }
 
 
-        return redirect('/surat-izin/index?tahun=' . config('app.tahun'))
+        return redirect($redirect)
             ->with('success', "Berhasil Menambahkan Surat Izin");
     }
 
