@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ $title }}</title>
 
     @vite('resources/css/app.css')
@@ -12,7 +12,7 @@
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 </head>
 
-<body class="min-h-[100dvh] overflow-hidden pb-[env(safe-area-inset-bottom)]">
+<body class="h-screen pb-24 md:pb-0">
 
     {{-- LOADING OVERLAY --}}
     <div
