@@ -4,8 +4,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Surat RSI | Login</title>
-    <link rel="icon" type="image/x-icon" href={{ asset('favicon-rsi.png') }}>
+    <title>E-Sekre | Login</title>
+    <link rel="icon" type="image/x-icon" href={{ asset('logo-cmi.png') }}>
     @vite('resources/css/app.css')
 </head>
 
