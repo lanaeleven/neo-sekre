@@ -13,15 +13,6 @@
             'icons' => ['active' => 'heroicon-s-inbox-arrow-down', 'inactive' => 'heroicon-o-inbox-arrow-down'],
         ],
         [
-            'label' => 'Surat Izin',
-            'key' => 'surat izin',
-            'route' => 'surat-izin.index-ns',
-            'icons' => [
-                'active' => 'heroicon-s-clipboard-document-check',
-                'inactive' => 'heroicon-o-clipboard-document-check',
-            ],
-        ],
-        [
             'label' => 'Standar Prosedur Operasional',
             'key' => 'spo',
             'route' => 'spo.index-ns',

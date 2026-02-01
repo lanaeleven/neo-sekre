@@ -13,9 +13,6 @@
                 <x-dashboard-card title="Surat Masuk" value="{{ $suratMasukBulanIni }}" icon="heroicon-s-inbox-arrow-down"
                     color="green" dateText="Bulan ini"
                     link="/surat-masuk/index?tanggalAwal={{ $awalBulan }}&tanggalAkhir={{ $akhirBulan }}" />
-                <x-dashboard-card title="Surat Izin" value="{{ $suratIzinBulanIni }}" icon="heroicon-s-clipboard-document-check"
-                    color="green" dateText="Bulan ini"
-                    link="/surat-izin/index?tanggalAwal={{ $awalBulan }}&tanggalAkhir={{ $akhirBulan }}" />
                 <x-dashboard-card title="Pengumuman/Himbauan" value="{{ $pengumuman }}"
                     icon="heroicon-s-speaker-wave" color="yellow" dateText=""
                     link="/informasi/index/ns?jenisInformasi=1" />
@@ -27,9 +24,6 @@
                 <x-dashboard-card title="Surat Masuk" value="{{ $suratMasukBulanIni }}" icon="heroicon-s-inbox-arrow-down"
                     linkJustify="start" color="green" dateText="Bulan ini"
                     link="/surat-masuk/index?tanggalAwal={{ $awalBulan }}&tanggalAkhir={{ $akhirBulan }}" />
-                <x-dashboard-card title="Surat Izin" value="{{ $suratIzinBulanIni }}" icon="heroicon-s-clipboard-document-check"
-                    linkJustify="start" color="green" dateText="Bulan ini"
-                    link="/surat-izin/index?tanggalAwal={{ $awalBulan }}&tanggalAkhir={{ $akhirBulan }}" />
                 <x-dashboard-card title="Pengumuman/Himbauan" value="{{ $pengumuman }}"
                     icon="heroicon-s-speaker-wave" linkJustify="start" color="yellow" dateText=""
                     link="/informasi/index?jenisInformasi=1" />
@@ -55,9 +49,6 @@
                 <x-dashboard-card title="Surat Masuk Belum Diteruskan" value="{{ $belumDiteruskan }}"
                     icon="heroicon-s-inbox-arrow-down" linkJustify="start" color="green" dateText=""
                     link="/surat-masuk/ns/belum-diteruskan" />
-                <x-dashboard-card title="Surat Izin Belum Diteruskan" value="{{ $suratIzinBelumDiteruskan }}"
-                    icon="heroicon-s-clipboard-document-check" linkJustify="start" color="green" dateText=""
-                    link="/surat-izin/ns/belum-diteruskan" />
                 <x-dashboard-card title="Pengumuman/Himbauan" value="{{ $pengumuman }}"
                     icon="heroicon-s-speaker-wave" linkJustify="start" color="yellow" dateText=""
                     link="/informasi/index/ns?jenisInformasi=1" />
@@ -70,8 +61,6 @@
                 <x-dashboard-card title="Surat Masuk Belum Diteruskan" value="{{ $belumDiteruskan }}"
                     icon="heroicon-s-inbox-arrow-down" color="green" dateText=""
                     link="/surat-masuk/ns/belum-diteruskan" />
-                <x-dashboard-card title="Surat Izin Belum Diteruskan" value="{{ $suratIzinBelumDiteruskan }}"
-                    icon="heroicon-s-clipboard-document-check" color="green" dateText="" link="/surat-izin/ns/belum-diteruskan" />
                 <x-dashboard-card title="Pengumuman/Himbauan" value="{{ $pengumuman }}"
                     icon="heroicon-s-speaker-wave" color="yellow" dateText=""
                     link="/informasi/index/ns?jenisInformasi=1" />

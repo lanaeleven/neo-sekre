@@ -11,11 +11,6 @@
             'route' => 'surat-masuk.index-ns',
         ],
         [
-            'label' => 'Surat Izin',
-            'key' => 'surat izin',
-            'route' => 'surat-izin.index-ns',
-        ],
-        [
             'label' => 'Standar Prosedur Operasional',
             'key' => 'spo',
             'route' => 'spo.index-ns',

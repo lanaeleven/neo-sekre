@@ -11,11 +11,6 @@
             'route' => 'surat-masuk.index',
         ],
         [
-            'label' => 'Surat Izin',
-            'key' => 'surat izin',
-            'route' => 'surat-izin.index',
-        ],
-        [
             'label' => 'Surat Keluar',
             'key' => 'surat keluar',
             'route' => 'surat-keluar.index',
