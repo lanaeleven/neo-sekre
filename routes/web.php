@@ -12,6 +12,7 @@ use App\Http\Controllers\InformasiController;
 use App\Http\Controllers\JenisInformasiController;
 use App\Http\Controllers\JenisRegulasiController;
 use App\Http\Controllers\JenisSuratController;
+use App\Http\Controllers\JenisSuratMasukController;
 use App\Http\Controllers\PerjanjianKerjaSamaController;
 use App\Http\Controllers\RegulasiController;
 use App\Http\Controllers\UnitController;
@@ -150,6 +151,12 @@ Route::get('/jenis-surat/tambah', [JenisSuratController::class, 'tambah'])->midd
 Route::get('/jenis-surat/edit/{jenisSurat}', [JenisSuratController::class, 'edit'])->middleware('sekre');
 Route::post('/jenis-surat/tambah', [JenisSuratController::class, 'store']);
 Route::post('/jenis-surat/save', [JenisSuratController::class, 'save']);
+
+Route::get('/jenis-surat-masuk/index', [JenisSuratMasukController::class, 'create'])->middleware('sekre');
+Route::get('/jenis-surat-masuk/tambah', [JenisSuratMasukController::class, 'tambah'])->middleware('sekre');
+Route::get('/jenis-surat-masuk/edit/{jenisSurat}', [JenisSuratMasukController::class, 'edit'])->middleware('sekre');
+Route::post('/jenis-surat-masuk/tambah', [JenisSuratMasukController::class, 'store']);
+Route::post('/jenis-surat-masuk/save', [JenisSuratMasukController::class, 'save']);
 
 Route::get('/jenis-regulasi/index', [JenisRegulasiController::class, 'create'])->middleware('sekre');
 Route::get('/jenis-regulasi/tambah', [JenisRegulasiController::class, 'tambah'])->middleware('sekre');

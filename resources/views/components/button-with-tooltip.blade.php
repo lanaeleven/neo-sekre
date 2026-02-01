@@ -32,7 +32,7 @@
 @endphp
 
 <div class="relative group inline-block">
-    <a href="{{ $url }}" target="{{ $target }}"
+    <a href="{{ $url }}" target="{{ $target }}" @if ($target === '_blank') data-no-loading @endif
         @if ($isDownload) download="{{ $downloadName }}" @endif
         class="rounded transition-all duration-200 flex items-center justify-center {{ $btnClass }}">
         <span class="flex items-center">

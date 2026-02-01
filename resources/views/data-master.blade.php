@@ -17,6 +17,9 @@
             <x-data-master-card title="Unit"
                 description="Pengaturan Unit yang terkait dengan pengguna aplikasi, unit digunakan pada SPO dan Regulasi"
                 icon="heroicon-s-building-office" color="green" link="/unit/index" />
+            <x-data-master-card title="Jenis Surat Masuk"
+                description="Pengaturan Jenis Surat yang akan dipakai pada Surat Masuk" icon="heroicon-s-paper-airplane"
+                color="green" link="/jenis-surat-masuk/index" />
             <x-data-master-card title="Jenis Surat Keluar"
                 description="Pengaturan Jenis Surat yang akan dipakai pada Surat Keluar" icon="heroicon-s-paper-airplane"
                 color="green" link="/jenis-surat/index" />

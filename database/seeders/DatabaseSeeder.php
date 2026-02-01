@@ -8,6 +8,7 @@ use App\Models\JenisSurat;
 use App\Models\DistribusiSurat;
 use App\Models\JenisInformasi;
 use App\Models\JenisRegulasi;
+use App\Models\JenisSuratMasuk;
 use App\Models\TujuanDisposisi;
 use Illuminate\Database\Seeder;
 use App\Models\StrukturOrganisasi;
@@ -95,6 +96,34 @@ class DatabaseSeeder extends Seeder
         JenisSurat::create([
             'kodeJenisSurat' => 'SE',
             'keterangan' => 'Surat Edaran'
+        ]);
+
+        JenisSuratMasuk::create([
+            'nama' => 'Surat Izin',
+        ]);
+
+        JenisSuratMasuk::create([
+            'nama' => 'Surat Permohonan',
+        ]);
+
+        JenisSuratMasuk::create([
+            'nama' => 'Surat KGB/Golongan',
+        ]);
+
+        JenisSuratMasuk::create([
+            'nama' => 'Surat Undangan',
+        ]);
+
+        JenisSuratMasuk::create([
+            'nama' => 'Surat Tembusan',
+        ]);
+
+        JenisSuratMasuk::create([
+            'nama' => 'Laporan',
+        ]);
+
+        JenisSuratMasuk::create([
+            'nama' => 'Surat Biasa',
         ]);
 
         // SEEDING UNTUK TABEL USER

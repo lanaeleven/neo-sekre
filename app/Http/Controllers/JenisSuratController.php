@@ -34,12 +34,12 @@ class JenisSuratController extends Controller
         $jenisSurat->save();
 
         // Redirect back to the index page with a success message
-        return redirect('/jenis-surat/index')->with('success', 'Berhasil Menambah Jenis Surat');
+        return redirect('/jenis-surat/index')->with('success', 'Berhasil Menambah Jenis Surat Keluar');
     }
 
     public function edit(JenisSurat $jenisSurat)
     {
-        return view('jenis-surat.edit', ['title' => 'Edit Direksi', 'active' => 'data master', 'jenisSurat' => $jenisSurat, 'isForm' => true]);
+        return view('jenis-surat.edit', ['title' => 'Edit Jenis Surat Keluar', 'active' => 'data master', 'jenisSurat' => $jenisSurat, 'isForm' => true]);
     }
 
     public function save(Request $request): RedirectResponse

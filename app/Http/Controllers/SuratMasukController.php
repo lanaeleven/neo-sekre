@@ -25,6 +25,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Storage;
 use App\Jobs\ProcessNotifSuratMasukBaru;
+use App\Models\JenisSuratMasuk;
 use Illuminate\Pagination\LengthAwarePaginator;
 use setasign\Fpdi\PdfParser\PdfParserException;
 use Webklex\PDFMerger\Facades\PDFMergerFacade as PDFMerger;
@@ -34,8 +35,15 @@ class SuratMasukController extends Controller
     public function create(?string $keterangan = null)
     {
 
-        $suratMasuk = SuratMasuk::orderBy('tahun', 'desc')->orderBy('index', 'desc');
+        $suratMasuk = SuratMasuk::orderBy('tahun', 'desc')->orderBy('index', 'desc')->with('jenisSurat');
         $judul = "Surat Masuk";
+        $jenisSurat = JenisSuratMasuk::all();
+        $opsiJenisSurat = $jenisSurat->map(function ($js) {
+            return (object)[
+                'id' => $js->id,
+                'label' => $js->nama
+            ];
+        });
         // $pengirim = User::whereNotIn("id", [1,2,3])->get();
 
         if ($keterangan == 'hari-ini') {
@@ -79,6 +87,10 @@ class SuratMasukController extends Controller
         if (request('tahun')) {
             $suratMasuk->where('tahun', 'like', '%' . request('tahun') . '%');
         }
+        
+        if (request('jenisSurat')) {
+            $suratMasuk->where('idJenisSurat', request('jenisSurat'));
+        }
 
         // penyimpanan session
         session([
@@ -91,7 +103,7 @@ class SuratMasukController extends Controller
             'search_status' => request('status')
         ]);
 
-        return view('surat-masuk.index', ['title' => $judul, 'active' => 'surat masuk', 'suratMasuk' => $suratMasuk->with(['userPengirim'])->paginate(25), 'keterangan' => $keterangan, 'judul' => $judul, 'isForm' => false]);
+        return view('surat-masuk.index', ['title' => $judul, 'active' => 'surat masuk', 'suratMasuk' => $suratMasuk->with(['userPengirim'])->paginate(25), 'keterangan' => $keterangan, 'judul' => $judul, 'isForm' => false, 'jenisSurat' => $opsiJenisSurat]);
     }
 
     public function tambah()
@@ -120,8 +132,9 @@ class SuratMasukController extends Controller
             'id' => 'lainnya',
             'nama' => 'Lainnya'
         ]);
+        $jenisSurat = JenisSuratMasuk::all();
 
-        return view('surat-masuk.tambah', ['title' => 'Tambah Surat Masuk', 'active' => 'surat masuk', 'pengirim' => $opsiPengirim, 'sifatSurat' => $sifatSurat, 'lampiran' => $lampiran, 'isForm' => true]);
+        return view('surat-masuk.tambah', ['title' => 'Tambah Surat Masuk', 'active' => 'surat masuk', 'pengirim' => $opsiPengirim, 'sifatSurat' => $sifatSurat, 'lampiran' => $lampiran, 'isForm' => true, 'jenisSurat' => $jenisSurat]);
     }
 
     public function store(Request $request): RedirectResponse
@@ -136,6 +149,7 @@ class SuratMasukController extends Controller
             'pengirim' => 'required',
             'idPengirim' => 'required',
             'perihal' => 'required',
+            'jenisSurat' => 'required',
             'fileSurat' => 'required|mimes:pdf,jpg,png|max:10240'
         ]);
 
@@ -189,6 +203,7 @@ class SuratMasukController extends Controller
         $suratMasuk->pengirim = $request->input('pengirim');
         $suratMasuk->perihal = $request->input('perihal');
         $suratMasuk->status = $request->input('status');
+        $suratMasuk->idJenisSurat = $request->input('jenisSurat');
         $suratMasuk->statusArsip = 0;
         $suratMasuk->fileName = $fileName;
         $suratMasuk->filePath = $filePath;
@@ -206,6 +221,129 @@ class SuratMasukController extends Controller
             ->with('success', "Berhasil Menambahkan Surat Masuk");
     }
 
+    public function tambahNs()
+    {
+        $sifatSurat = collect([
+            ['id' => 'Biasa', 'nama' => 'Biasa'],
+            ['id' => 'Rahasia', 'nama' => 'Rahasia'],
+            ['id' => 'Segera', 'nama' => 'Segera'],
+        ])->map(function ($item) {
+            return (object) $item;
+        });
+        $lampiran = collect([
+            ['id' => 'Ada', 'nama' => 'Ada'],
+            ['id' => 'Tidak Ada', 'nama' => 'Tidak Ada'],
+        ])->map(function ($item) {
+            return (object) $item;
+        });
+        $pengirim = User::whereNotIn('id', [1, 2, 3])->where('isAktif', true)->get();
+        $opsiPengirim = $pengirim->map(function ($p) {
+            return (object)[
+                'id' => $p->id,
+                'nama' => $p->namaJabatan
+            ];
+        });
+        $opsiPengirim->push((object)[
+            'id' => 'lainnya',
+            'nama' => 'Lainnya'
+        ]);
+
+        return view('surat-izin.tambah-ns', ['title' => 'Tambah Surat Izin', 'active' => 'surat izin', 'pengirim' => $opsiPengirim, 'sifatSurat' => $sifatSurat, 'lampiran' => $lampiran, 'isForm' => true]);
+    }
+
+    public function storeNs(Request $request): RedirectResponse
+    {
+        $request->validate([
+            'tanggalAgenda' => 'required',
+            'sifatSurat' => 'required',
+            'nomorSurat' => 'required',
+            'tanggalSurat' => 'required',
+            'lampiran' => 'required',
+            'pengirim' => 'required',
+            'idPengirim' => 'required',
+            'perihal' => 'required',
+            'fileSurat' => 'required|mimes:pdf,jpg,png|max:10240'
+        ]);
+
+        $ketua = User::where('role', 'ketua')->first();
+        $tahun = Carbon::createFromFormat('Y-m-d', $request->input('tanggalSurat'))->format('Y');
+        $bulan = Carbon::createFromFormat('Y-m-d', $request->input('tanggalSurat'))->format('m');
+        // Get the maximum id for the given year
+        $maxIndex = SuratMasuk::where('tahun', $tahun)->max('index');
+        // Determine the new id for the given year
+        $newIndex = $maxIndex ? $maxIndex + 1 : 1;
+
+        // Store the file in storage\app\public folder
+        // Dapatkan tipe MIME file yang diunggah
+        $mimeType = $request->file('fileSurat')->getMimeType();
+        // Cek jika tipe file adalah image (JPEG, PNG)
+        if (strpos($mimeType, 'image') !== false) {
+            // Dapatkan konten gambar
+            $imageContent = file_get_contents($request->file('fileSurat')->getRealPath());
+
+            // Data yang akan dikirim ke view
+            $data = [
+                'imageContent' => $imageContent,
+            ];
+
+            // Load view dan generate PDF
+            $pdf = PDF::loadView('pdf.image-to-pdf', $data);
+
+            // Path untuk menyimpan file PDF
+            $filePath = 'uploads/surat-izin/' . $tahun . '/' . $bulan . '/' . uniqid() . '.pdf';
+            $storagePath = 'public/' . $filePath;
+
+            // Simpan file PDF ke storage
+            Storage::put($storagePath, $pdf->output());
+        } else {
+            $filePath = $request->file('fileSurat')->store('uploads/surat-izin/' . $tahun . '/' . $bulan, 'public');
+        }
+        $fileName = $request->file('fileSurat')->getClientOriginalName();
+
+        $suratIzin = new SuratMasuk();
+        $suratIzin->index = $newIndex;
+        $suratIzin->idPosisiDisposisi = $ketua->id;
+        $suratIzin->tanggalAgenda = $request->input('tanggalAgenda');
+        $suratIzin->sifatSurat = $request->input('sifatSurat');
+        $suratIzin->nomorSurat = $request->input('nomorSurat');
+        $suratIzin->tanggalSurat = $request->input('tanggalSurat');
+        $suratIzin->tahun = $tahun;
+        $suratIzin->lampiran = $request->input('lampiran');
+        $suratIzin->idPengirim = $request->input('idPengirim') != "lainnya" ? $request->input('idPengirim') : NULL;
+        $suratIzin->pengirim = $request->input('pengirim');
+        $suratIzin->perihal = $request->input('perihal');
+        $suratIzin->status = "Diteruskan ke " . $ketua->namaJabatan;
+        $suratIzin->statusArsip = 0;
+        $suratIzin->fileName = $fileName;
+        $suratIzin->filePath = $filePath;
+        $suratIzin->save();
+
+
+        if (!($request->input('idPengirim') == 'lainnya')) {
+            $user = User::find($request->input('idPengirim'));
+            $job = new ProcessNotifSuratMasukBaru($user->email, $user->namaJabatan, $request->input('nomorSurat'));
+            dispatch($job);
+        }
+
+        $penerima = $suratIzin = User::find($ketua->id);
+
+        $job = new ProcessNotifDisposisi(
+            $request->input('sifatSurat'),
+            $request->input('nomorSurat'),
+            auth()->user()->namaJabatan,
+            $penerima->namaJabatan,
+            $penerima->nama,
+            \Carbon\Carbon::now()->format('d/m/Y'),
+            "Surat Izin Masuk",
+            $penerima->email
+        );
+        dispatch($job);
+
+
+        return redirect('/surat-izin/ns/dikirim')
+            ->with('success', "Berhasil Menambahkan Surat Izin");
+    }
+    
     public function edit(SuratMasuk $suratMasuk)
     {
         $sifatSurat = collect([

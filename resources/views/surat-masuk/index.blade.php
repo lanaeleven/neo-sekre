@@ -22,6 +22,7 @@
         <x-mobile-filter-drawer urlFilter="/surat-masuk/index" :withAddOption="true" addOptionUrl="/surat-masuk/tambah">
             <x-range-date-filter />
             <x-input-field-filter :isLabel="false" name="index" type="number" placeholder="Index" />
+            <x-mobile-dropdown-field-filter name='jenisSurat' optionLabelDefault='Semua Jenis' :options="$jenisSurat" />
             <x-input-field-filter :isLabel="false" name="pengirim" type="text" placeholder="Pengirim" />
             <x-input-field-filter :isLabel="false" name="nomorSurat" type="text" placeholder="No Surat" />
             <x-input-field-filter :isLabel="false" name="perihal" type="text" placeholder="Perihal" />
@@ -32,6 +33,7 @@
         <x-desktop-filter-bar urlFilter="/surat-masuk/index">
             <x-range-date-filter />
             <x-input-field-filter :isLabel="false" name="index" type="number" placeholder="Index" :isSmall="true" />
+            <x-desktop-dropdown-field-filter name="jenisSurat" id="jenisSurat" optionLabelDefault="Semua Jenis" :options="$jenisSurat" />
             <x-input-field-filter :isLabel="false" name="pengirim" type="text" placeholder="Pengirim"
             :isMedium="true" />
             <x-input-field-filter :isLabel="false" name="nomorSurat" type="text" placeholder="No Surat"
@@ -48,10 +50,11 @@
             <x-empty-content />
         @else
             {{-- ================= DESKTOP TABLE ================= --}}
-            <x-simple-table :headers="['Indeks', 'Dari', 'Tgl Surat', 'No Surat', 'Perihal', 'Status', 'Aksi']">
+            <x-simple-table :headers="['Indeks', 'Jenis', 'Dari', 'Tgl Surat', 'No Surat', 'Perihal', 'Status', 'Aksi']">
                 @foreach ($suratMasuk as $sm)
                     <tr class="hover:bg-green-50 transition-colors">
                         <x-td-default>{{ $sm->index }}</x-td-default>
+                        <x-td-default>{{ $sm->jenisSurat->nama }}</x-td-default>
                         <x-td-default>{{ $sm->pengirim }}</x-td-default>
                         <x-td-default>{{ $sm->tanggalSurat }}</x-td-default>
                         <x-td-default>{{ $sm->nomorSurat }}</x-td-default>

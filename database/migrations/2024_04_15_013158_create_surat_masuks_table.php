@@ -28,6 +28,8 @@ return new class extends Migration
             $table->string('status')->nullable();
             $table->string('fileName');
             $table->string('filePath');
+            $table->unsignedInteger('idJenisSurat');
+            $table->foreign('idJenisSurat')->references('id')->on('jenis_surat_masuk');
         });
     }
 

@@ -28,4 +28,9 @@ class SuratMasuk extends Model
     {
         return $this->belongsTo(User::class, 'idPengirim');
     }
+
+    public function jenisSurat(): BelongsTo
+    {
+        return $this->belongsTo(JenisSuratMasuk::class, 'idJenisSurat');
+    }
 }
