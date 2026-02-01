@@ -2,7 +2,7 @@
 @section('container')
     <x-default-page-container>
         {{-- NAVBAR --}}
-        <x-navbar title="{{ $title }}" :showTambahButton="false" :showFilterButton="false" />
+        <x-navbar title="{{ $title }}" urlTambah="/surat-masuk/tambah-ns" />
         @include('layouts.mobile-sidebar-ns')
 
         @if (session()->has('success'))

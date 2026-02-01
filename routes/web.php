@@ -43,6 +43,7 @@ Route::get('/surat-masuk/index-ns', [SuratMasukController::class, 'indexNs'])->m
 Route::get('/surat-masuk/s/{keterangan}', [SuratMasukController::class, 'create'])->middleware('sekre');
 Route::get('/laporan/distribusi-surat/{keterangan}', [SuratMasukController::class, 'laporanDistribusiSurat'])->middleware('sekre');
 Route::get('/surat-masuk/tambah', [SuratMasukController::class, 'tambah'])->middleware('sekre');
+Route::get('/surat-masuk/tambah-ns', [SuratMasukController::class, 'tambahNs'])->middleware('notSekre');
 Route::get('/surat-masuk/edit/{suratMasuk}', [SuratMasukController::class, 'edit'])->middleware('sekre');
 Route::get('/laporan/surat-masuk/per-direksi', [SuratMasukController::class, 'laporanPerDireksi'])->middleware('sekre');
 Route::get('/laporan/distribusi-surat/rekap/per-tujuan', [SuratMasukController::class, 'laporanPerTujuan'])->middleware('sekre');
@@ -55,6 +56,7 @@ Route::get('/surat-masuk/ns/dikirim', [SuratMasukController::class, 'nonSekreDik
 Route::get('/surat-masuk/terusan-surat/{idSuratMasuk}/{terusanSurat}/edit', [SuratMasukController::class, 'editTerusanSurat'])->middleware('sekre');
 Route::put('/terusan-surat', [SuratMasukController::class, 'updateTerusanSurat']);
 Route::post('/surat-masuk/tambah', [SuratMasukController::class, 'store']);
+Route::post('/surat-masuk/tambah-ns', [SuratMasukController::class, 'storeNs']);
 Route::post('/surat-masuk/save', [SuratMasukController::class, 'save']);
 Route::post('/surat-masuk/teruskan', [SuratMasukController::class, 'teruskan']);
 Route::post('/surat-masuk/arsipkan', [SuratMasukController::class, 'arsipkan']);

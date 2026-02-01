@@ -248,13 +248,16 @@ class SuratMasukController extends Controller
             'nama' => 'Lainnya'
         ]);
 
-        return view('surat-izin.tambah-ns', ['title' => 'Tambah Surat Izin', 'active' => 'surat izin', 'pengirim' => $opsiPengirim, 'sifatSurat' => $sifatSurat, 'lampiran' => $lampiran, 'isForm' => true]);
+        $jenisSurat = JenisSuratMasuk::all();
+
+        return view('surat-masuk.tambah-ns', ['title' => 'Tambah Surat Masuk', 'active' => 'surat masuk', 'pengirim' => $opsiPengirim, 'sifatSurat' => $sifatSurat, 'lampiran' => $lampiran, 'isForm' => true, 'jenisSurat' => $jenisSurat]);
     }
 
     public function storeNs(Request $request): RedirectResponse
     {
         $request->validate([
             'tanggalAgenda' => 'required',
+            'jenisSurat' => 'required',
             'sifatSurat' => 'required',
             'nomorSurat' => 'required',
             'tanggalSurat' => 'required',
@@ -265,7 +268,7 @@ class SuratMasukController extends Controller
             'fileSurat' => 'required|mimes:pdf,jpg,png|max:10240'
         ]);
 
-        $ketua = User::where('role', 'ketua')->first();
+        $sekre = User::where('role', 'sekre')->first();
         $tahun = Carbon::createFromFormat('Y-m-d', $request->input('tanggalSurat'))->format('Y');
         $bulan = Carbon::createFromFormat('Y-m-d', $request->input('tanggalSurat'))->format('m');
         // Get the maximum id for the given year
@@ -300,23 +303,24 @@ class SuratMasukController extends Controller
         }
         $fileName = $request->file('fileSurat')->getClientOriginalName();
 
-        $suratIzin = new SuratMasuk();
-        $suratIzin->index = $newIndex;
-        $suratIzin->idPosisiDisposisi = $ketua->id;
-        $suratIzin->tanggalAgenda = $request->input('tanggalAgenda');
-        $suratIzin->sifatSurat = $request->input('sifatSurat');
-        $suratIzin->nomorSurat = $request->input('nomorSurat');
-        $suratIzin->tanggalSurat = $request->input('tanggalSurat');
-        $suratIzin->tahun = $tahun;
-        $suratIzin->lampiran = $request->input('lampiran');
-        $suratIzin->idPengirim = $request->input('idPengirim') != "lainnya" ? $request->input('idPengirim') : NULL;
-        $suratIzin->pengirim = $request->input('pengirim');
-        $suratIzin->perihal = $request->input('perihal');
-        $suratIzin->status = "Diteruskan ke " . $ketua->namaJabatan;
-        $suratIzin->statusArsip = 0;
-        $suratIzin->fileName = $fileName;
-        $suratIzin->filePath = $filePath;
-        $suratIzin->save();
+        $suratMasuk = new SuratMasuk();
+        $suratMasuk->index = $newIndex;
+        $suratMasuk->idPosisiDisposisi = $sekre->id;
+        $suratMasuk->tanggalAgenda = $request->input('tanggalAgenda');
+        $suratMasuk->idJenisSurat = $request->input('jenisSurat');
+        $suratMasuk->sifatSurat = $request->input('sifatSurat');
+        $suratMasuk->nomorSurat = $request->input('nomorSurat');
+        $suratMasuk->tanggalSurat = $request->input('tanggalSurat');
+        $suratMasuk->tahun = $tahun;
+        $suratMasuk->lampiran = $request->input('lampiran');
+        $suratMasuk->idPengirim = $request->input('idPengirim') != "lainnya" ? $request->input('idPengirim') : NULL;
+        $suratMasuk->pengirim = $request->input('pengirim');
+        $suratMasuk->perihal = $request->input('perihal');
+        $suratMasuk->status = "Diteruskan ke Sekretariat";
+        $suratMasuk->statusArsip = 0;
+        $suratMasuk->fileName = $fileName;
+        $suratMasuk->filePath = $filePath;
+        $suratMasuk->save();
 
 
         if (!($request->input('idPengirim') == 'lainnya')) {
@@ -325,7 +329,7 @@ class SuratMasukController extends Controller
             dispatch($job);
         }
 
-        $penerima = $suratIzin = User::find($ketua->id);
+        $penerima = $suratMasuk = User::find($sekre->id);
 
         $job = new ProcessNotifDisposisi(
             $request->input('sifatSurat'),
@@ -334,14 +338,14 @@ class SuratMasukController extends Controller
             $penerima->namaJabatan,
             $penerima->nama,
             \Carbon\Carbon::now()->format('d/m/Y'),
-            "Surat Izin Masuk",
+            "Surat Masuk",
             $penerima->email
         );
         dispatch($job);
 
 
-        return redirect('/surat-izin/ns/dikirim')
-            ->with('success', "Berhasil Menambahkan Surat Izin");
+        return redirect('/surat-masuk/ns/dikirim')
+            ->with('success', "Berhasil Menambahkan Surat Masuk");
     }
     
     public function edit(SuratMasuk $suratMasuk)
@@ -1396,7 +1400,7 @@ class SuratMasukController extends Controller
             $suratMasuk = $suratMasuk->where('perihal', 'like', '%' . request('perihal') . '%');
         }
 
-        return view('surat-masuk.surat-disposisi-dikirim', ['title' => 'Surat Masuk Dikirim', 'active' => 'surat masuk', 'suratMasuk' => $suratMasuk->paginate(25), 'isForm' => false]);
+        return view('surat-masuk.surat-disposisi-dikirim', ['title' => 'Surat Masuk Anda', 'active' => 'surat masuk', 'suratMasuk' => $suratMasuk->paginate(25), 'isForm' => false]);
     }
 
     public function nonSekreSudahDiteruskan()

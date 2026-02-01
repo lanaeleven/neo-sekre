@@ -3,17 +3,21 @@
 @section('container')
     <x-default-page-container>
         {{-- Navbar --}}
-        <x-navbar-form title="Tambah Surat Izin" closeUrl="/surat-izin/index-ns" />
+        <x-navbar-form title="Tambah Surat Masuk" closeUrl="/surat-masuk/index-ns" />
 
         {{-- Error Notif --}}
         <x-error-notif />
 
         <x-form-body-container>
-            <form action="/surat-izin/tambah-ns" method="post" enctype="multipart/form-data">
+            <form action="/surat-masuk/tambah-ns" method="post" enctype="multipart/form-data">
                 @csrf
                 <input type="hidden" name="idPengirim" value="{{ auth()->user()->id }}">
 
                 <x-block-input-container>
+                    <div>
+                        <x-dropdown-input :label="'Jenis Surat'" labelPilihan='Pilih Jenis Surat' :name="'jenisSurat'"
+                            :id="'jenisSurat'" :options="$jenisSurat" :required="true"></x-dropdown-input>
+                    </div>
                     <div>
                         <x-text-input name="nomorSurat" id="nomorSurat" value="{{ old('nomorSurat') }}"
                             :required="true">Nomor Surat</x-text-input>
