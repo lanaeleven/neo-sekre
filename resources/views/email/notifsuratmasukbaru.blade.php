@@ -40,8 +40,8 @@
 </head>
 <body>
     <p>Assalamualaikum Wr Wb, {{ $nama }}</p>
-    <p>Surat Anda dengan nomor {{ $noSurat }} sudah masuk ke dalam E-Disposisi.</p>
-    <p>Silakan masuk ke Sistem E-Disposisi untuk melacak progressnnya</p>
-    <p><a href="https://surat.rsisabanjarbaru.com/" class="button">Masuk E-Disposisi</a></p>
+    <p>Surat Anda dengan nomor {{ $noSurat }} sudah masuk ke dalam Website {{ $appName }}.</p>
+    <p>Silakan masuk ke Website {{ $appName }} untuk melacak progressnnya</p>
+    <p><a href="{{ $appUrl }}" class="button">Masuk {{ $appName }}</a></p>
 </body>
 </html>

@@ -16,11 +16,13 @@ class EmailNotifSuratMasukBaru extends Mailable
     /**
      * Create a new message instance.
      */
-    var $nama, $noSurat;
+    var $nama, $noSurat, $appName, $appUrl;
     public function __construct($nama, $noSurat)
     {
         $this->nama = $nama;
         $this->noSurat = $noSurat;
+        $this->appName = config('app.name');
+        $this->appUrl = config('app.url');
     }
 
     /**
@@ -29,7 +31,7 @@ class EmailNotifSuratMasukBaru extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Surat ' . $this->noSurat . ' sudah masuk ke dalam E-Disposisi',
+            subject: 'Surat ' . $this->noSurat . ' sudah masuk ke dalam ' . $this->appName,
         );
     }
 
@@ -42,7 +44,9 @@ class EmailNotifSuratMasukBaru extends Mailable
             view: 'email.notifsuratmasukbaru',
             with: [
                 'nama' => $this->nama,
-                'noSurat' => $this->noSurat
+                'noSurat' => $this->noSurat, 
+                'appName' => $this->appName, 
+                'appUrl' => $this->appUrl, 
             ]
         );
     }
