@@ -179,7 +179,7 @@ class RegulasiController extends Controller
         })->get();
 
         foreach ($userUnit as $un) {
-            $job = new ProcessNotifRegulasiBaru($un->email, $un->namaJabatan, $request->input('perihal'));
+            $job = new ProcessNotifRegulasiBaru($un->email, $un->nama, $request->input('perihal'));
             dispatch($job);
         }
 

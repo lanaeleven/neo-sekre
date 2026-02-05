@@ -165,7 +165,7 @@ class InformasiController extends Controller
         $namaJenisInformasi = JenisInformasi::find($request->input('jenisInformasi'))->nama;
 
         foreach ($recipientUser as $ru) {
-            $job = new ProcessNotifInformasiBaru($ru->email, $ru->namaJabatan, $namaJenisInformasi, $request->input('judul'));
+            $job = new ProcessNotifInformasiBaru($ru->email, $ru->nama, $namaJenisInformasi, $request->input('judul'));
             dispatch($job);
         }
 

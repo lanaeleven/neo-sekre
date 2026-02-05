@@ -212,7 +212,7 @@ class SuratMasukController extends Controller
 
         if (!($request->input('idPengirim') == 'lainnya')) {
             $user = User::find($request->input('idPengirim'));
-            $job = new ProcessNotifSuratMasukBaru($user->email, $user->namaJabatan, $request->input('nomorSurat'));
+            $job = new ProcessNotifSuratMasukBaru($user->email, $user->nama, $request->input('nomorSurat'));
             dispatch($job);
         }
 
@@ -325,7 +325,7 @@ class SuratMasukController extends Controller
 
         if (!($request->input('idPengirim') == 'lainnya')) {
             $user = User::find($request->input('idPengirim'));
-            $job = new ProcessNotifSuratMasukBaru($user->email, $user->namaJabatan, $request->input('nomorSurat'));
+            $job = new ProcessNotifSuratMasukBaru($user->email, $user->nama, $request->input('nomorSurat'));
             dispatch($job);
         }
 

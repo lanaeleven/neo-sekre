@@ -17,7 +17,7 @@ class EmailNotifDisposisi extends Mailable
     /**
      * Create a new message instance.
      */
-    var $sifatSurat, $nomorSurat, $pengirim, $penerima, $nama, $tanggal, $instruksi;
+    var $sifatSurat, $nomorSurat, $pengirim, $penerima, $nama, $tanggal, $instruksi, $appName, $appUrl;
     public function __construct($sifatSurat, $nomorSurat, $pengirim, $penerima, $nama, $tanggal, $instruksi)
     {
         $this->sifatSurat = $sifatSurat;
@@ -27,6 +27,8 @@ class EmailNotifDisposisi extends Mailable
         $this->nama = $nama;
         $this->tanggal = $tanggal;
         $this->instruksi = $instruksi;
+        $this->appName = config('app.name');
+        $this->appUrl = config('app.url');
     }
 
     /**
@@ -51,7 +53,9 @@ class EmailNotifDisposisi extends Mailable
                 'penerima' => $this->penerima, 
                 'nama' => $this->nama,
                 'tanggal' => $this->tanggal,
-                'instruksi' => $this->instruksi
+                'instruksi' => $this->instruksi,
+                'appName' => $this->appName, 
+                'appUrl' => $this->appUrl, 
                 ],
         );
     }

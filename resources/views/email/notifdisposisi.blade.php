@@ -41,12 +41,7 @@
 <body>
     <p>Assalamualaikum Wr Wb, {{ $nama }}</p>
     <p>Anda Memiliki Disposisi baru yang harus ditindaklanjuti.</p>
-    <p>Silakan masuk ke Web Surat RSI Sultan Agung Banjarbaru untuk menindaklanjuti disposisi</p>
-    <p><a href="https://surat.rsisabanjarbaru.com/" class="button">Masuk Aplikasi Surat RSI</a></p>
-    <p>Berikut detail disposisinya:</p>
-    <p>Oleh: {{ $pengirim }}</p>
-    <p>Kepada: {{ $penerima }}</p>
-    <p>Tanggal: {{ $tanggal }}</p>
-    <p>Instruksi: {{ $instruksi }}</p>
+    <p>Silakan masuk ke Website {{ $appName }} untuk menindaklanjuti disposisi</p>
+    <p><a href="{{ $appUrl }}" class="button">Masuk {{ $appName }}</a></p>
 </body>
 </html>

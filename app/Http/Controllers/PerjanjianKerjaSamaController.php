@@ -119,7 +119,7 @@ class PerjanjianKerjaSamaController extends Controller
         $recipientUser = User::whereIn('id', $request->input('users'))->get();
 
         foreach ($recipientUser as $ru) {
-            $job = new ProcessNotifPerjanjianKerjaSamaBaru($ru->email, $ru->namaJabatan, $request->input('perihal'));
+            $job = new ProcessNotifPerjanjianKerjaSamaBaru($ru->email, $ru->nama, $request->input('perihal'));
             dispatch($job);
         }
 

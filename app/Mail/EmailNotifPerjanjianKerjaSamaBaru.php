@@ -16,11 +16,13 @@ class EmailNotifPerjanjianKerjaSamaBaru extends Mailable
     /**
      * Create a new message instance.
      */
-    var $nama, $perihal;
+    var $nama, $perihal, $appName, $appUrl;
     public function __construct($nama, $perihal)
     {
         $this->nama = $nama;
         $this->perihal = $perihal;
+        $this->appName = config('app.name');
+        $this->appUrl = config('app.url');
     }
 
     /**
@@ -43,6 +45,8 @@ class EmailNotifPerjanjianKerjaSamaBaru extends Mailable
             with: [
                 'nama' => $this->nama,
                 'perihal' => $this->perihal,
+                'appName' => $this->appName, 
+                'appUrl' => $this->appUrl, 
             ]
         );
     }

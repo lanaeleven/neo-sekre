@@ -16,12 +16,14 @@ class EmailNotifInformasiBaru extends Mailable
     /**
      * Create a new message instance.
      */
-    var $nama, $jenisInformasi, $judul;
+    var $nama, $jenisInformasi, $judul, $appName, $appUrl;
     public function __construct($nama, $jenisInformasi, $judul)
     {
         $this->nama = $nama;
         $this->jenisInformasi = $jenisInformasi;
         $this->judul = $judul;
+        $this->appName = config('app.name');
+        $this->appUrl = config('app.url');
     }
 
     /**
@@ -45,6 +47,8 @@ class EmailNotifInformasiBaru extends Mailable
                 'nama' => $this->nama,
                 'jenisInformasi' => $this->jenisInformasi,
                 'judul' => $this->judul,
+                'appName' => $this->appName, 
+                'appUrl' => $this->appUrl, 
             ]
         );
     }

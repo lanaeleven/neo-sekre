@@ -44,8 +44,8 @@
 
 <body>
     <p>Assalamualaikum Wr Wb, {{ $nama }}</p>
-    <p>Anda memiliki Undangan baru ({{ $judul }}), silakan cek selengkapnya di laman E-Disposisi</p>
-    <p><a href="https://surat.rsisabanjarbaru.com/" class="button">Masuk E-Disposisi</a></p>
+    <p>Anda memiliki Undangan baru ({{ $judul }}), silakan cek selengkapnya di Website {{ $appName }}</p>
+    <p><a href="{{ $appUrl }}" class="button">Masuk {{ $appName }}</a></p>
 </body>
 
 </html>
