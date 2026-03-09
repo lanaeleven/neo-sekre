@@ -140,6 +140,7 @@ Route::get('/pks/edit/{pks}', [PerjanjianKerjaSamaController::class, 'edit'])->m
 Route::get('/pks/index/ns/', [PerjanjianKerjaSamaController::class, 'listPerjanjianKerjaSamaNs'])->middleware('notSekre')->name('pks.index-ns');
 Route::post('/pks/tambah', [PerjanjianKerjaSamaController::class, 'store']);
 Route::post('/pks/save', [PerjanjianKerjaSamaController::class, 'save']);
+Route::delete('/pks/{id}', [PerjanjianKerjaSamaController::class, 'delete'])->name('pks.delete');
 
 Route::get('/login', [LoginController::class, 'create'])->middleware('guest')->name('login');
 Route::post('/login', [LoginController::class, 'authenticate']);

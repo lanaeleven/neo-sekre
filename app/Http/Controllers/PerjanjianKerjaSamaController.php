@@ -238,4 +238,12 @@ class PerjanjianKerjaSamaController extends Controller
 
         return view('pks.index-ns', ['title' =>  $judul, 'active' => 'pks', 'pks' => $pks->orderBy('tahun', 'desc')->orderBy('index', 'desc')->paginate(25), 'judul' => $judul, 'isForm' => false]);
     }
+
+    public function delete ($id)
+    {
+        $pks = PerjanjianKerjaSama::find($id);
+        $pks->delete();
+        return redirect('/pks/index')
+            ->with('success', "Berhasil Menghapus Perjanjian Kerja Sama");
+    }
 }

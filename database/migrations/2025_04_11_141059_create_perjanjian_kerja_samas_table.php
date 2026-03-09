@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('perjanjian_kerja_sama', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
             $table->integer('index');
             $table->year('tahun');
             $table->date('tanggalSurat');
@@ -22,6 +21,8 @@ return new class extends Migration
             $table->string('keterangan')->nullable();
             $table->string('fileName');
             $table->string('filePath');
+            $table->softDeletes();
+            $table->timestamps();
         });
     }
 
