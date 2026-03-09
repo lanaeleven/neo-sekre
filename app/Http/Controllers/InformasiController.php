@@ -246,4 +246,12 @@ class InformasiController extends Controller
         return redirect($redirect)
             ->with('success', 'Berhasil Mengedit Informasi');
     }
+
+    public function delete ($id)
+    {
+        $informasi = Informasi::find($id);
+        $informasi->delete();
+        return redirect('/informasi/index')
+            ->with('success', "Berhasil Menghapus Informasi");
+    }
 }

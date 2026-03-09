@@ -125,6 +125,7 @@ Route::get('/informasi/edit/{informasi}', [InformasiController::class, 'edit'])-
 Route::get('/informasi/index/ns/', [InformasiController::class, 'listInformasiNs'])->middleware('notSekre')->name('informasi.index-ns');
 Route::post('/informasi/tambah', [InformasiController::class, 'store']);
 Route::post('/informasi/save', [InformasiController::class, 'save']);
+Route::delete('/informasi/{id}', [InformasiController::class, 'delete'])->name('informasi.delete');
 
 Route::get('/undangan/index', [UndanganController::class, 'create'])->middleware('sekre');
 Route::get('/undangan/tambah', [UndanganController::class, 'tambah'])->middleware('sekre');
