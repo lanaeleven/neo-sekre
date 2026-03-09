@@ -257,4 +257,12 @@ class RegulasiController extends Controller
         return redirect($redirect)
             ->with('success', 'Berhasil Mengedit Regulasi');
     }
+
+    public function delete ($id)
+    {
+        $regulasi = Regulasi::find($id);
+        $regulasi->delete();
+        return redirect('/regulasi/index')
+            ->with('success', "Berhasil Menghapus Regulasi");
+    }
 }

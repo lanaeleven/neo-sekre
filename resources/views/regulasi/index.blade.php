@@ -63,6 +63,10 @@
                                 <x-button-with-tooltip variant="light" tooltip="Lihat"
                                     url="{{ asset('storage/' . $r->filePath) }}" target="_blank"><x-heroicon-s-eye
                                         class="w-4 h-4" /></x-button-with-tooltip>
+                                <x-delete-button
+                                    url="{{ route('regulasi.delete', ['id' => $r->id]) }}">
+                                    <x-heroicon-s-trash class="w-4 h-4" />
+                                </x-delete-button>
                             </x-td-action>
                         </tr>
                     @endforeach
