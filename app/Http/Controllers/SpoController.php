@@ -320,4 +320,12 @@ class SpoController extends Controller
             dd('gagal membuka file zip');
         }
     }
+
+    public function delete ($id)
+    {
+        $spo = Spo::find($id);
+        $spo->delete();
+        return redirect('/spo/index')
+            ->with('success', "Berhasil Menghapus SPO");
+    }
 }

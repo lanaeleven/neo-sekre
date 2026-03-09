@@ -109,6 +109,7 @@ Route::get('/spo/index/ns/', [SpoController::class, 'listSpoNs'])->middleware('n
 Route::post('/spo/tambah', [SpoController::class, 'store']);
 Route::post('/spo/save', [SpoController::class, 'save']);
 Route::post('/unduh-rekap-spo', [SpoController::class, 'rekapSpo']);
+Route::delete('/spo/{id}', [SpoController::class, 'delete'])->name('spo.delete');
 
 Route::get('/regulasi/index', [RegulasiController::class, 'create'])->middleware('sekre')->name('regulasi.index');
 Route::get('/regulasi/tambah', [RegulasiController::class, 'tambah'])->middleware('sekre');
