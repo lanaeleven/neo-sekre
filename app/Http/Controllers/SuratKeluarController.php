@@ -352,4 +352,12 @@ class SuratKeluarController extends Controller
             abort(404, 'File tidak ditemukan');
         }
     }
+
+    public function delete ($id)
+    {
+        $suratKeluar = SuratKeluar::find($id);
+        $suratKeluar->delete();
+        return redirect('/surat-keluar/index')
+            ->with('success', "Berhasil Menghapus Surat Keluar");
+    }
 }

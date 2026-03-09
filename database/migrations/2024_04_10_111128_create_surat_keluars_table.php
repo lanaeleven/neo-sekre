@@ -23,6 +23,8 @@ return new class extends Migration
             $table->string('keterangan')->nullable();
             $table->string('fileName');
             $table->string('filePath');
+            $table->softDeletes();
+            $table->timestamps();
         });
     }
 
