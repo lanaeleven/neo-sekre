@@ -58,6 +58,7 @@ Route::put('/terusan-surat', [SuratMasukController::class, 'updateTerusanSurat']
 Route::post('/surat-masuk/tambah', [SuratMasukController::class, 'store']);
 Route::post('/surat-masuk/tambah-ns', [SuratMasukController::class, 'storeNs']);
 Route::post('/surat-masuk/save', [SuratMasukController::class, 'save']);
+Route::delete('/surat-masuk/{id}', [SuratMasukController::class, 'delete'])->name('surat-masuk.delete');
 Route::post('/surat-masuk/teruskan', [SuratMasukController::class, 'teruskan']);
 Route::post('/surat-masuk/arsipkan', [SuratMasukController::class, 'arsipkan']);
 Route::post('/surat-masuk/buka-arsip', [SuratMasukController::class, 'bukaArsip']);

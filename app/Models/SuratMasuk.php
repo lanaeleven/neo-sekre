@@ -6,18 +6,18 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class SuratMasuk extends Model
 {
     use HasFactory;
+    use SoftDeletes;
 
     protected $guarded = [
         'id'
     ];
 
     protected $table = 'surat_masuk';
-
-    public $timestamps = false;
 
     public function distribusiSurat(): HasMany
     {

@@ -1814,4 +1814,12 @@ class SuratMasukController extends Controller
             'isForm' => false
         ]);
     }
+
+    public function delete ($id)
+    {
+        $suratMasuk = SuratMasuk::find($id);
+        $suratMasuk->delete();
+        return redirect('/surat-masuk/index?tahun=' . config('app.tahun'))
+            ->with('success', "Berhasil Menghapus Surat Masuk");
+    }
 }
