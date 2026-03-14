@@ -53,6 +53,7 @@ class UserController extends Controller
         $user->email = $request->input('email');
         $user->username = $request->input('username');
         $user->password = Hash::make($request->input('password'));
+        $user->role = 'umum';
         $user->save();
 
         // Redirect back to the index page with a success message
