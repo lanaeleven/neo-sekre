@@ -73,10 +73,10 @@
                             <x-button-with-tooltip variant="success" tooltip="Disposisi"
                                 url="/surat-masuk/disposisi/{{ $sm->id }}"><x-heroicon-s-arrow-up-right
                                     class="w-4 h-4" /></x-button-with-tooltip>
-                            <x-delete-button
+                            {{-- <x-delete-button
                                 url="{{ route('surat-masuk.delete', ['id' => $sm->id]) }}">
                                 <x-heroicon-s-trash class="w-4 h-4" />
-                            </x-delete-button>
+                            </x-delete-button> --}}
                         </x-td-action>
                     </tr>
                 @endforeach
